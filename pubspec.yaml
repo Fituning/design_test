@@ -38,6 +38,15 @@ dependencies:
 
   font_awesome_flutter: ^10.7.0
   google_fonts: ^6.2.1
+  flutter_svg: ^2.0.10+1
+
+  # pour les langues et localizations
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.19.0
+
+  #pour les circular slider
+  syncfusion_flutter_gauges: ^27.1.52
 
 dev_dependencies:
   flutter_test:
@@ -90,3 +99,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_intl:
+  enabled: true
