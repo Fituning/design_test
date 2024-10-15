@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../components/BottomNavBar.dart';
 import '../components/TopNavBar.dart';
+import '../components/circular_info_tile.dart';
 import '../main.dart';
 
 class Home extends StatelessWidget {
@@ -17,7 +18,7 @@ class Home extends StatelessWidget {
           FontAwesomeIcons.unlock,
           size: 42,
         ),
-        padding: 24,
+        padding: EdgeInsets.all(24),
         bgColor: Theme.of(context).colorScheme.surfaceContainerLow, onPressed: () {  },
       ),
       floatingActionButtonLocation: CustomFabLocation(),
@@ -66,104 +67,29 @@ class Home extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          const CircularElevatedButton(
-                                            icon: FaIcon(
-                                                FontAwesomeIcons.batteryHalf,
-                                                size: 24),
-                                            clickable: false, onPressed: null,
-                                          ),
-                                          const SizedBox(height: 12,),
-                                          Text(
-                                            "Batterie",
-                                            style: GoogleFonts.roboto(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSurface,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          Text(
-                                            "58%",
-                                            style: GoogleFonts.teko(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSurface,
-                                                fontSize: 22,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
+                                    const Expanded(
+                                      child: CircularInfoTile(
+                                        icon: FaIcon(FontAwesomeIcons.batteryHalf),
+                                        label: "Battery",
+                                        value: "58",
+                                        unit: "%",
+                                      ),
+                                    ),
+                                    const Expanded(
+                                      child: CircularInfoTile(
+                                        icon: FaIcon(FontAwesomeIcons.route),
+                                        label: "Range",
+                                        value: "116",
+                                        unit: "km",
                                       ),
                                     ),
                                     Expanded(
-                                      child: Column(
-                                        children: [
-                                          const CircularElevatedButton(
-                                            icon: FaIcon(
-                                                FontAwesomeIcons.route,
-                                                size: 24),
-                                            clickable: false, onPressed: null,
-                                          ),
-                                          const SizedBox(height: 12,),
-                                          Text(
-                                            "Autonomie",
-                                            style: GoogleFonts.roboto(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSurface,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          Text(
-                                            "285 km",
-                                            style: GoogleFonts.teko(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSurface,
-                                                fontSize: 22,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          CircularElevatedButton(
-                                            icon: FaIcon(
-                                              FontAwesomeIcons.bolt,
-                                              size: 24,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onTertiary,
-                                            ),
-                                            bgColor: Theme.of(context)
-                                                .colorScheme
-                                                .tertiary,
-                                            clickable: false, onPressed: null,
-                                          ),
-                                          const SizedBox(height: 12,),
-                                          Text(
-                                            "Statut",
-                                            style: GoogleFonts.roboto(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSurface,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          Text(
-                                            "En charge",
-                                            style: GoogleFonts.teko(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSurface,
-                                                fontSize: 22,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
+                                      child: CircularInfoTile(
+                                        icon: FaIcon(FontAwesomeIcons.bolt),
+                                        label: "Status",
+                                        value: "Unplugged",
+                                        iconColor: Theme.of(context).colorScheme.onTertiary,
+                                        bgColor: Theme.of(context).colorScheme.tertiary,
                                       ),
                                     ),
                                   ],
@@ -186,3 +112,5 @@ class Home extends StatelessWidget {
     );
   }
 }
+
+

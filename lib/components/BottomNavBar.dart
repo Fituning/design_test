@@ -16,9 +16,10 @@ class NavBar extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-                color: Theme.of(context).colorScheme.shadow,
+                color: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
                 spreadRadius: 2,
-                blurRadius: 6),
+                blurRadius: 12
+            )
           ],
         ),
         child: ClipRRect(

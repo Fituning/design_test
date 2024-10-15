@@ -1,0 +1,148 @@
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
+
+import 'ElevatedButton.dart';
+
+class CircularChargeGauge extends StatefulWidget {
+  const CircularChargeGauge({super.key});
+
+  @override
+  State<CircularChargeGauge> createState() => _CircularChargeGaugeState();
+}
+
+class _CircularChargeGaugeState extends State<CircularChargeGauge> {
+  var currentTemp = 24.5;
+  var battery = 58.0; //bien déclarer la var avant le @override
+  var onCharge = false;
+  var hoodLock = false;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          onCharge ? "Voiture en charge" : "Branchez la voiture",
+          style: GoogleFonts.roboto(
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface,
+              fontSize: 20,
+              fontWeight: FontWeight.w700),
+        ),
+        SizedBox(height: 12,),
+        Container(
+            width: 270,
+            height: 270,
+            color: Theme.of(context).colorScheme.surface,
+            child:
+            Stack(
+                alignment: Alignment.center,
+                children: [
+                  Positioned(
+                      bottom: 0,
+                      child: Column(
+                        children: [
+                          Text(
+                            // textHeightBehavior: const TextHeightBehavior(leadingDistribution: TextLeadingDistribution.even),
+                            battery.round().toString(),
+                            // "58",
+                            style: GoogleFonts.teko(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                fontSize: 100,
+                                fontWeight: FontWeight.w600,
+                                height: 0.65
+                            ),
+                          ),
+                          Text(
+                            "Batterie %",
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400
+                            ),
+                          ),
+                        ],
+                      )
+                  ),
+
+                  SizedBox(
+                    width: 270,
+                    height: 270,
+                    child: SfRadialGauge(
+                      axes: <RadialAxis>[
+                        RadialAxis(
+                          minimum: 0,
+                          maximum: 100,
+                          startAngle: 120,
+                          endAngle: 60,
+                          showLabels: false,
+                          maximumLabels: 1,
+                          showFirstLabel: false,
+                          showLastLabel: false,
+                          showTicks: false,
+                          interval: 5,
+                          radiusFactor: 1,
+                          axisLineStyle:
+                          const AxisLineStyle(cornerStyle: CornerStyle.bothCurve),
+                          pointers: [
+                            RangePointer(
+                              value: battery,
+                              cornerStyle: CornerStyle.bothCurve,
+                              width: 8,
+                              sizeUnit: GaugeSizeUnit.logicalPixel,
+                              color: Theme.of(context).colorScheme.tertiary,
+                              enableAnimation: true,
+                              animationType: AnimationType.ease,
+                              animationDuration: 3000,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                      top: 12,
+                      child: Column(
+                        children: [
+                          CircularElevatedButton(
+                            icon: Text(
+                              "AUTO",
+                              style: TextStyle(
+                                  color: hoodLock ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurface
+                              ),
+                            ),
+                            onPressed: (){
+                              setState(() {
+                                hoodLock = !hoodLock;
+                                onCharge = hoodLock;
+                              });
+                            },
+                            value: hoodLock,
+                            padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                            // enable: true,
+                          ),
+                          SizedBox(height: 6,),
+                          CircularElevatedButton(
+                            icon: const FaIcon(FontAwesomeIcons.plug),
+                            iconClicked: FaIcon(FontAwesomeIcons.bolt),
+                            bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
+                            iconColor: Theme.of(context).colorScheme.tertiary,
+                            padding: EdgeInsets.all(24),
+                            onPressed:(){
+                              setState(() {
+                                onCharge = !onCharge;
+                              });
+                            },
+                            iconSize: 32,
+                            value: onCharge,
+                          ),
+                        ],
+                      )
+                  ),
+                ])
+        ),
+      ],
+    );
+  }
+}
