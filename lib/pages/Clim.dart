@@ -2,15 +2,9 @@ import 'package:design_test/components/ElevatedButton.dart';
 import 'package:design_test/components/next_prog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import '../components/BottomNavBar.dart';
 import '../components/TopNavBar.dart';
-import '../components/Vent.dart';
-import '../components/chip_button.dart';
-import '../components/circular_progress_indicator.dart';
 import '../components/clim_controler_panel.dart';
 
 class Clim extends StatelessWidget {
@@ -18,132 +12,14 @@ class Clim extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: CircularElevatedButton(
-        icon: const FaIcon(
-          FontAwesomeIcons.clock,
-          size: 38,
+    return
+      CustomScrollView(
+      slivers: [
+        SliverPersistentHeader(
+          delegate: ClimControl(),
         ),
-        elevation: 8,
-        padding: EdgeInsets.all(16),
-        bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
-        onPressed: () {},
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      body: SafeArea(
-        child: Container(
-          color: Theme.of(context).colorScheme.surface,
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              // to remove
-              // Container(
-              //   color: Colors.green,
-              //   width: MediaQuery.of(context).size.width,
-              //   child: Image.asset(
-              //     "assets/images/Frame 185.png",
-              //     fit: BoxFit.cover,
-              //     alignment: Alignment.topCenter,
-              //   ),
-              // ),
-              // to here
-              Padding(
-                padding: const EdgeInsets.only(top: 76, left: 16, right: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    VentController(),
-                    const SizedBox(
-                      height: 38,
-                    ),
-                    const CircularProgressSlider(),
-                    const SizedBox(
-                      height: 38,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 44.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: ChipButton(
-                              icon: Text(
-                                "AC",
-                                style: GoogleFonts.roboto(
-                                    color:
-                                        Theme.of(context).colorScheme.onSurface,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 28,
-                            width: 2,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          Expanded(
-                            child: ChipButton(
-                              icon: SvgPicture.asset(
-                                "assets/images/deg_avant.svg",
-                                height: 28,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 28,
-                            width: 2,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          Expanded(
-                            child: ChipButton(
-                              icon: SvgPicture.asset(
-                                "assets/images/deg_arriere.svg",
-                                height: 28,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    Text(
-                      "PROCHAINES PROGRAMMATIONS".toUpperCase(),
-                      style: GoogleFonts.teko(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    NextProg(
-                      next: '',
-                      startTime: DateTime.now().add(const Duration(days: 1)),
-                      temperature: 23,
-                    ),
-                    NextProg(
-                      next: '',
-                      startTime: DateTime.now().add(const Duration(days: 3)),
-                      temperature: 23.5105141458,
-                    ),
-                    NextProg(
-                      next: '',
-                      startTime: DateTime.now().add(const Duration(days: 9)),
-                      temperature: 24,
-                    ),
-                  ],
-                ),
-              ),
-              const Positioned(top: 0, left: 0, child: TopNavBar()),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: const NavBar(),
+        NextProgList()
+      ],
     );
   }
 }
@@ -185,7 +61,7 @@ class Clim2 extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const NavBar(),
+      //bottomNavigationBar: const NavBar(),
     );
   }
 }
