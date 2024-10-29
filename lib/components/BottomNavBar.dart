@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class NavBar extends StatelessWidget {
-  const NavBar({super.key});
+  const NavBar({
+    super.key,
+    this.pageIndex =2,
+    required this.onPageChanged ,
+  });
+
+  final int pageIndex;
+  final ValueChanged<int> onPageChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +38,10 @@ class NavBar extends StatelessWidget {
             child: BottomNavigationBar(
                 backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
                 selectedItemColor: Theme.of(context).colorScheme.secondary,
-                currentIndex: 2,
+                currentIndex: pageIndex,
+                onTap: (value){
+                  onPageChanged(value);
+                },
                 unselectedItemColor:
                 Theme.of(context).colorScheme.onSurface,
                 type: BottomNavigationBarType.fixed,

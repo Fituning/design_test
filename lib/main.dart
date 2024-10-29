@@ -1,10 +1,15 @@
 import 'package:design_test/pages/Charge.dart';
 import 'package:design_test/pages/Clim.dart';
 import 'package:design_test/pages/home.dart';
+import 'package:design_test/pages/maintenance.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'components/BottomNavBar.dart';
+import 'components/ElevatedButton.dart';
+import 'components/TopNavBar.dart';
 import 'generated/l10n.dart';
 
 void main() {
@@ -64,17 +69,97 @@ class _MyAppState extends State<MyApp> {
       ],
       supportedLocales: S.delegate.supportedLocales,
       themeMode: ThemeMode.light,
-      home: const Charge(),
+      home: const MainScreen(),
     );
   }
 }
 
-class MySoftcar extends StatelessWidget {
-  const MySoftcar({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int pageIndex = 2;
+  @override
   Widget build(BuildContext context) {
-    return const CircularProgressIndicator();
+    Widget page = Home();
+    Widget? floatingActionButton = null;
+    FloatingActionButtonLocation floatingActionLocation = CustomFabLocation();
+    switch (pageIndex) {
+      case 0:
+        page = Maintenance();
+        floatingActionButton = null;
+        floatingActionLocation = FloatingActionButtonLocation.centerFloat;
+        break;
+      case 1:
+        page = Clim();
+        floatingActionButton = CircularElevatedButton(
+          icon: const FaIcon(
+            FontAwesomeIcons.clock,
+            size: 42,
+          ),
+          padding: EdgeInsets.all(16),
+          bgColor: Theme.of(context).colorScheme.surfaceContainerLow, onPressed: () {  },
+        );
+        floatingActionLocation = FloatingActionButtonLocation.centerFloat;
+        break;
+      case 2 :
+        page = Home();
+        floatingActionButton = CircularElevatedButton(
+          icon: const FaIcon(
+            FontAwesomeIcons.unlock,
+            size: 42,
+          ),
+          padding: EdgeInsets.all(24),
+          bgColor: Theme.of(context).colorScheme.surfaceContainerLow, onPressed: () {  },
+        );
+        floatingActionLocation = CustomFabLocation();
+      case 4 :
+        page = Charge();
+        floatingActionButton = CircularElevatedButton(
+          icon: const FaIcon(
+            FontAwesomeIcons.clock,
+            size: 42,
+          ),
+          padding: EdgeInsets.all(16),
+          bgColor: Theme.of(context).colorScheme.surfaceContainerLow, onPressed: () {  },
+        );
+        floatingActionLocation = FloatingActionButtonLocation.centerFloat;
+    }
+
+    return Scaffold(
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionLocation,
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      body: SafeArea(
+        child: Container(
+          color: Theme.of(context).colorScheme.surface,
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              // Image.asset(
+              //   "assets/images/Screenshot_20241017-161950.png",
+              //   width: MediaQuery.of(context).size.width,
+              //   fit: BoxFit.fitWidth,
+              //   alignment: Alignment.centerRight,
+              // ),
+              page,
+              Positioned(top: 0, left: 0, child: TopNavBar()),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: NavBar(pageIndex: pageIndex,onPageChanged: (value){
+        if(value != 3){
+          setState(() {
+            pageIndex = value;
+          });
+        }
+      }),
+    );
   }
 }
 
@@ -92,7 +177,7 @@ class CustomFabLocation extends FloatingActionButtonLocation {
         scaffoldGeometry.scaffoldSize.width -
             scaffoldGeometry.floatingActionButtonSize.width -
             16,
-        550);
+        scaffoldGeometry.scaffoldSize.height*13/24);
   }
 }
 
