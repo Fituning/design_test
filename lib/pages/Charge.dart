@@ -1,9 +1,6 @@
-import 'package:design_test/components/ElevatedButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../components/BottomNavBar.dart';
-import '../components/TopNavBar.dart';
 import '../components/circular_charge_gauge.dart';
 import '../components/circular_info_tile.dart';
 
@@ -24,7 +21,7 @@ class Charge extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: spacing/2,),
-                CircularChargeGauge(),
+                const CircularChargeGauge(),
                 SizedBox(height: spacing,),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.0),

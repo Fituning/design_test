@@ -50,11 +50,11 @@ class CircularElevatedButton extends StatelessWidget {
         ),
         elevation: WidgetStatePropertyAll<double>(elevation),
         shadowColor: WidgetStatePropertyAll<Color>(Theme.of(context).colorScheme.shadow),
-        shape: _isPaddingEqual(padding ?? EdgeInsets.all(16)) ? WidgetStateProperty.all(const CircleBorder()) : null,
+        shape: _isPaddingEqual(padding ?? const EdgeInsets.all(16)) ? WidgetStateProperty.all(const CircleBorder()) : null,
       ),
       alignment: Alignment.center,
       iconSize: iconSize,
-      padding: padding ?? EdgeInsets.all(16),
+      padding: padding ?? const EdgeInsets.all(16),
       onPressed: onPressed,
     );
   }

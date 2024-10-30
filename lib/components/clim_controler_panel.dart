@@ -30,7 +30,7 @@ class ClimControllerPanel extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              VentController(),
+              const VentController(),
               const SizedBox(
                 height: 38,
               ),

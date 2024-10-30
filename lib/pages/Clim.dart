@@ -1,7 +1,6 @@
 import 'package:design_test/components/ElevatedButton.dart';
 import 'package:design_test/components/next_prog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import '../components/TopNavBar.dart';
@@ -18,7 +17,7 @@ class Clim extends StatelessWidget {
         SliverPersistentHeader(
           delegate: ClimControl(),
         ),
-        NextProgList()
+        const NextProgList()
       ],
     );
   }
@@ -36,7 +35,7 @@ class Clim2 extends StatelessWidget {
           size: 38,
         ),
         elevation: 8,
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
         onPressed: () {},
       ),
@@ -53,7 +52,7 @@ class Clim2 extends StatelessWidget {
                   SliverPersistentHeader(
                     delegate: ClimControl(),
                   ),
-                  NextProgList()
+                  const NextProgList()
                 ],
               ),
               const Positioned(top: 0, left: 0, child: TopNavBar()),

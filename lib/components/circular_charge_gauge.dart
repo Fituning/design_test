@@ -30,7 +30,7 @@ class _CircularChargeGaugeState extends State<CircularChargeGauge> {
               fontSize: 20,
               fontWeight: FontWeight.w700),
         ),
-        SizedBox(height: 12,),
+        const SizedBox(height: 12,),
         Container(
             width: 270,
             height: 270,
@@ -122,13 +122,13 @@ class _CircularChargeGaugeState extends State<CircularChargeGauge> {
                             padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
                             // enable: true,
                           ),
-                          SizedBox(height: 6,),
+                          const SizedBox(height: 6,),
                           CircularElevatedButton(
                             icon: const FaIcon(FontAwesomeIcons.plug),
-                            iconClicked: FaIcon(FontAwesomeIcons.bolt),
+                            iconClicked: const FaIcon(FontAwesomeIcons.bolt),
                             bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
                             iconColor: Theme.of(context).colorScheme.tertiary,
-                            padding: EdgeInsets.all(24),
+                            padding: const EdgeInsets.all(24),
                             onPressed:(){
                               setState(() {
                                 onCharge = !onCharge;
