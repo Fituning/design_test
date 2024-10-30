@@ -41,7 +41,7 @@ class CircularInfoTile extends StatelessWidget {
 }
 
 class _TextSection extends StatelessWidget {
-  const _TextSection({super.key, required this.label, required this.value, required this.unit, required this.axis});
+  const _TextSection({required this.label, required this.value, required this.unit, required this.axis});
 
   final String label;
   final String value;

@@ -85,46 +85,46 @@ class _MainScreenState extends State<MainScreen> {
   int pageIndex = 2;
   @override
   Widget build(BuildContext context) {
-    Widget page = Home();
-    Widget? floatingActionButton = null;
+    Widget page = const Home();
+    Widget? floatingActionButton;
     FloatingActionButtonLocation floatingActionLocation = CustomFabLocation();
     switch (pageIndex) {
       case 0:
-        page = Maintenance();
+        page = const Maintenance();
         floatingActionButton = null;
         floatingActionLocation = FloatingActionButtonLocation.centerFloat;
         break;
       case 1:
-        page = Clim();
+        page = const Clim();
         floatingActionButton = CircularElevatedButton(
           icon: const FaIcon(
             FontAwesomeIcons.clock,
             size: 42,
           ),
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           bgColor: Theme.of(context).colorScheme.surfaceContainerLow, onPressed: () {  },
         );
         floatingActionLocation = FloatingActionButtonLocation.centerFloat;
         break;
       case 2 :
-        page = Home();
+        page = const Home();
         floatingActionButton = CircularElevatedButton(
           icon: const FaIcon(
             FontAwesomeIcons.unlock,
             size: 42,
           ),
-          padding: EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
           bgColor: Theme.of(context).colorScheme.surfaceContainerLow, onPressed: () {  },
         );
         floatingActionLocation = CustomFabLocation();
       case 4 :
-        page = Charge();
+        page = const Charge();
         floatingActionButton = CircularElevatedButton(
           icon: const FaIcon(
             FontAwesomeIcons.clock,
             size: 42,
           ),
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           bgColor: Theme.of(context).colorScheme.surfaceContainerLow, onPressed: () {  },
         );
         floatingActionLocation = FloatingActionButtonLocation.centerFloat;
@@ -147,7 +147,7 @@ class _MainScreenState extends State<MainScreen> {
               //   alignment: Alignment.centerRight,
               // ),
               page,
-              Positioned(top: 0, left: 0, child: TopNavBar()),
+              const Positioned(top: 0, left: 0, child: TopNavBar()),
             ],
           ),
         ),

@@ -15,7 +15,7 @@ class NextProgList extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surfaceContainer,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(32),
               topRight: Radius.circular(32),
             ),
@@ -38,7 +38,7 @@ class NextProgList extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  borderRadius: const BorderRadius.all(Radius.circular(50)),
                 ),
                 width: 100,
                 height: 4,
@@ -93,20 +93,20 @@ class NextProg extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             color:  Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.only(topRight: Radius.circular(12), bottomRight: Radius.circular(12)),
+            borderRadius: const BorderRadius.only(topRight: Radius.circular(12), bottomRight: Radius.circular(12)),
           border: Border(left: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 4)),
           boxShadow: [
             BoxShadow(
                 color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
                 spreadRadius: 0,
                 blurRadius: 2,
-                offset: Offset(0,1)
+                offset: const Offset(0,1)
             ),
             BoxShadow(
                 color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
                 spreadRadius: 1,
                 blurRadius: 3,
-                offset: Offset(0, 1)
+                offset: const Offset(0, 1)
             ),
           ]
         ),
@@ -126,7 +126,7 @@ class NextProg extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(width: 4,),
+                  const SizedBox(width: 4,),
                   Column(
                     children: [
                       Text(
@@ -152,7 +152,7 @@ class NextProg extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("prog 1"),
+                  const Text("prog 1"),
                   Text(
                     getFormattedDate(startTime),
                     overflow: TextOverflow.ellipsis,

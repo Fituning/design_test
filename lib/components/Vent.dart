@@ -107,7 +107,7 @@ class _VentControllerState extends State<VentController> {
 
 
 class VentLevelIndicator extends StatefulWidget {
-  const VentLevelIndicator({Key? key, required this.ventLevel}) : super(key: key);
+  const VentLevelIndicator({super.key, required this.ventLevel});
 
   final int ventLevel;
 

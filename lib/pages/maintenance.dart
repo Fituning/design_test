@@ -1,6 +1,5 @@
 import 'package:design_test/components/circular_info_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -46,20 +45,20 @@ class Maintenance extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*scale*10/24, right: 6.0),
-                  child: Container(
+                  child: SizedBox(
                     height: MediaQuery.of(context).size.height*scale*15/24,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CircularInfoTile(
+                        const CircularInfoTile(
                           icon: FaIcon(FontAwesomeIcons.road),
                           axis: Axis.horizontal,
                           label: "Kilomètres parcourus",
                           value: "12450",
                           unit: "km",
                         ),
-                        CircularInfoTile(
+                        const CircularInfoTile(
                           icon: FaIcon(FontAwesomeIcons.heartCircleBolt),
                           axis: Axis.horizontal,
                           label: "Etat de la batterie",
@@ -67,7 +66,7 @@ class Maintenance extends StatelessWidget {
                           unit: "%",
                         ),
                         CircularInfoTile(
-                          icon: FaIcon(FontAwesomeIcons.wrench),
+                          icon: const FaIcon(FontAwesomeIcons.wrench),
                           axis: Axis.horizontal,
                           label: "Prochain entretien",
                           value: "692",
@@ -75,14 +74,14 @@ class Maintenance extends StatelessWidget {
                           bgColor: Theme.of(context).colorScheme.error,
                           iconColor: Theme.of(context).colorScheme.onError,
                         ),
-                        CircularInfoTile(
+                        const CircularInfoTile(
                           icon: FaIcon(FontAwesomeIcons.chargingStation),
                           axis: Axis.horizontal,
                           label: "Consomation Moyenne",
                           value: "1.2",
                           unit: "Wh/km",
                         ),
-                        CircularInfoTile(
+                        const CircularInfoTile(
                           icon: FaIcon(FontAwesomeIcons.download),
                           axis: Axis.horizontal,
                           label: "Statut du Software",

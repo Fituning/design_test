@@ -1,11 +1,7 @@
-import 'package:design_test/components/ElevatedButton.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../components/BottomNavBar.dart';
-import '../components/TopNavBar.dart';
 import '../components/circular_info_tile.dart';
-import '../main.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -68,7 +64,7 @@ class Home extends StatelessWidget {
                           ),
                           Expanded(
                             child: CircularInfoTile(
-                              icon: FaIcon(FontAwesomeIcons.bolt),
+                              icon: const FaIcon(FontAwesomeIcons.bolt),
                               label: "Status",
                               value: "Unplugged",
                               iconColor: Theme.of(context).colorScheme.onTertiary,
