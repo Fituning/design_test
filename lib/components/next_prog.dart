@@ -122,7 +122,7 @@ class NextProg extends StatelessWidget {
                       SvgPicture.asset(
                         "assets/images/time_arrow.svg",
                         color: Theme.of(context).colorScheme.onSurface,
-                        height: 48,
+                        height: 53,
                       ),
                     ],
                   ),
@@ -149,46 +149,50 @@ class NextProg extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("prog 1"),
-                  Text(
-                    getFormattedDate(startTime),
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.roboto(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
                 children: [
                   Row(
-
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      FaIcon(
-                        FontAwesomeIcons.temperatureHalf,
-                        color: Theme.of(context).colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        width: 6,
+                      Row(
+                        children: [
+                          FaIcon(
+                            FontAwesomeIcons.temperatureHalf,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 20,
+                          ),
+                          const SizedBox(
+                            width: 6,
+                          ),
+                          Text(
+                            "${temperature.toStringAsFixed(1)}°C",
+                            style: GoogleFonts.roboto(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                fontSize: 20,
+                                letterSpacing: 1,
+                                fontWeight: FontWeight.w600),
+                          ),
+
+                        ],
                       ),
                       Text(
-                        "${temperature.toStringAsFixed(1)}°C",
+                        getFormattedDate(startTime),
+                        overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.roboto(
                             color: Theme.of(context).colorScheme.onSurface,
                             fontSize: 20,
-                            letterSpacing: 1,
-                            fontWeight: FontWeight.w600),
+                            fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("prog 1"),
+                    ],
+                  ),
                 ],
-              )
+              ),
             ],
           )
         ),

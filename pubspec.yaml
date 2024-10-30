@@ -45,6 +45,9 @@ dependencies:
     sdk: flutter
   intl: ^0.19.0
 
+  url_launcher: ^6.3.1
+
+
   #pour les circular slider
   syncfusion_flutter_gauges: ^27.1.52
 

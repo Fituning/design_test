@@ -2,6 +2,7 @@ import 'package:design_test/pages/Charge.dart';
 import 'package:design_test/pages/Clim.dart';
 import 'package:design_test/pages/home.dart';
 import 'package:design_test/pages/maintenance.dart';
+import 'package:design_test/pages/unlock_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -114,7 +115,15 @@ class _MainScreenState extends State<MainScreen> {
             size: 42,
           ),
           padding: const EdgeInsets.all(24),
-          bgColor: Theme.of(context).colorScheme.surfaceContainerLow, onPressed: () {  },
+          bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return const CarLockDialog(); // Utilisation du widget personnalisé
+              },
+            );
+          },
         );
         floatingActionLocation = CustomFabLocation();
       case 4 :
