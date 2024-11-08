@@ -1,11 +1,10 @@
-import 'package:design_test/bloc/get_car_bloc/get_car_bloc.dart';
+import 'package:design_test/bloc/car_bloc/car_bloc.dart';
 import 'package:design_test/pages/Charge.dart';
 import 'package:design_test/pages/Clim.dart';
 import 'package:design_test/pages/home.dart';
 import 'package:design_test/pages/maintenance.dart';
 import 'package:design_test/pages/unlock_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -40,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
-              BlocBuilder<GetCarBloc, GetCarState>(
+              BlocBuilder<CarBloc, CarState>(
                 builder: (context, state) {
                   if (state is GetCarSuccess || state is GetCarReLoadFailure) {
                     return page;
@@ -61,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: (value) {
           if (value != 4) {
             setState(() {
-              context.read<GetCarBloc>().add(GetCar());
+              context.read<CarBloc>().add(GetCar());
               pageIndex = value;
             });
           } else {
@@ -80,7 +79,7 @@ class _MainScreenState extends State<MainScreen> {
               );
 
               // Insérer l'overlay
-              overlay?.insert(overlayEntry);
+              overlay.insert(overlayEntry);
 
               // Retirer l'overlay après 3 secondes
               Future.delayed(const Duration(seconds: 3), () {

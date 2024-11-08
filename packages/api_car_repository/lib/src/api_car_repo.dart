@@ -29,7 +29,7 @@ class ApiCarRepo implements CarRepository {
   @override
   Future<Car> getCar() async {
     try {
-      final response = await http.get(Uri.parse('${apiUrl}/672a183e50544b8598a27d90'));
+      final response = await http.get(Uri.parse('$apiUrl/672a183e50544b8598a27d90'));
 
       if (response.statusCode == 200) {
         // Decode the JSON response as a Map, since we are expecting a single Car object
@@ -57,7 +57,7 @@ class ApiCarRepo implements CarRepository {
   }) async {
     try {
       // Créez l'URL en utilisant votre API
-      final url = Uri.parse('${apiUrl}/672a183e50544b8598a27d90/update/air_conditioning');
+      final url = Uri.parse('$apiUrl/672a183e50544b8598a27d90/update/air_conditioning');
 
       // Construisez le corps de la requête en JSON de manière dynamique
       final Map<String, dynamic> body = {};
@@ -98,7 +98,7 @@ class ApiCarRepo implements CarRepository {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
         // Analysez le JSON en un objet Car et retournez-le
-        print("json response : "+ jsonResponse.toString());
+        print("json response : $jsonResponse");
         return Car.fromEntity(CarEntity.fromJson(jsonResponse));
       } else {
         throw Exception('Failed to update car');

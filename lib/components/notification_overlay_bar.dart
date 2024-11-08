@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NotificationOverlayBar extends StatelessWidget {
@@ -27,13 +26,13 @@ class NotificationOverlayBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                    offset: Offset(0, 4),
+                    offset: const Offset(0, 4),
                     blurRadius: 4,
                     spreadRadius: 3,
                     color: Theme.of(context).colorScheme.shadow.withOpacity(0.15)
                 ),
                 BoxShadow(
-                    offset: Offset(0, 1),
+                    offset: const Offset(0, 1),
                     blurRadius: 3,
                     spreadRadius: 0,
                     color: Theme.of(context).colorScheme.shadow.withOpacity(0.15),

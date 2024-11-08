@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-import '../bloc/get_car_bloc/get_car_bloc.dart';
+import '../bloc/car_bloc/car_bloc.dart';
 import 'ElevatedButton.dart';
 
 class CircularProgressSlider extends StatefulWidget {
@@ -19,7 +19,7 @@ class CircularProgressSlider extends StatefulWidget {
 class _CircularProgressSliderState extends State<CircularProgressSlider> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetCarBloc, GetCarState>(
+    return BlocBuilder<CarBloc, CarState>(
       builder: (context, state) {
         // Vérifier si l'état est GetCarSuccess
         if (state is GetCarSuccess) {
@@ -104,7 +104,7 @@ class _CircularProgressSliderState extends State<CircularProgressSlider> {
                       markerWidth: 24,
                       enableDragging: true,
                       onValueChangeEnd: (value) {
-                        context.read<GetCarBloc>().add(
+                        context.read<CarBloc>().add(
                             UpdateAirConditioning(temperature: car.airConditioning.temperature));
                       },
                       onValueChanged: (value) {
@@ -129,7 +129,7 @@ class _CircularProgressSliderState extends State<CircularProgressSlider> {
                 }
               });
 
-              context.read<GetCarBloc>().add(UpdateAirConditioning(mode: car.airConditioning.mode));
+              context.read<CarBloc>().add(UpdateAirConditioning(mode: car.airConditioning.mode));
             },
             iconSize: 44,
             value: car.airConditioning.mode != AirConditioningModeEnum.off,
@@ -153,7 +153,7 @@ class _CircularProgressSliderState extends State<CircularProgressSlider> {
                     car.airConditioning.mode = AirConditioningModeEnum.off;
                   }
                 });
-                context.read<GetCarBloc>().add(UpdateAirConditioning(mode: car.airConditioning.mode));
+                context.read<CarBloc>().add(UpdateAirConditioning(mode: car.airConditioning.mode));
               },
               value: car.airConditioning.mode == AirConditioningModeEnum.auto,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

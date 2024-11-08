@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import '../bloc/get_car_bloc/get_car_bloc.dart';
+import '../bloc/car_bloc/car_bloc.dart';
 import '../components/TopNavBar.dart';
 import '../components/clim_controler_panel.dart';
 
@@ -15,7 +15,7 @@ class Clim extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-      BlocBuilder<GetCarBloc, GetCarState>(
+      BlocBuilder<CarBloc, CarState>(
         builder: (context, state) {
           if(state is GetCarSuccess){
             final car = state.car;
@@ -69,7 +69,7 @@ class Clim2 extends StatelessWidget {
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
-              BlocBuilder<GetCarBloc, GetCarState>(
+              BlocBuilder<CarBloc, CarState>(
                 builder: (context, state) {
                   if(state is GetCarSuccess){
                     final car = state.car;

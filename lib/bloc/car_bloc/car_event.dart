@@ -1,15 +1,15 @@
-part of 'get_car_bloc.dart';
+part of 'car_bloc.dart';
 
-sealed class GetCarEvent extends Equatable {
-  const GetCarEvent();
+sealed class CarEvent extends Equatable {
+  const CarEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class GetCar extends GetCarEvent {}
+class GetCar extends CarEvent {}
 
-class UpdateAirConditioning extends GetCarEvent {
+class UpdateAirConditioning extends CarEvent {
   final int? temperature;
   final AirConditioningModeEnum? mode;
   final VentilationLevelEnum? ventilationLevel;

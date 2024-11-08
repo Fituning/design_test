@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../bloc/get_car_bloc/get_car_bloc.dart';
+import '../bloc/car_bloc/car_bloc.dart';
 import 'ElevatedButton.dart';
 import 'NotifPastille.dart';
 
@@ -83,7 +83,7 @@ class _VentControllerState extends State<VentController> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetCarBloc, GetCarState>(
+    return BlocBuilder<CarBloc, CarState>(
       builder: (context, state) {
         // Vérifier si l'état est GetCarSuccess
         if (state is GetCarSuccess) {
@@ -115,7 +115,7 @@ class _VentControllerState extends State<VentController> {
               setState(() {
                 car.airConditioning.ventilationLevel = VentilationLevelEnumExtension.fromInt(max(minVentLevel, car.airConditioning.ventilationLevel.index - 1));
               });
-              context.read<GetCarBloc>().add(UpdateAirConditioning(ventilationLevel: car.airConditioning.ventilationLevel));
+              context.read<CarBloc>().add(UpdateAirConditioning(ventilationLevel: car.airConditioning.ventilationLevel));
             }),
         const SizedBox(width: 32,),
         VentLevelIndicator(ventLevel: car.airConditioning.ventilationLevel.index),
@@ -126,7 +126,7 @@ class _VentControllerState extends State<VentController> {
               setState(() {
                 car.airConditioning.ventilationLevel = VentilationLevelEnumExtension.fromInt(min(maxVentLevel, car.airConditioning.ventilationLevel.index + 1));
               });
-              context.read<GetCarBloc>().add(UpdateAirConditioning(ventilationLevel: car.airConditioning.ventilationLevel));
+              context.read<CarBloc>().add(UpdateAirConditioning(ventilationLevel: car.airConditioning.ventilationLevel));
             }
             ),
       ],

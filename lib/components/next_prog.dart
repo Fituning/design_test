@@ -227,7 +227,7 @@ class _NextProgState extends State<NextProg> {
                               fontSize: 20,
                               fontWeight: FontWeight.w400),
                         ),
-                        Text("prog 1"),
+                        const Text("prog 1"),
                       ],
                     ),
                   ],

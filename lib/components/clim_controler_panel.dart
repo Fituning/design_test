@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../bloc/get_car_bloc/get_car_bloc.dart';
+import '../bloc/car_bloc/car_bloc.dart';
 import 'Vent.dart';
 import 'chip_button.dart';
 import 'circular_progress_indicator.dart';
@@ -40,16 +40,16 @@ class _ClimControllerPanelState extends State<ClimControllerPanel> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              VentController(),
+              const VentController(),
               const SizedBox(
                 height: 38,
               ),
-              CircularProgressSlider(),
+              const CircularProgressSlider(),
               const SizedBox(
                 height: 38,
               ),
               // if (shrinkOffset < 90)
-              BlocBuilder<GetCarBloc, GetCarState>(
+              BlocBuilder<CarBloc, CarState>(
                 builder: (context, state) {
                   // Vérifier si l'état est GetCarSuccess
                   if (state is GetCarSuccess) {
@@ -92,7 +92,7 @@ class _ClimControllerPanelState extends State<ClimControllerPanel> {
                 setState(() {
                   car.airConditioning.acIsActive = !car.airConditioning.acIsActive;
                 });
-                context.read<GetCarBloc>().add(UpdateAirConditioning(acIsActive: car.airConditioning.acIsActive));
+                context.read<CarBloc>().add(UpdateAirConditioning(acIsActive: car.airConditioning.acIsActive));
               },
             ),
           ),
@@ -112,7 +112,7 @@ class _ClimControllerPanelState extends State<ClimControllerPanel> {
                 setState(() {
                   car.airConditioning.frontDefogging = !car.airConditioning.frontDefogging;
                 });
-                context.read<GetCarBloc>().add(UpdateAirConditioning(frontDefogging: car.airConditioning.frontDefogging));
+                context.read<CarBloc>().add(UpdateAirConditioning(frontDefogging: car.airConditioning.frontDefogging));
               },
             ),
           ),
@@ -132,7 +132,7 @@ class _ClimControllerPanelState extends State<ClimControllerPanel> {
                 setState(() {
                   car.airConditioning.backDefogging = !car.airConditioning.backDefogging;
                 });
-                context.read<GetCarBloc>().add(UpdateAirConditioning(backDefogging: car.airConditioning.backDefogging));
+                context.read<CarBloc>().add(UpdateAirConditioning(backDefogging: car.airConditioning.backDefogging));
               },
             ),
           ),

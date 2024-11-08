@@ -1,5 +1,4 @@
 import 'package:api_car_repository/api_car_repository.dart';
-import 'package:api_car_repository/src/enums/enum.dart';
 
 class CarEntity{
   String vin;

@@ -1,5 +1,5 @@
 import 'package:api_car_repository/api_car_repository.dart';
-import 'package:design_test/bloc/get_car_bloc/get_car_bloc.dart';
+import 'package:design_test/bloc/car_bloc/car_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,7 +61,7 @@ class _MyAppViewState extends State<MyAppView> {
       supportedLocales: S.delegate.supportedLocales,
       themeMode: ThemeMode.light,
       home: BlocProvider(
-        create:  (context) => GetCarBloc(ApiCarRepo())..add(GetCar()),
+        create:  (context) => CarBloc(ApiCarRepo())..add(GetCar()),
         child: const MainScreen(),
       ),
     );

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../bloc/get_car_bloc/get_car_bloc.dart';
+import '../bloc/car_bloc/car_bloc.dart';
 import '../components/circular_charge_gauge.dart';
 import '../components/circular_info_tile.dart';
 import '../components/notification_overlay_bar.dart';
@@ -21,7 +21,7 @@ class Charge extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: Column(
               children: [
-                BlocBuilder<GetCarBloc, GetCarState>(
+                BlocBuilder<CarBloc, CarState>(
                   builder: (context, state) {
                     if(state is GetCarSuccess){
                       final car = state.car;
@@ -53,7 +53,6 @@ class _Display extends StatelessWidget {
   final Car car;
   final bool showConnectionError;
   const _Display({
-    super.key,
     required this.car,
     this.showConnectionError = false,
   });
@@ -77,7 +76,7 @@ class _Display extends StatelessWidget {
         );
 
         // Insérer l'overlay
-        overlay?.insert(overlayEntry);
+        overlay.insert(overlayEntry);
 
         // Retirer l'overlay après 3 secondes
         Future.delayed(const Duration(seconds: 3), () {

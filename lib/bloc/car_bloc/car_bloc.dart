@@ -2,14 +2,14 @@ import 'package:api_car_repository/api_car_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-part 'get_car_event.dart';
-part 'get_car_state.dart';
+part 'car_event.dart';
+part 'car_state.dart';
 
-class GetCarBloc extends Bloc<GetCarEvent, GetCarState> {
+class CarBloc extends Bloc<CarEvent, CarState> {
   final ApiCarRepo _apiCarRepo;
   Car? _cachedCar; // Variable pour stocker l'objet Car mis en cache
 
-  GetCarBloc(this._apiCarRepo) : super(GetCarInitial()) {
+  CarBloc(this._apiCarRepo) : super(GetCarInitial()) {
     on<GetCar>((event, emit) async {
       // Si l'état actuel n'est ni GetCarSuccess ni GetCarReLoadFailure, émettre GetCarLoading
       if (state is! GetCarSuccess && state is! GetCarReLoadFailure) {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../bloc/get_car_bloc/get_car_bloc.dart';
+import '../bloc/car_bloc/car_bloc.dart';
 import '../components/circular_info_tile.dart';
 
 class Home extends StatelessWidget {
@@ -44,7 +44,7 @@ class Home extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: BlocBuilder<GetCarBloc, GetCarState>(
+                      child: BlocBuilder<CarBloc, CarState>(
                         builder: (context, state) {
                           if(state is GetCarSuccess){
                             final car = state.car;
@@ -74,7 +74,6 @@ class _Display extends StatelessWidget {
   final bool showConnectionError; // Variable pour afficher ou non le message
 
   const _Display({
-    super.key,
     required this.car,
     this.showConnectionError = false, // Valeur par défaut : false
   });
@@ -97,7 +96,7 @@ class _Display extends StatelessWidget {
         );
 
         // Insérer l'overlay
-        overlay?.insert(overlayEntry);
+        overlay.insert(overlayEntry);
 
         // Retirer l'overlay après 3 secondes
         Future.delayed(const Duration(seconds: 3), () {

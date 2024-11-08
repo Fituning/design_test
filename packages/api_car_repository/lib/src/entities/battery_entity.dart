@@ -1,5 +1,3 @@
-import 'package:api_car_repository/src/entities/entities.dart';
-import 'package:api_car_repository/src/models/models.dart';
 
 class BatteryEntity {
   int chargeLevel;
