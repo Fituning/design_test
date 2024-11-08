@@ -15,47 +15,24 @@ const int minVentLevel = 0;
 int maxVentLevel = VentilationLevelEnum.values.length - 1;
 
 class VentController extends StatefulWidget {
-  const VentController({super.key});
+  const VentController({
+    super.key,
+    required this.car
+  });
+
+  final Car car;
 
   @override
   State<VentController> createState() => _VentControllerState();
 }
 
 class _VentControllerState extends State<VentController> {
-  VentilationLevelEnum ventLevel = VentilationLevelEnum.level2;
+  // VentilationLevelEnum ventLevel = VentilationLevelEnum.level2;
   Timer? _debounce; // Déclaration du Timer pour la logique de délai
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CarBloc, CarState>(
-      builder: (context, state) {
-        // Vérifier si l'état est GetCarSuccess
-        if (state is GetCarSuccess) {
-          final car = state.car;
-          return _display(context, car);
-        } else if (state is GetCarReLoadFailure) {
-          final car = state.car;
-          return _display(context, car);
-        } else {
-          return const Center(
-            child: Text("An error has occurred while loading the car data"),
-          );
-        }
-      },
-    );
-  }
-
-  //Pour mettre un delais avant d'envoyer la requete
-  void _onVentilationLevelChange(int newLevel) {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 600), () {
-      context.read<CarBloc>().add(UpdateAirConditioning(
-        ventilationLevel: VentilationLevelEnumExtension.fromInt(newLevel),
-      ));
-    });
-  }
-
-  Widget _display(BuildContext context, Car car) {
+    Car car = widget.car;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,7 +51,7 @@ class _VentControllerState extends State<VentController> {
           },
         ),
         const SizedBox(width: 32),
-        VentLevelIndicator(ventLevel: car.airConditioning.ventilationLevel.index),
+        _ventLevelIndicator(context,car.airConditioning.ventilationLevel.index),
         const SizedBox(width: 32),
         CircularElevatedButton(
           icon: const FaIcon(FontAwesomeIcons.plus),
@@ -92,15 +69,18 @@ class _VentControllerState extends State<VentController> {
       ],
     );
   }
-}
 
-class VentLevelIndicator extends StatelessWidget {
-  const VentLevelIndicator({super.key, required this.ventLevel});
+  //Pour mettre un delais avant d'envoyer la requete
+  void _onVentilationLevelChange(int newLevel) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 600), () {
+      context.read<CarBloc>().add(UpdateAirConditioning(
+        ventilationLevel: VentilationLevelEnumExtension.fromInt(newLevel),
+      ));
+    });
+  }
 
-  final int ventLevel;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _ventLevelIndicator(BuildContext context, int ventLevel){
     return Column(
       children: [
         SvgPicture.asset(

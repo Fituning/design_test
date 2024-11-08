@@ -41,6 +41,7 @@ class _MainScreenState extends State<MainScreen> {
             children: [
               BlocBuilder<CarBloc, CarState>(
                 builder: (context, state) {
+                  print("main bloc builder");
                   if (state is GetCarSuccess || state is GetCarReLoadFailure) {
                     return page;
                   } else if (state is GetCarLoading) {

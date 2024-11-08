@@ -45,67 +45,6 @@ class Clim extends StatelessWidget {
   }
 }
 
-class Clim2 extends StatelessWidget {
-  const Clim2({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: CircularElevatedButton(
-        icon: const FaIcon(
-          FontAwesomeIcons.clock,
-          size: 38,
-        ),
-        elevation: 8,
-        padding: const EdgeInsets.all(16),
-        bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
-        onPressed: () {},
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      body: SafeArea(
-        child: Container(
-          color: Theme.of(context).colorScheme.surface,
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              BlocBuilder<CarBloc, CarState>(
-                builder: (context, state) {
-                  if(state is GetCarSuccess){
-                    final car = state.car;
-                    return CustomScrollView(
-                      slivers: [
-                        SliverPersistentHeader(
-                          delegate: ClimControl(car :car),
-                        ),
-                        const NextProgList()
-                      ],
-                    );
-                  }else if(state is GetCarReLoadFailure){
-                    final car = state.car;
-                    return CustomScrollView(
-                      slivers: [
-                        SliverPersistentHeader(
-                          delegate: ClimControl(car :car),
-                        ),
-                        const NextProgList()
-                      ],
-                    );
-                  }else {
-                    return const Center(child: Text("An error has occurred while loading home page"));
-                  }
-                },
-              ),
-              const Positioned(top: 0, left: 0, child: TopNavBar()),
-            ],
-          ),
-        ),
-      ),
-      //bottomNavigationBar: const NavBar(),
-    );
-  }
-}
-
 class ClimControl extends SliverPersistentHeaderDelegate {
   double expandedHeight = 570;
   final Car car;

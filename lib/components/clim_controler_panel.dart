@@ -40,31 +40,15 @@ class _ClimControllerPanelState extends State<ClimControllerPanel> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const VentController(),
+              VentController(car : widget.car),
               const SizedBox(
                 height: 38,
               ),
-              const CircularProgressSlider(),
+              CircularProgressSlider(car : widget.car),
               const SizedBox(
                 height: 38,
               ),
-              // if (shrinkOffset < 90)
-              BlocBuilder<CarBloc, CarState>(
-                builder: (context, state) {
-                  // Vérifier si l'état est GetCarSuccess
-                  if (state is GetCarSuccess) {
-                    final car = state.car;
-                    return _displayACControls(context, car);
-                  } else if (state is GetCarReLoadFailure) {
-                    final car = state.car;
-                    return _displayACControls(context, car,);
-                  } else {
-                    return const Center(
-                      child: Text("An error has occurred while loading the car data"),
-                    );
-                  }
-                },
-          ),
+              _displayACControls(context, widget.car)
             ],
           ),
         ),

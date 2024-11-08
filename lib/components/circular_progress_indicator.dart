@@ -10,7 +10,10 @@ import 'ElevatedButton.dart';
 class CircularProgressSlider extends StatefulWidget {
   const CircularProgressSlider({
     super.key,
+    required this.car
   });
+
+  final Car car;
 
   @override
   State<CircularProgressSlider> createState() => _CircularProgressSliderState();
@@ -19,25 +22,7 @@ class CircularProgressSlider extends StatefulWidget {
 class _CircularProgressSliderState extends State<CircularProgressSlider> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CarBloc, CarState>(
-      builder: (context, state) {
-        // Vérifier si l'état est GetCarSuccess
-        if (state is GetCarSuccess) {
-          final car = state.car;
-          return _buildContent(context, car);
-        } else if (state is GetCarReLoadFailure) {
-          final car = state.car;
-          return _buildContent(context, car,);
-        } else {
-          return const Center(
-            child: Text("An error has occurred while loading the car data"),
-          );
-        }
-      },
-    );
-  }
-
-  Widget _buildContent(BuildContext context, Car car) {
+    Car car = widget.car;
     return Container(
       width: 270,
       height: 270,
