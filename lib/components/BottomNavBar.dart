@@ -72,8 +72,10 @@ class NavBar extends StatelessWidget {
                       ],
                     ),
                   ),
+
+
                   BottomNavigationBarItem(
-                    label: "entretien",
+                    label: "climatisation",
                     icon: Stack(
                       alignment: Alignment.center,
                       children: [
@@ -96,34 +98,14 @@ class NavBar extends StatelessWidget {
                       ],
                     ),
                   ),
+
+
                   const BottomNavigationBarItem(
                       label: "home", icon: FaIcon(FontAwesomeIcons.house,size: 32)),
+
+
                   BottomNavigationBarItem(
-                    label: "entretien",
-                    icon: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Positioned(
-                          right: 0,
-                          top: 0,
-                          child: Container(
-                            height: 6,
-                            width: 6,
-                            decoration: const BoxDecoration(
-                                color: Color(0x00FFFFFF),
-                                borderRadius: BorderRadius.all(Radius.circular(50))
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          child: FaIcon(FontAwesomeIcons.fire,size: 24,color: Theme.of(context).colorScheme.primaryContainer),
-                        ),
-                      ],
-                    ),
-                  ),
-                  BottomNavigationBarItem(
-                    label: "entretien",
+                    label: "Charge",
                     icon: Stack(
                       alignment: Alignment.center,
                       children: [
@@ -146,6 +128,33 @@ class NavBar extends StatelessWidget {
                       ],
                     ),
                   ),
+
+
+                  BottomNavigationBarItem(
+                    label: "rex",
+                    icon: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: Container(
+                            height: 6,
+                            width: 6,
+                            decoration: const BoxDecoration(
+                                color: Color(0x00FFFFFF),
+                                borderRadius: BorderRadius.all(Radius.circular(50))
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          child: FaIcon(FontAwesomeIcons.fire,size: 24,color: Theme.of(context).colorScheme.primaryContainer),
+                        ),
+                      ],
+                    ),
+                  ),
+
                 ]),
           ),
         ),

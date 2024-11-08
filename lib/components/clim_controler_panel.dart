@@ -1,20 +1,30 @@
+import 'package:api_car_repository/api_car_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../bloc/get_car_bloc/get_car_bloc.dart';
 import 'Vent.dart';
 import 'chip_button.dart';
 import 'circular_progress_indicator.dart';
 
-class ClimControllerPanel extends StatelessWidget {
+class ClimControllerPanel extends StatefulWidget {
   const ClimControllerPanel({
     super.key,
     required this.expandedHeight,
+    required this.car,
   });
 
   final double expandedHeight;
+  final Car car;
 
+  @override
+  State<ClimControllerPanel> createState() => _ClimControllerPanelState();
+}
+
+class _ClimControllerPanelState extends State<ClimControllerPanel> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,69 +34,109 @@ class ClimControllerPanel extends StatelessWidget {
       child: ClipRRect(
         child: OverflowBox(
           alignment: Alignment.topCenter,
-          maxHeight: expandedHeight+76,
+          maxHeight: widget.expandedHeight+76,
           fit: OverflowBoxFit.max,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const VentController(),
+              VentController(),
               const SizedBox(
                 height: 38,
               ),
-              const CircularProgressSlider(),
+              CircularProgressSlider(),
               const SizedBox(
                 height: 38,
               ),
               // if (shrinkOffset < 90)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 44.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: ChipButton(
-                        icon: Text(
-                          "AC",
-                          style: GoogleFonts.roboto(
-                              color: Theme.of(context).colorScheme.onSurface,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 28,
-                      width: 2,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    Expanded(
-                      child: ChipButton(
-                        icon: SvgPicture.asset(
-                          "assets/images/deg_avant.svg",
-                          height: 28,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 28,
-                      width: 2,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    Expanded(
-                      child: ChipButton(
-                        icon: SvgPicture.asset(
-                          "assets/images/deg_arriere.svg",
-                          height: 28,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              BlocBuilder<GetCarBloc, GetCarState>(
+                builder: (context, state) {
+                  // Vérifier si l'état est GetCarSuccess
+                  if (state is GetCarSuccess) {
+                    final car = state.car;
+                    return _displayACControls(context, car);
+                  } else if (state is GetCarReLoadFailure) {
+                    final car = state.car;
+                    return _displayACControls(context, car,);
+                  } else {
+                    return const Center(
+                      child: Text("An error has occurred while loading the car data"),
+                    );
+                  }
+                },
+          ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _displayACControls(BuildContext context, Car car){
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 44.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: ChipButton(
+              icon: Text(
+                "AC",
+                style: GoogleFonts.roboto(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500),
+              ),
+              value: car.airConditioning.acIsActive,
+              onPressed: (){
+                setState(() {
+                  car.airConditioning.acIsActive = !car.airConditioning.acIsActive;
+                });
+                context.read<GetCarBloc>().add(UpdateAirConditioning(acIsActive: car.airConditioning.acIsActive));
+              },
+            ),
+          ),
+          Container(
+            height: 28,
+            width: 2,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          Expanded(
+            child: ChipButton(
+              icon: SvgPicture.asset(
+                "assets/images/deg_avant.svg",
+                height: 28,
+              ),
+              value: car.airConditioning.frontDefogging,
+              onPressed: (){
+                setState(() {
+                  car.airConditioning.frontDefogging = !car.airConditioning.frontDefogging;
+                });
+                context.read<GetCarBloc>().add(UpdateAirConditioning(frontDefogging: car.airConditioning.frontDefogging));
+              },
+            ),
+          ),
+          Container(
+            height: 28,
+            width: 2,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          Expanded(
+            child: ChipButton(
+              icon: SvgPicture.asset(
+                "assets/images/deg_arriere.svg",
+                height: 28,
+              ),
+              value: car.airConditioning.backDefogging,
+              onPressed: (){
+                setState(() {
+                  car.airConditioning.backDefogging = !car.airConditioning.backDefogging;
+                });
+                context.read<GetCarBloc>().add(UpdateAirConditioning(backDefogging: car.airConditioning.backDefogging));
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

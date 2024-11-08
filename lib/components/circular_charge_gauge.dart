@@ -1,28 +1,35 @@
+import 'package:api_car_repository/api_car_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
+import '../bloc/get_car_bloc/get_car_bloc.dart';
 import 'ElevatedButton.dart';
 
 class CircularChargeGauge extends StatefulWidget {
-  const CircularChargeGauge({super.key});
+  final Car car;
+  const CircularChargeGauge( {
+    super.key,
+    required this.car,
+  });
 
   @override
   State<CircularChargeGauge> createState() => _CircularChargeGaugeState();
 }
 
 class _CircularChargeGaugeState extends State<CircularChargeGauge> {
-  var currentTemp = 24.5;
-  var battery = 58.0; //bien déclarer la var avant le @override
-  var onCharge = false;
-  var hoodLock = false;
+  // var currentTemp = 24.5;
+  // var battery = 58.0; //bien déclarer la var avant le @override
+  // var onCharge = false;
+  // var hoodLock = false;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(
-          onCharge ? "Voiture en charge" : "Branchez la voiture",
+          widget.car.chargingSocketIsConnected ? (widget.car.chargeIsActivated ? "Voiture en charge" : "Voiture branchée") : "Branchez la voiture",
           style: GoogleFonts.roboto(
               color: Theme.of(context)
                   .colorScheme
@@ -45,7 +52,7 @@ class _CircularChargeGaugeState extends State<CircularChargeGauge> {
                         children: [
                           Text(
                             // textHeightBehavior: const TextHeightBehavior(leadingDistribution: TextLeadingDistribution.even),
-                            battery.round().toString(),
+                            widget.car.battery.chargeLevel.toString(),
                             // "58",
                             style: GoogleFonts.teko(
                                 color: Theme.of(context).colorScheme.onSurface,
@@ -87,7 +94,7 @@ class _CircularChargeGaugeState extends State<CircularChargeGauge> {
                           const AxisLineStyle(cornerStyle: CornerStyle.bothCurve),
                           pointers: [
                             RangePointer(
-                              value: battery,
+                              value: widget.car.battery.chargeLevel.toDouble(),
                               cornerStyle: CornerStyle.bothCurve,
                               width: 8,
                               sizeUnit: GaugeSizeUnit.logicalPixel,
@@ -107,18 +114,18 @@ class _CircularChargeGaugeState extends State<CircularChargeGauge> {
                         children: [
                           CircularElevatedButton(
                             icon: Text(
-                              "AUTO",
+                              widget.car.hood == DoorStatusEnum.open ? 'capot ouvert' : 'capot fermé',
                               style: TextStyle(
-                                  color: hoodLock ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurface
+                                  color: widget.car.hood == DoorStatusEnum.open ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurface
                               ),
                             ),
                             onPressed: (){
-                              setState(() {
-                                hoodLock = !hoodLock;
-                                onCharge = hoodLock;
-                              });
+                              // setState(() {
+                              //   hoodLock = !hoodLock;
+                              //   onCharge = hoodLock;
+                              // });
                             },
-                            value: hoodLock,
+                            value: widget.car.hood == DoorStatusEnum.open,
                             padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
                             // enable: true,
                           ),
@@ -130,12 +137,12 @@ class _CircularChargeGaugeState extends State<CircularChargeGauge> {
                             iconColor: Theme.of(context).colorScheme.tertiary,
                             padding: const EdgeInsets.all(24),
                             onPressed:(){
-                              setState(() {
-                                onCharge = !onCharge;
-                              });
+                              // setState(() {
+                              //   onCharge = !onCharge;
+                              // });
                             },
                             iconSize: 32,
-                            value: onCharge,
+                            value: widget.car.chargeIsActivated,
                           ),
                         ],
                       )

@@ -57,11 +57,12 @@ class NextProgList extends StatelessWidget {
               const SizedBox(
                 height: 12,
               ),
-              NextProg(next: '',startTime:DateTime.now().add(const Duration(days: 1)),temperature: 23,),
-              NextProg(next: '',startTime:DateTime.now().add(const Duration(days: 3)),temperature: 23.5105141458,           ),
-              NextProg(next: '',startTime:DateTime.now().add(const Duration(days: 9)),temperature: 24,),
-              NextProg(next: '',startTime:DateTime.now().add(const Duration(days: 1)),temperature: 23,),
-              NextProg(next: '',startTime:DateTime.now().add(const Duration(days: 3)),temperature: 23.5105141458,           ),
+              NextProg(startTime:DateTime.now().add(const Duration(days: 1)),temperature: 23),
+              NextProg(startTime:DateTime.now().add(const Duration(days: 3)),temperature: 23.5105141458),
+              NextProg(startTime:DateTime.now().add(const Duration(days: 9)),temperature: 24),
+              NextProg(startTime:DateTime.now().add(const Duration(days: 1)),temperature: 23),
+              NextProg(startTime:DateTime.now().add(const Duration(days: 3)),temperature: 23.5105141458),
+              NextProg(startTime:DateTime.now().add(const Duration(days: 3)),temperature: 23.5105141458),
               const SizedBox(
                 height: 128,
               ),
@@ -74,18 +75,23 @@ class NextProgList extends StatelessWidget {
 }
 
 
-class NextProg extends StatelessWidget {
+class NextProg extends StatefulWidget {
   const NextProg({
     super.key,
-    required this.next,
     required this.startTime,
     required this.temperature,
   });
 
-  final String next;
+
   final DateTime startTime;
   final double temperature;
 
+  @override
+  State<NextProg> createState() => _NextProgState();
+}
+
+class _NextProgState extends State<NextProg> {
+  bool activeProg = true;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -130,7 +136,7 @@ class NextProg extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        DateFormat("HH:mm").format(startTime),
+                        DateFormat("HH:mm").format(widget.startTime),
                         style: GoogleFonts.roboto(
                             color: Theme.of(context).colorScheme.onSurface,
                             fontSize: 20,
@@ -138,7 +144,7 @@ class NextProg extends StatelessWidget {
                             fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        DateFormat("HH:mm").format(startTime.add(const Duration(hours: 1))),
+                        DateFormat("HH:mm").format(widget.startTime.add(const Duration(hours: 1))),
                         style: GoogleFonts.roboto(
                             color: Theme.of(context).colorScheme.onSurface,
                             fontSize: 20,
@@ -149,128 +155,87 @@ class NextProg extends StatelessWidget {
                   ),
                 ],
               ),
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.temperatureHalf,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 20,
-                          ),
-                          const SizedBox(
-                            width: 6,
-                          ),
-                          Text(
-                            "${temperature.toStringAsFixed(1)}°C",
-                            style: GoogleFonts.roboto(
-                                color: Theme.of(context).colorScheme.onSurface,
-                                fontSize: 20,
-                                letterSpacing: 1,
-                                fontWeight: FontWeight.w600),
-                          ),
+              const SizedBox(width: 24,),
+              Expanded(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            FaIcon(
+                              FontAwesomeIcons.temperatureHalf,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 20,
+                            ),
+                            const SizedBox(
+                              width: 6,
+                            ),
+                            Text(
+                              "${widget.temperature.toStringAsFixed(1)}°C",
+                              style: GoogleFonts.roboto(
+                                  color: Theme.of(context).colorScheme.onSurface,
+                                  fontSize: 20,
+                                  letterSpacing: 1,
+                                  fontWeight: FontWeight.w600),
+                            ),
 
-                        ],
-                      ),
-                      Text(
-                        getFormattedDate(startTime),
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.roboto(
-                            color: Theme.of(context).colorScheme.onSurface,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("prog 1"),
-                    ],
-                  ),
-                ],
+                          ],
+                        ),
+                        // Switch(
+                        //   // This bool value toggles the switch.
+                        //   activeTrackColor: Theme.of(context).colorScheme.primaryContainer,
+                        //   inactiveThumbColor: Theme.of(context).colorScheme.primaryContainer,
+                        //   inactiveTrackColor: Theme.of(context).colorScheme.surfaceContainerLowest,
+                        //   trackOutlineColor: WidgetStateProperty. resolveWith<Color?>((Set<WidgetState> states) {
+                        //     if (!states.contains(WidgetState.selected)) {
+                        //       return Theme.of(context).colorScheme.primaryContainer;
+                        //     }
+                        //     return null; // Use the default color.
+                        //   }),
+                        //   thumbIcon: WidgetStateProperty.resolveWith<Icon?>((Set<WidgetState> states) {
+                        //     if (!states.contains(WidgetState.selected)) {
+                        //       return const Icon(FontAwesomeIcons.xmark);
+                        //     }else{
+                        //       return Icon(
+                        //           FontAwesomeIcons.check,
+                        //         color: Theme.of(context).colorScheme.primaryContainer,
+                        //       );
+                        //     }
+                        //     return null; // Use the default color.
+                        //   }),
+                        //
+                        //   value: activeProg,
+                        //   onChanged: (bool value){
+                        //     setState(() {
+                        //       activeProg = value;
+                        //     });
+                        //   },
+                        // )
+
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          getFormattedDate(widget.startTime),
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.roboto(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        Text("prog 1"),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           )
         ),
-      ),
-    );
-  }
-}
-
-class NextProgOriginal extends StatelessWidget {
-  const NextProgOriginal({
-    super.key,
-    required this.next,
-    required this.startTime,
-    required this.temperature,
-  });
-
-  final String next;
-  final DateTime startTime;
-  final double temperature;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: 112,
-                    child: Text(
-                      getFormattedDate(startTime),
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.roboto(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 6,
-                  ),
-                  Text(
-                    DateFormat("HH:mm").format(startTime),
-                    style: GoogleFonts.roboto(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 20,
-                        letterSpacing: 1,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  FaIcon(
-                    FontAwesomeIcons.temperatureLow,
-                    color: Theme.of(context).colorScheme.primary,
-                    size: 24,
-                  ),
-                  const SizedBox(
-                    width: 6,
-                  ),
-                  Text(
-                    "${temperature.toStringAsFixed(1)}°C",
-                    style: GoogleFonts.roboto(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 20,
-                        letterSpacing: 1,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
-              )
-            ],
-          )
-        ],
       ),
     );
   }
