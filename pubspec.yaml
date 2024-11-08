@@ -46,6 +46,15 @@ dependencies:
   intl: ^0.19.0
 
   url_launcher: ^6.3.1
+  #maps_launcher: ^2.2.1
+
+#  for blocs
+  bloc: ^8.1.4
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+
+  api_car_repository: #import api repo
+    path: packages/api_car_repository
 
 
   #pour les circular slider
