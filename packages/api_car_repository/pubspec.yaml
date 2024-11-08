@@ -1,0 +1,28 @@
+name: api_car_repository
+description: The Repo that handle api
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  google_fonts: ^6.2.1
+
+  cupertino_icons: ^1.0.8
+#  firebase_auth: ^5.2.1
+#  cloud_firestore: ^5.4.1
+  rxdart: ^0.28.0
+  http: ^1.2.2
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
