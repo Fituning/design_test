@@ -24,6 +24,7 @@ class _CircularChargeGaugeState extends State<CircularChargeGauge> {
   // var hoodLock = false;
   @override
   Widget build(BuildContext context) {
+    print("clim bloc"+widget.car.toString());
     return Column(
       children: [
         Text(

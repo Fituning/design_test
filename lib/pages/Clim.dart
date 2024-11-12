@@ -1,12 +1,9 @@
 import 'package:api_car_repository/api_car_repository.dart';
-import 'package:design_test/components/ElevatedButton.dart';
 import 'package:design_test/components/next_prog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import '../bloc/car_bloc/car_bloc.dart';
-import '../components/TopNavBar.dart';
 import '../components/clim_controler_panel.dart';
 
 class Clim extends StatelessWidget {
@@ -54,7 +51,6 @@ class ClimControl extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    // print(context.size!.height);
     return ClimControllerPanel(expandedHeight: expandedHeight, car :car);
   }
 
@@ -66,7 +62,7 @@ class ClimControl extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
+    return true;//mettre a true pour reconstruire la vue si les valeurs changent
   }
 }
 

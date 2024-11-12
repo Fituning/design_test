@@ -31,7 +31,7 @@ class _MyAppViewState extends State<MyAppView> {
           primary: Color(0xFF081C3D),
           onPrimary: Color(0xFFF4F7FC),
           secondary: Color(0xFF2F6ECB),
-          onSecondary: Color(0xFFF4F7FC),
+          onSecondary: Color(0xFFE9EFF8),
           error: Color(0xFFF55555),
           onError: Color(0xFFF4F7FC),
           errorContainer: Color(0xFFFFC400),

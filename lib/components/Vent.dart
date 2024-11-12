@@ -80,7 +80,7 @@ class _VentControllerState extends State<VentController> {
     });
   }
 
-  Widget _ventLevelIndicator(BuildContext context, int ventLevel){
+  Widget _ventLevelIndicator(BuildContext context, int ventLevel) {
     return Column(
       children: [
         SvgPicture.asset(
@@ -89,28 +89,17 @@ class _VentControllerState extends State<VentController> {
         ),
         const SizedBox(height: 6),
         Row(
-          children: [
-            NotificationBadge(
-              radius: 8,
-              active: (ventLevel >= 1),
-              activeColor: Theme.of(context).colorScheme.secondary,
-              inactiveColor: Theme.of(context).colorScheme.primaryContainer,
-            ),
-            const SizedBox(width: 8),
-            NotificationBadge(
-              radius: 8,
-              active: (ventLevel >= 2),
-              activeColor: Theme.of(context).colorScheme.secondary,
-              inactiveColor: Theme.of(context).colorScheme.primaryContainer,
-            ),
-            const SizedBox(width: 8),
-            NotificationBadge(
-              radius: 8,
-              active: (ventLevel >= 3),
-              activeColor: Theme.of(context).colorScheme.secondary,
-              inactiveColor: Theme.of(context).colorScheme.primaryContainer,
-            ),
-          ],
+          children: List.generate(3, (index) { // Generate 3 badges
+            return Padding(
+              padding: const EdgeInsets.only(right: 8), // Add padding
+              child: NotificationBadge(
+                radius: 8,
+                active: (ventLevel >= index + 1),
+                activeColor: Theme.of(context).colorScheme.secondary,
+                inactiveColor: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.25),
+              ),
+            );
+          }),
         ),
       ],
     );
