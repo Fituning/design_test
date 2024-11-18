@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:api_car_repository/api_car_repository.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiCarRepo implements CarRepository {
-  final String apiUrl = 'https://ocr-api-4fox.onrender.com/api/car'; // Replace with your API URL
+  final String apiUrl = dotenv.env["API_KEY"]! + '/api/car'; // Replace with your API URL
 
   @override
   Future<List<Car>> getCars() async {
@@ -29,7 +30,8 @@ class ApiCarRepo implements CarRepository {
   @override
   Future<Car> getCar() async {
     try {
-      final response = await http.get(Uri.parse('$apiUrl/672a183e50544b8598a27d90'));
+      print(apiUrl);
+      final response = await http.get(Uri.parse('$apiUrl/${dotenv.env["TEST_CAR_ID"]}'));
 
       if (response.statusCode == 200) {
         // Decode the JSON response as a Map, since we are expecting a single Car object
@@ -38,7 +40,10 @@ class ApiCarRepo implements CarRepository {
         // Parse the JSON into a Car object and return it
         return Car.fromEntity(CarEntity.fromJson(jsonResponse));
       } else {
-        throw Exception('Failed to load car');
+        // Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        print(response.body);
+        // return Car.fromEntity(CarEntity.fromJson(jsonResponse));
+        throw Exception(response.body);
       }
     } catch (e) {
       log(e.toString());
@@ -57,7 +62,7 @@ class ApiCarRepo implements CarRepository {
   }) async {
     try {
       // Créez l'URL en utilisant votre API
-      final url = Uri.parse('$apiUrl/672a183e50544b8598a27d90/update/air_conditioning');
+      final url = Uri.parse('$apiUrl/${dotenv.env["TEST_CAR_ID"]}/update/air_conditioning');
 
       // Construisez le corps de la requête en JSON de manière dynamique
       final Map<String, dynamic> body = {};
