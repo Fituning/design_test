@@ -56,6 +56,9 @@ dependencies:
   api_car_repository: #import api repo
     path: packages/api_car_repository
 
+  api_user_repository: #import api repo
+    path: packages/api_user_repository
+
   shared_preferences: ^2.0.13 #for persitant cache data
   mqtt_client: ^9.6.0
 

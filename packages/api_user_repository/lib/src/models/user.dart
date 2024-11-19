@@ -6,7 +6,7 @@ class MyUser{
   String firstName;
   String lastName;
   UserRoleEnum role;
-  List<Car> cars;
+  List<String> cars;
   Preferences preferences;
 
   MyUser({
@@ -39,6 +39,4 @@ class MyUser{
         preferences: entity.preferences,
     );
   }
-
-
 }

@@ -8,6 +8,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0+1"
+  api_user_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/api_user_repository"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   args:
     dependency: transitive
     description:

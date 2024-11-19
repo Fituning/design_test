@@ -9,7 +9,7 @@ class Preferences{
   ThemeMode theme;
   NotificationModeEnum noltifications;
   String language;
-  String selectedCar;
+  String? selectedCar;
 
   Preferences({
     required this.theme,

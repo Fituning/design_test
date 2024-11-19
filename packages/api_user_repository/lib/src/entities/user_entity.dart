@@ -7,7 +7,7 @@ class MyUserEntity{
   String firstName;
   String lastName;
   UserRoleEnum role;
-  List<Car> cars;
+  List<String> cars;
   Preferences preferences;
 
   MyUserEntity({
@@ -37,7 +37,7 @@ class MyUserEntity{
       lastName: json['last_name'] as String,
       role: UserRoleEnumExtension.fromString(json['role']),
       cars: (json['cars'] as List)
-          .map((carJson) => Car.fromEntity(CarEntity.fromJson(carJson as Map<String, dynamic>)))
+          .map((carJson) => carJson as String)
           .toList(),
       preferences: Preferences.fromEntity(PreferencesEntity.fromJson(json['preferences'] as Map<String,dynamic>)),
     );

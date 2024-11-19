@@ -88,8 +88,6 @@ class ApiCarRepo implements CarRepository {
       // Encodez le corps en JSON
       final jsonBody = jsonEncode(body);
 
-      print(jsonBody);
-
       // Faites une requête PATCH ou POST avec le corps en JSON
       final response = await http.patch(
         url,
