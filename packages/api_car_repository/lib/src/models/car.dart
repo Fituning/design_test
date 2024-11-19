@@ -88,6 +88,13 @@ class GpsLocation {
     return GpsLocation(coordinates: [47.06612603801956, 7.107213090213195]);
   }
 
+  /// Méthode pour convertir en JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'gps_location': coordinates, // Convertir la liste de coordonnées directement
+    };
+  }
+
   /// Validation function
   bool isValid() {
     return coordinates.length == 2;

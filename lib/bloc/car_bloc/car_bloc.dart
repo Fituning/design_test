@@ -1,37 +1,40 @@
 import 'package:api_car_repository/api_car_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
+import '../../mqtt_service.dart'; // Pour encoder et décoder JSON
 
 part 'car_event.dart';
 part 'car_state.dart';
 
 class CarBloc extends Bloc<CarEvent, CarState> {
   final ApiCarRepo _apiCarRepo;
+  final MqttService _mqttService;
   Car? _cachedCar; // Variable pour stocker l'objet Car mis en cache
 
-  CarBloc(this._apiCarRepo) : super(GetCarInitial()) {
+  CarBloc(this._apiCarRepo)
+      : _mqttService = MqttService(), // Initialise le service MQTT
+        super(GetCarInitial()) {
+    _initializeMqtt(); // Démarre la connexion MQTT
+
     on<GetCar>((event, emit) async {
-      // Si l'état actuel n'est ni GetCarSuccess ni GetCarReLoadFailure, émettre GetCarLoading
+
+      _cachedCar = await _loadCachedCar();
       if (state is! GetCarSuccess && state is! GetCarReLoadFailure) {
         emit(GetCarLoading());
       }
 
       try {
-        // Simuler une erreur pour tester l'état GetCarReLoadFailure
-        // if (state is GetCarSuccess) {
-        //   throw Exception("Simulated error");
-        // }
-
-        // Faire la requête pour obtenir les données de la voiture
         Car car = await _apiCarRepo.getCar();
-        _cachedCar = car; // Mettre à jour le cache avec les nouvelles données
+        _cachedCar = car;
+        _saveCarToCache(car); // Sauvegarde les nouvelles données dans le cache
         emit(GetCarSuccess(car));
       } catch (e) {
-        // Si l'état précédent est GetCarSuccess, émettre GetCarReLoadFailure
         if (_cachedCar != null) {
-          emit(GetCarReLoadFailure(_cachedCar!)); // Utilisez _cachedCar pour afficher les anciennes données
+          emit(GetCarReLoadFailure(_cachedCar!, "Connexion impossible au serveur"));
         } else {
-          _cachedCar = null;
           emit(GetCarFailure());
         }
       }
@@ -39,25 +42,63 @@ class CarBloc extends Bloc<CarEvent, CarState> {
 
     on<UpdateAirConditioning>((event, emit) async {
       try {
-        // Appel à l'API pour changer la température de la climatisation
         Car updatedCar = await _apiCarRepo.updateAirConditioning(
-            temperature:  event.temperature,
-            ventilationLevel : event.ventilationLevel,
-            mode: event.mode,
-            acIsActive: event.acIsActive,
-            frontDefogging: event.frontDefogging,
-            backDefogging: event.backDefogging
+          temperature: event.temperature,
+          ventilationLevel: event.ventilationLevel,
+          mode: event.mode,
+          acIsActive: event.acIsActive,
+          frontDefogging: event.frontDefogging,
+          backDefogging: event.backDefogging,
         );
-        _cachedCar = updatedCar; // Mettre à jour le cache
+        _cachedCar = updatedCar;
+        _saveCarToCache(updatedCar); // Sauvegarde les nouvelles données dans le cache
         emit(GetCarSuccess(updatedCar));
       } catch (e) {
-        emit(GetCarFailure());
+        if (_cachedCar != null) {
+          emit(GetCarReLoadFailure(_cachedCar!,"impossible de mettre a jour les données"));
+        } else {
+          emit(GetCarFailure());
+        }
       }
     });
+  }
 
+  void _initializeMqtt() {
+    _mqttService.connect();
+    _mqttService.listen((message) {
+      // Traite le message MQTT et mets à jour l'état si nécessaire
+      print('Message MQTT reçu : $message');
+      // Parse le message et mets à jour l'état de la voiture
+      add(GetCar());
+    });
+  }
+
+  // Méthode pour charger l'objet Car depuis le cache
+  Future<Car?> _loadCachedCar() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? carJson = prefs.getString('cachedCar');
+    if (carJson != null) {
+      // _cachedCar = Car.fromJson(jsonDecode(carJson)); // Convertir JSON en objet Car
+      return _cachedCar = Car.fromEntity(CarEntity.fromJson(jsonDecode(carJson))); // Convertir JSON en objet Car
+      // emit(GetCarSuccess(_cachedCar!));
+    }
+    return null;
+  }
+
+  // Méthode pour sauvegarder l'objet Car dans le cache
+  Future<void> _saveCarToCache(Car car) async {
+    final prefs = await SharedPreferences.getInstance();
+    // prefs.setString('cachedCar', jsonEncode(car.toJson())); // Convertir objet Car en JSON
+    prefs.setString('cachedCar', jsonEncode(car.toEntity().toJson())); // Convertir objet Car en JSON
   }
 
   // Méthode pour obtenir l'objet Car mis en cache
   Car? get cachedCar => _cachedCar;
 
+  // Déconnecte MQTT lorsque le bloc est fermé
+  @override
+  Future<void> close() {
+    _mqttService.disconnect();
+    return super.close();
+  }
 }

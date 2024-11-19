@@ -51,7 +51,7 @@ class Home extends StatelessWidget {
                             return _Display(car: car,);
                           }else if(state is GetCarReLoadFailure){
                             final car = state.car;
-                            return _Display(car: car,showConnectionError: true,);
+                            return _Display(car: car,errorMessage: state.msg,);
                           }else {
                             return const Center(child: Text("An error has occurred while loading home page"));
                           }
@@ -71,22 +71,22 @@ class Home extends StatelessWidget {
 
 class _Display extends StatelessWidget {
   final Car car;
-  final bool showConnectionError; // Variable pour afficher ou non le message
+  final String? errorMessage;
 
   const _Display({
     required this.car,
-    this.showConnectionError = false, // Valeur par défaut : false
+    this.errorMessage,
   });
 
   @override
   Widget build(BuildContext context) {
     // Afficher le SnackBar si showConnectionError est true
-    if (showConnectionError) {
+    if (errorMessage != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final overlay = Overlay.of(context);
         final overlayEntry = OverlayEntry(
           builder: (context) => NotificationOverlayBar(
-            message: "Connexion impossible au serveur",
+            message: errorMessage??"",
             icon: FaIcon(
               FontAwesomeIcons.triangleExclamation,
               color: Theme.of(context).colorScheme.onError,

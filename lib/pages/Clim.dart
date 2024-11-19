@@ -51,7 +51,6 @@ class ClimControl extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    // print(context.size!.height);
     return ClimControllerPanel(expandedHeight: expandedHeight, car :car);
   }
 
@@ -63,7 +62,7 @@ class ClimControl extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
+    return true;//mettre a true pour reconstruire la vue si les valeurs changent
   }
 }
 

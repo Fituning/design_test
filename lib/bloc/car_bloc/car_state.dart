@@ -12,11 +12,12 @@ final class GetCarLoading extends CarState {}
 
 final class GetCarReLoadFailure extends CarState {
   final Car car;
+  final String msg;
 
-  const GetCarReLoadFailure(this.car);
+  const GetCarReLoadFailure(this.car,this.msg);
 
   @override
-  List<Object> get props => [car];
+  List<Object> get props => [car,msg];
 }
 
 final class GetCarSuccess extends CarState {

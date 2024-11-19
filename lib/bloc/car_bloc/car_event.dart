@@ -30,4 +30,6 @@ class UpdateAirConditioning extends CarEvent {
   List<Object?> get props => [temperature, mode,ventilationLevel, acIsActive, frontDefogging, backDefogging];
 }
 
+// class UpdateCarFromMqtt extends CarEvent {}
+
 

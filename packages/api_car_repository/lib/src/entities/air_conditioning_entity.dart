@@ -23,7 +23,7 @@ class AirConditioningEntity {
     return {
       'temperature': temperature,
       'mode': mode.name, // Convert enum to string
-      'ventilationLevel': ventilationLevel,
+      'ventilation_level': ventilationLevel.index,
       'ac_is_active': acIsActive,
       'front_defogging': frontDefogging,
       'back_defogging': backDefogging,
