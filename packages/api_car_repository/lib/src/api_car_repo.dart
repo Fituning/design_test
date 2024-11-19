@@ -30,7 +30,6 @@ class ApiCarRepo implements CarRepository {
   @override
   Future<Car> getCar() async {
     try {
-      print(apiUrl);
       final response = await http.get(Uri.parse('$apiUrl/${dotenv.env["TEST_CAR_ID"]}'));
 
       if (response.statusCode == 200) {
