@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:api_user_repository/api_user_repository.dart';
 import 'package:http/http.dart' as http;
 import 'package:api_car_repository/api_car_repository.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiCarRepo implements CarRepository {
   final String apiUrl = dotenv.env["API_KEY"]! + '/api/car'; // Replace with your API URL
+  final ApiUserRepo _apiUserRepo ;
+
+  ApiCarRepo(this._apiUserRepo);
 
   @override
   Future<List<Car>> getCars() async {
@@ -30,17 +34,24 @@ class ApiCarRepo implements CarRepository {
   @override
   Future<Car> getCar() async {
     try {
-      final response = await http.get(Uri.parse('$apiUrl/${dotenv.env["TEST_CAR_ID"]}'));
+      final token = await _apiUserRepo.getJwtToken();
+      final response = await http.get(
+          // Uri.parse('$apiUrl/${dotenv.env["TEST_CAR_ID"]}'),
+        Uri.parse(apiUrl),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token" // Ajouter le token ici
+          },
+      );
 
       if (response.statusCode == 200) {
         // Decode the JSON response as a Map, since we are expecting a single Car object
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
         // Parse the JSON into a Car object and return it
-        return Car.fromEntity(CarEntity.fromJson(jsonResponse));
+        return Car.fromEntity(CarEntity.fromJson(jsonResponse["data"]));
       } else {
         // Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-        print(response.body);
         // return Car.fromEntity(CarEntity.fromJson(jsonResponse));
         throw Exception(response.body);
       }
@@ -51,7 +62,7 @@ class ApiCarRepo implements CarRepository {
   }
 
   @override
-  Future<Car> updateAirConditioning({
+  Future<AirConditioning> updateAirConditioning({
     int? temperature,
     AirConditioningModeEnum? mode,
     VentilationLevelEnum? ventilationLevel,
@@ -60,8 +71,10 @@ class ApiCarRepo implements CarRepository {
     bool? backDefogging,
   }) async {
     try {
+      final token = await _apiUserRepo.getJwtToken();
+
       // Créez l'URL en utilisant votre API
-      final url = Uri.parse('$apiUrl/${dotenv.env["TEST_CAR_ID"]}/update/air_conditioning');
+      final url = Uri.parse('$apiUrl/update/air_conditioning');
 
       // Construisez le corps de la requête en JSON de manière dynamique
       final Map<String, dynamic> body = {};
@@ -91,7 +104,10 @@ class ApiCarRepo implements CarRepository {
       // Faites une requête PATCH ou POST avec le corps en JSON
       final response = await http.patch(
         url,
-        headers: {"Content-Type": "application/json"}, // En-tête pour indiquer que le corps est en JSON
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token" // Ajouter le token ici
+        },// En-tête pour indiquer que le corps est en JSON
         body: jsonBody,
       );
 
@@ -99,9 +115,7 @@ class ApiCarRepo implements CarRepository {
         // Décodez la réponse JSON en tant que Map, car nous attendons un objet Car
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
-        // Analysez le JSON en un objet Car et retournez-le
-        print("json response : $jsonResponse");
-        return Car.fromEntity(CarEntity.fromJson(jsonResponse));
+        return AirConditioning.fromEntity(AirConditioningEntity.fromJson(jsonResponse["data"]));//todo ne met pas a jour le car puisque MQTT envoie une notification de changement
       } else {
         throw Exception('Failed to update car');
       }
@@ -110,5 +124,12 @@ class ApiCarRepo implements CarRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<Battery> updateBattery() {
+    // TODO: implement updateBattery
+    throw UnimplementedError();
+  }
+
 
 }

@@ -1,5 +1,4 @@
 import 'package:api_user_repository/api_user_repository.dart';
-import 'package:api_car_repository/api_car_repository.dart';
 
 class MyUser{
   String email;

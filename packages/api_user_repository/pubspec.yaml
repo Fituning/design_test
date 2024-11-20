@@ -17,9 +17,8 @@ dependencies:
   #for env variables:
   flutter_dotenv: ^5.2.1
 
+  flutter_secure_storage: ^9.2.2 #pour sécuriser le token
 
-  api_car_repository: #import api repo
-    path: ../api_car_repository
 
 dev_dependencies:
   flutter_test:

@@ -21,6 +21,7 @@ class CarBloc extends Bloc<CarEvent, CarState> {
 
     on<GetCar>((event, emit) async {
 
+
       _cachedCar = await _loadCachedCar();
       if (state is! GetCarSuccess && state is! GetCarReLoadFailure) {
         emit(GetCarLoading());
@@ -42,17 +43,22 @@ class CarBloc extends Bloc<CarEvent, CarState> {
 
     on<UpdateAirConditioning>((event, emit) async {
       try {
-        Car updatedCar = await _apiCarRepo.updateAirConditioning(
-          temperature: event.temperature,
-          ventilationLevel: event.ventilationLevel,
-          mode: event.mode,
-          acIsActive: event.acIsActive,
-          frontDefogging: event.frontDefogging,
-          backDefogging: event.backDefogging,
-        );
-        _cachedCar = updatedCar;
-        _saveCarToCache(updatedCar); // Sauvegarde les nouvelles données dans le cache
-        emit(GetCarSuccess(updatedCar));
+        if(_cachedCar != null){
+
+          AirConditioning updatedAirConditioning = await _apiCarRepo.updateAirConditioning(
+            temperature: event.temperature,
+            ventilationLevel: event.ventilationLevel,
+            mode: event.mode,
+            acIsActive: event.acIsActive,
+            frontDefogging: event.frontDefogging,
+            backDefogging: event.backDefogging,
+          );
+          _cachedCar!.airConditioning = updatedAirConditioning;
+          _saveCarToCache(_cachedCar!); // Sauvegarde les nouvelles données dans le cache
+          emit(GetCarSuccess(_cachedCar!));
+        }else{
+          GetCar();
+        }
       } catch (e) {
         if (_cachedCar != null) {
           emit(GetCarReLoadFailure(_cachedCar!,"impossible de mettre a jour les données"));
