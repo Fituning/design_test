@@ -11,7 +11,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); //verify anything in the project is initialize
   Bloc.observer = SimpleBlocObserver();
   await dotenv.load(); // Charge les variables d'environnement
-  runApp(MyApp(apiUserRepo: ApiUserRepo(onTokenExpired: null),));
+  runApp(MyApp(apiUserRepo: ApiUserRepo(),));
 }
 
 

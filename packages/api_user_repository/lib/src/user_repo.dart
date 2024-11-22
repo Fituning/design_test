@@ -6,11 +6,11 @@ abstract class UserRepository{
 
   Future<String?> getJwtToken();
 
-  Future<MyUser> signUp(MyUser myUser,String password);
+  Future<void> signUp(String email, String password, String firstName, String lastName);
 
-  Future<MyUser> signIn(String email,String password);
+  Future<void> signIn(String email,String password);
 
-  Future<MyUser> getUser();
+  Future<void> getUser();
 
   Future<void> logOut();
 

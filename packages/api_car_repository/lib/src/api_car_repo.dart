@@ -34,6 +34,8 @@ class ApiCarRepo implements CarRepository {
   @override
   Future<Car> getCar() async {
     try {
+      print(await _apiUserRepo.user.toString());
+
       final token = await _apiUserRepo.getJwtToken();
       final response = await http.get(
           // Uri.parse('$apiUrl/${dotenv.env["TEST_CAR_ID"]}'),

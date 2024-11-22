@@ -1,7 +1,9 @@
 import 'package:api_car_repository/api_car_repository.dart';
 import 'package:api_user_repository/api_user_repository.dart';
 import 'package:design_test/bloc/car_bloc/car_bloc.dart';
-import 'package:design_test/pages/welcome.dart';
+import 'package:design_test/pages/select_car/car_picker.dart';
+import 'package:design_test/pages/select_car/pages/add_car_screen.dart';
+import 'package:design_test/pages/welcome/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +25,7 @@ class _MyAppViewState extends State<MyAppView> {
   void initState() {
     super.initState();
     // Déclencher l'événement GetUser au démarrage
-    context.read<AuthBloc>().add(GetUser());
+    context.read<AuthBloc>().add(AuthStarted());
   }
 
   @override
@@ -82,13 +84,15 @@ class _MyAppViewState extends State<MyAppView> {
                   //       context.read<AuthenticationBloc>().userRepository),
                   // ),
                   BlocProvider(
-                    create: (context) => CarBloc(ApiCarRepo(ApiUserRepo(onTokenExpired: () {context.read<AuthBloc>().add(TokenExpired());})))..add(GetCar()),
+                    create: (context) => CarBloc(ApiCarRepo(context.read<AuthBloc>().apiUserRepo))..add(GetCar()),
                   ),
                 ],
                 child: const MainScreen(),
               );
+            }else if (state.status == Authenticationstatus.noCarSelected || state.status == Authenticationstatus.noCars){
+              return const CarPicker();//todo refaire la page
             } else if (state.status == Authenticationstatus.unauthenticated){
-              return const WelcomeScreen();//todo refaire la welcome screen
+              return const WelcomeScreen();
             }else{
               return const Center(child: CircularProgressIndicator());
             }
