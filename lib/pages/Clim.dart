@@ -2,7 +2,6 @@ import 'package:api_car_repository/api_car_repository.dart';
 import 'package:design_test/components/next_prog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import '../bloc/car_bloc/car_bloc.dart';
 import '../components/clim_controler_panel.dart';
 
@@ -16,22 +15,28 @@ class Clim extends StatelessWidget {
         builder: (context, state) {
           if(state is GetCarSuccess){
             final car = state.car;
+            final progList = car.acProg
+                .where((acProg) => acProg!.isActive && acProg.dateInitial.isAfter(DateTime.now()))
+                .toList();
             return CustomScrollView(
               slivers: [
                 SliverPersistentHeader(
                   delegate: ClimControl(car :car),
                 ),
-                const NextProgList()
+                NextProgList(acProgList: progList,)
               ],
             );
           }else if(state is GetCarReLoadFailure){
-            final car = state.car;
+            final Car car = state.car;
+            final progList = car.acProg
+                .where((acProg) => acProg!.isActive && acProg.dateInitial.isAfter(DateTime.now()))
+                .toList();
             return CustomScrollView(
               slivers: [
                 SliverPersistentHeader(
                   delegate: ClimControl(car :car),
                 ),
-                const NextProgList()
+                NextProgList(acProgList: progList)
               ],
             );
           }else {
@@ -66,25 +71,5 @@ class ClimControl extends SliverPersistentHeaderDelegate {
   }
 }
 
-String getFormattedDate(DateTime startTime) {
-  DateTime now = DateTime.now();
-  DateTime tomorrow = now.add(const Duration(days: 1));
-  DateTime oneWeekLater = now.add(const Duration(days: 7));
 
-  // Si c'est demain
-  if (startTime.year == tomorrow.year &&
-      startTime.month == tomorrow.month &&
-      startTime.day == tomorrow.day) {
-    return "Demain";
-  }
-
-  // Si c'est dans les 7 prochains jours
-  if (startTime.isAfter(now) && startTime.isBefore(oneWeekLater)) {
-    return DateFormat('EEEE')
-        .format(startTime); // Jour de la semaine (Lundi, Mardi, ...)
-  }
-
-  // Si c'est plus d'une semaine à partir de maintenant
-  return DateFormat('dd/MM').format(startTime); // Format DD/MM/YYYY
-}
 

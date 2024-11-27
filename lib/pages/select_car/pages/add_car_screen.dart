@@ -2,11 +2,8 @@
 import 'package:design_test/components/my_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../welcome/blocs/sign_in/sign_in_bloc.dart';
-import '../bloc/select_car_bloc.dart';
+import '../blocs/select_car/select_car_bloc.dart';
 
 
 
@@ -74,7 +71,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
                         ),
                         if (isEnoughSpace) // Afficher l'image uniquement si l'espace est suffisant
                           Image.asset(
-                            "assets/images/Mango-cherry.png",
+                            "assets/images/softcar_blue.png",
                             width: MediaQuery.of(context).size.width - 48,
                           ),
                         const SizedBox(height: 32),

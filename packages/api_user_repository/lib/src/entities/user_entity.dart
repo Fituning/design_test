@@ -37,8 +37,17 @@ class MyUserEntity{
       lastName: json['last_name'] as String,
       role: UserRoleEnumExtension.fromString(json['role']),
       cars: (json['cars'] as List)
-          .map((carJson) => carJson as String)
-          .toList(),
+          .map((carJson) {
+        if (carJson is Map<String, dynamic>) {
+          // Si c'est un objet peuplé, on récupère uniquement l'_id
+          return carJson['_id'] as String;
+        } else if (carJson is String) {
+          // Si c'est déjà une chaîne (ID), on la garde
+          return carJson;
+        } else {
+          throw Exception("Type inattendu dans la liste 'cars': ${carJson.runtimeType}");
+        }
+      }).toList(),
       preferences: Preferences.fromEntity(PreferencesEntity.fromJson(json['preferences'] as Map<String,dynamic>)),
     );
   }

@@ -16,6 +16,7 @@ class Car{
   bool chargeIsActivated;
   Battery battery;
   AirConditioning airConditioning;
+  List<ACProg?> acProg;
 
   Car({
     required this.vin,
@@ -33,6 +34,7 @@ class Car{
     required this.chargeIsActivated,
     required this.battery,
     required this.airConditioning,
+    required this.acProg
   });
 
   CarEntity toEntity(){
@@ -52,6 +54,7 @@ class Car{
         chargeIsActivated: chargeIsActivated,
         battery: battery,
         airConditioning: airConditioning,
+        acProg: acProg,
     );
   }
 
@@ -72,6 +75,7 @@ class Car{
       chargeIsActivated: entity.chargeIsActivated,
       battery: entity.battery,
       airConditioning: entity.airConditioning,
+      acProg: entity.acProg
     );
   }
 }

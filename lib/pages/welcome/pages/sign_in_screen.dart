@@ -27,8 +27,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    emailController.text = "user2@gmail.com";
-    passwordController.text = "Admin1234/";
+    emailController.text = "user1@gmail.com";
+    passwordController.text = "admin1234";
 
     return BlocListener<SignInBloc, SignInState>(
       listener: (context, state) {

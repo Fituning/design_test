@@ -14,7 +14,7 @@ class MqttService {
     client.secure = true;
     client.logging(on: true);
     client.keepAlivePeriod = 20;
-    client.onConnected = onConnected;
+    // client.onConnected = onConnected;
     client.onDisconnected = onDisconnected;
     client.onSubscribed = onSubscribed;
     client.pongCallback = pong;
@@ -30,10 +30,10 @@ class MqttService {
     }
   }
 
-  void onConnected() {
+  void onConnected(String carVin) {
     print('Connecté à MQTT');
-    client.subscribe('car/batteryStatus', MqttQos.atMostOnce);
-    client.subscribe('car/airConditioning', MqttQos.atMostOnce);
+    client.subscribe('car/batteryStatus/$carVin', MqttQos.atMostOnce);
+    client.subscribe('car/airConditioning/$carVin', MqttQos.atMostOnce);
   }
 
   void onDisconnected() {

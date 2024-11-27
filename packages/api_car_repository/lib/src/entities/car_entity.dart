@@ -16,6 +16,7 @@ class CarEntity{
   bool chargeIsActivated;
   Battery battery;
   AirConditioning airConditioning;
+  List<ACProg?> acProg;
 
   CarEntity({
     required this.vin,
@@ -33,6 +34,7 @@ class CarEntity{
     required this.chargeIsActivated,
     required this.battery,
     required this.airConditioning,
+    required this.acProg
   });
 
 
@@ -53,6 +55,7 @@ class CarEntity{
       'charge_is_activated': chargeIsActivated,
       'battery': battery.toEntity().toJson(),
       'air_conditioning': airConditioning.toEntity().toJson(),
+      // 'ac_prog': acProg.map((prog) => prog?.toEntity().toJson())//todo
     };
   }
 
@@ -63,6 +66,29 @@ class CarEntity{
     GpsLocation gpsLocation = GpsLocation(
       coordinates: gpsCoordinates.map((coord) => coord as double).toList(),
     );
+
+    // Vérifier si 'ac_prog' existe et est une liste avant de la traiter
+    List<ACProg>? acProgList;
+    if (json.containsKey('ac_prog')) {
+      acProgList = (json['ac_prog'] as List)
+          .map((acProgJson) {
+        if (acProgJson is Map<String, dynamic>) {
+          // Si c'est un objet peuplé, on récupère uniquement l'_id
+          print(acProgJson);
+          return ACProg.fromEntity(ACProgEntity.fromJson(acProgJson));
+        }
+        else if (acProgJson is String) {
+          // Si c'est déjà une chaîne (ID), on la garde
+          return [] as ACProg;
+        }
+        else {
+          throw Exception("Type inattendu dans la liste 'cars': ${acProgJson.runtimeType}");
+        }
+      }).toList() ;
+    } else {
+      acProgList = []; // Retourner une liste vide si 'ac_prog' n'existe pas ou n'est pas valide
+    }
+
     CarEntity car = CarEntity(
       vin: json['vin'] as String,
       color: json['color'] as String,
@@ -79,6 +105,7 @@ class CarEntity{
       chargeIsActivated: json['charge_is_activated'] as bool,
       battery: Battery.fromEntity(BatteryEntity.fromJson(json['battery'] as Map<String, dynamic>)),
       airConditioning: AirConditioning.fromEntity(AirConditioningEntity.fromJson(json['air_conditioning'] as Map<String, dynamic> )),
+      acProg: acProgList,
     );
 
     return car;

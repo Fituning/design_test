@@ -1,13 +1,14 @@
+import 'package:api_car_repository/api_car_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-import '../pages/Clim.dart';
-
 class NextProgList extends StatelessWidget {
-  const NextProgList({super.key});
+
+  final List<ACProg?> acProgList;
+  const NextProgList({super.key, required this.acProgList, });
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,7 @@ class NextProgList extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 24.0),
                 child: Text(
-                  "PROCHAINES PROGRAMMATIONS".toUpperCase(),
+                  acProgList.isNotEmpty ? "PROCHAINES PROGRAMMATIONS".toUpperCase() : "Aucune PROGRAMMATION prévue".toUpperCase(),
                   style: GoogleFonts.teko(
                       color:
                       Theme.of(context).colorScheme.primary,
@@ -57,12 +58,16 @@ class NextProgList extends StatelessWidget {
               const SizedBox(
                 height: 12,
               ),
-              NextProg(startTime:DateTime.now().add(const Duration(days: 1)),temperature: 23),
-              NextProg(startTime:DateTime.now().add(const Duration(days: 3)),temperature: 23.5105141458),
-              NextProg(startTime:DateTime.now().add(const Duration(days: 9)),temperature: 24),
-              NextProg(startTime:DateTime.now().add(const Duration(days: 1)),temperature: 23),
-              NextProg(startTime:DateTime.now().add(const Duration(days: 3)),temperature: 23.5105141458),
-              NextProg(startTime:DateTime.now().add(const Duration(days: 3)),temperature: 23.5105141458),
+
+              ListView.builder(
+                itemCount: acProgList.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final acProg = acProgList[index]; // Récupérez chaque voiture
+                  return acProg != null ? NextProg(acProg: acProg,): null;
+                },
+              ),
               const SizedBox(
                 height: 128,
               ),
@@ -78,22 +83,20 @@ class NextProgList extends StatelessWidget {
 class NextProg extends StatefulWidget {
   const NextProg({
     super.key,
-    required this.startTime,
-    required this.temperature,
+    required this.acProg
   });
 
-
-  final DateTime startTime;
-  final double temperature;
+  final ACProg acProg;
 
   @override
   State<NextProg> createState() => _NextProgState();
 }
 
 class _NextProgState extends State<NextProg> {
-  bool activeProg = true;
+  //todo check if prog is active or not
   @override
   Widget build(BuildContext context) {
+    final prog = widget.acProg;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: Container(
@@ -127,7 +130,7 @@ class _NextProgState extends State<NextProg> {
                     children: [
                       SvgPicture.asset(
                         "assets/images/time_arrow.svg",
-                        color: Theme.of(context).colorScheme.onSurface,
+                        colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onSurface, BlendMode.srcIn),
                         height: 53,
                       ),
                     ],
@@ -136,7 +139,7 @@ class _NextProgState extends State<NextProg> {
                   Column(
                     children: [
                       Text(
-                        DateFormat("HH:mm").format(widget.startTime),
+                        DateFormat("HH:mm").format(prog.dateInitial),
                         style: GoogleFonts.roboto(
                             color: Theme.of(context).colorScheme.onSurface,
                             fontSize: 20,
@@ -144,7 +147,7 @@ class _NextProgState extends State<NextProg> {
                             fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        DateFormat("HH:mm").format(widget.startTime.add(const Duration(hours: 1))),
+                        DateFormat("HH:mm").format(prog.dateFinal),
                         style: GoogleFonts.roboto(
                             color: Theme.of(context).colorScheme.onSurface,
                             fontSize: 20,
@@ -173,7 +176,7 @@ class _NextProgState extends State<NextProg> {
                               width: 6,
                             ),
                             Text(
-                              "${widget.temperature.toStringAsFixed(1)}°C",
+                              "${prog.temperature.toStringAsFixed(1)}°C",
                               style: GoogleFonts.roboto(
                                   color: Theme.of(context).colorScheme.onSurface,
                                   fontSize: 20,
@@ -219,15 +222,17 @@ class _NextProgState extends State<NextProg> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          getFormattedDate(widget.startTime),
-                          overflow: TextOverflow.ellipsis,
+                         Text(
+                           prog.repetition.isEmpty
+                               ? getFormattedDate(prog.dateInitial)
+                               : prog.repetition.map((day) => day.toShortString()).join(", "), // Combine les noms des jours en une chaîne
+                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.roboto(
                               color: Theme.of(context).colorScheme.onSurface,
-                              fontSize: 20,
+                              fontSize: 18,
                               fontWeight: FontWeight.w400),
                         ),
-                        const Text("prog 1"),
+                        Text(prog.name),
                       ],
                     ),
                   ],
@@ -239,4 +244,26 @@ class _NextProgState extends State<NextProg> {
       ),
     );
   }
+}
+
+String getFormattedDate(DateTime startTime) {
+  DateTime now = DateTime.now();
+  DateTime tomorrow = now.add(const Duration(days: 1));
+  DateTime oneWeekLater = now.add(const Duration(days: 7));
+
+  // Si c'est demain
+  if (startTime.year == tomorrow.year &&
+      startTime.month == tomorrow.month &&
+      startTime.day == tomorrow.day) {
+    return "Demain";
+  }
+
+  // Si c'est dans les 7 prochains jours
+  if (startTime.isAfter(now) && startTime.isBefore(oneWeekLater)) {
+    return DateFormat('EEEE')
+        .format(startTime); // Jour de la semaine (Lundi, Mardi, ...)
+  }
+
+  // Si c'est plus d'une semaine à partir de maintenant
+  return DateFormat('dd/MM').format(startTime); // Format DD/MM/YYYY
 }

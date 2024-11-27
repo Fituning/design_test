@@ -20,8 +20,6 @@ class CarBloc extends Bloc<CarEvent, CarState> {
     _initializeMqtt(); // Démarre la connexion MQTT
 
     on<GetCar>((event, emit) async {
-
-
       _cachedCar = await _loadCachedCar();
       if (state is! GetCarSuccess && state is! GetCarReLoadFailure) {
         emit(GetCarLoading());
@@ -29,8 +27,10 @@ class CarBloc extends Bloc<CarEvent, CarState> {
 
       try {
         Car car = await _apiCarRepo.getCar();
+        print(car);
         _cachedCar = car;
         _saveCarToCache(car); // Sauvegarde les nouvelles données dans le cache
+        _mqttService.onConnected(car.vin);
         emit(GetCarSuccess(car));
       } catch (e) {
         if (_cachedCar != null) {
@@ -73,9 +73,13 @@ class CarBloc extends Bloc<CarEvent, CarState> {
     _mqttService.connect();
     _mqttService.listen((message) {
       // Traite le message MQTT et mets à jour l'état si nécessaire
-      print('Message MQTT reçu : $message');
+      Map<String, dynamic> jsonMessage = jsonDecode(message);
+      // print('Message MQTT reçu : $jsonMessage');
+      // print('Message MQTT reçu');
       // Parse le message et mets à jour l'état de la voiture
-      add(GetCar());
+      if(jsonMessage["source"] != "frontend"){
+        add(GetCar());
+      }
     });
   }
 

@@ -14,16 +14,39 @@ class ApiCarRepo implements CarRepository {
   @override
   Future<List<Car>> getCars() async {
     try {
-      final response = await http.get(Uri.parse(apiUrl));
+      final token = await _apiUserRepo.getJwtToken();
+      final response = await http.get(
+        Uri.parse('$apiUrl/cars'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token" // Ajouter le token ici
+        },
+      );
 
       if (response.statusCode == 200) {
-        List<dynamic> jsonResponse = jsonDecode(response.body);
+        // Decode the JSON response as a Map, since we are expecting a single Car object
+        // Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
-        return jsonResponse
-            .map((carData) => Car.fromEntity(CarEntity.fromJson(carData)))
-            .toList();
+        // print(jsonResponse["data"]);
+
+        List<dynamic> jsonlist = jsonResponse["data"];
+
+        // print(jsonlist);
+
+        return jsonlist
+                .map((carData) => Car.fromEntity(CarEntity.fromJson(carData)))
+                .toList();
+
+        // Parse the JSON into a Car object and return it
+        // return jsonResponse
+        //     .map((carData) => Car.fromEntity(CarEntity.fromJson(carData)))
+        //     .toList();
+        throw Exception(response.body);
       } else {
-        throw Exception('Failed to load cars');
+        // Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        // return Car.fromEntity(CarEntity.fromJson(jsonResponse));
+        throw Exception(response.body);
       }
     } catch (e) {
       log(e.toString());
@@ -34,8 +57,6 @@ class ApiCarRepo implements CarRepository {
   @override
   Future<Car> getCar() async {
     try {
-      print(await _apiUserRepo.user.toString());
-
       final token = await _apiUserRepo.getJwtToken();
       final response = await http.get(
           // Uri.parse('$apiUrl/${dotenv.env["TEST_CAR_ID"]}'),
@@ -108,6 +129,7 @@ class ApiCarRepo implements CarRepository {
         url,
         headers: {
           "Content-Type": "application/json",
+          "source": "frontend", // add source for no autorefresh
           "Authorization": "Bearer $token" // Ajouter le token ici
         },// En-tête pour indiquer que le corps est en JSON
         body: jsonBody,

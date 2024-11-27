@@ -172,7 +172,45 @@ class ApiUserRepo implements UserRepository{
     }
   }
 
-  selectCar(String carId) {}//todo
+  selectCar(String carVin) async {
+    try {
+      final url = Uri.parse('$apiUrl/set_pref_car');
+
+      // Lire le token JWT depuis le stockage sécurisé
+      String? token = await _secureStorage.read(key: 'jwt_token');
+
+      final Map<String, dynamic> body = {
+        'vin' : carVin,
+      };
+
+      final jsonBody = jsonEncode(body);
+
+      final response = await http.patch(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token", // Ajouter le token ici
+        },
+        body: jsonBody,
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+
+        // Récupérer l'utilisateur depuis la réponse
+        final user =  MyUser.fromEntity(MyUserEntity.fromJson(jsonResponse["data"]));
+        // Diffuser l'utilisateur dans le Stream
+        _userController.add(user);
+      } else {
+        throw Exception(response.body);
+      }
+    } catch (e) {
+      log(e.toString());
+      // Diffuser un utilisateur vide en cas d'erreur
+      rethrow;
+    }
+
+  }
 
   addCar(String vin) async {
     try {
@@ -204,13 +242,11 @@ class ApiUserRepo implements UserRepository{
         // Diffuser l'utilisateur dans le Stream
         _userController.add(user);
       } else {
-        _userController.add(null);
         throw Exception(response.body);
       }
     } catch (e) {
       log(e.toString());
       // Diffuser un utilisateur vide en cas d'erreur
-      _userController.add(null);
       rethrow;
     }
   }

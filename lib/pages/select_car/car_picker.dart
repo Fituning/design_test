@@ -1,14 +1,12 @@
-import 'package:api_user_repository/api_user_repository.dart';
-import 'package:design_test/pages/select_car/bloc/select_car_bloc.dart';
+import 'package:api_car_repository/api_car_repository.dart';
+import 'package:design_test/pages/select_car/blocs/get_car/get_car_bloc.dart';
 import 'package:design_test/pages/select_car/pages/add_car_screen.dart';
-import 'package:design_test/pages/welcome/pages/sign_in_screen.dart';
-import 'package:design_test/pages/welcome/pages/sign_up_screen.dart';
+import 'package:design_test/pages/select_car/pages/select_car_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../bloc/auth_bloc/auth_bloc.dart';
+import 'blocs/select_car/select_car_bloc.dart';
 
 enum AuthView { signIn, signUp }
 
@@ -91,37 +89,26 @@ class _CarPickerState extends State<CarPicker> with TickerProviderStateMixin {
                         ],
                       ),
                     ),
-
-                    // Expanded(
-                    //     child: TabBarView(
-                    //       controller: tabController,
-                    //       children: [
-                    //         BlocProvider<SelectCarBloc>(
-                    //             create: (context) => SelectCarBloc(
-                    //                 context.read<AuthBloc>().apiUserRepo
-                    //             ),
-                    //             child: Placeholder()
-                    //         ),
-                    //         BlocProvider<SelectCarBloc>(
-                    //             create: (context) => SelectCarBloc(
-                    //                 context.read<AuthBloc>().apiUserRepo
-                    //             ),
-                    //             child: Placeholder()
-                    //         ),
-                    //       ],
-                    //     )
-                    // ),
-
-                    BlocProvider<SelectCarBloc>(
-                      create: (context) => SelectCarBloc(
-                          context.read<AuthBloc>().apiUserRepo
-                      ),
+                    
+                    MultiBlocProvider(
+                      providers:[
+                        BlocProvider<SelectCarBloc>(
+                          create: (context) => SelectCarBloc(
+                              context.read<AuthBloc>().apiUserRepo
+                          ),
+                        ),
+                        BlocProvider<GetCarBloc>(
+                            create: (context) => GetCarBloc(
+                                ApiCarRepo(context.read<AuthBloc>().apiUserRepo)
+                            )..add(GetCars()),
+                        ),
+                      ],
                       child: Expanded(
                         child: TabBarView(
                           controller: tabController,
-                          children: [
+                          children: const [
                             AddCarScreen(),
-                            Placeholder()
+                            SelectCarScreen(),
                           ],
                         ),
                       ),
