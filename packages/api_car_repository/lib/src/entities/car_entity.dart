@@ -74,7 +74,6 @@ class CarEntity{
           .map((acProgJson) {
         if (acProgJson is Map<String, dynamic>) {
           // Si c'est un objet peuplé, on récupère uniquement l'_id
-          print(acProgJson);
           return ACProg.fromEntity(ACProgEntity.fromJson(acProgJson));
         }
         else if (acProgJson is String) {

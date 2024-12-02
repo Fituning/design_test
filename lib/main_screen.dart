@@ -1,6 +1,7 @@
 import 'package:design_test/bloc/car_bloc/car_bloc.dart';
 import 'package:design_test/pages/Charge.dart';
-import 'package:design_test/pages/Clim.dart';
+import 'package:design_test/pages/clim_page/Clim.dart';
+import 'package:design_test/pages/clim_page/blocs/ac_prog/ac_prog_bloc.dart';
 import 'package:design_test/pages/home.dart';
 import 'package:design_test/pages/maintenance.dart';
 import 'package:design_test/pages/unlock_dialog.dart';
@@ -41,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
             children: [
               BlocBuilder<CarBloc, CarState>(
                 builder: (context, state) {
-                  print("main bloc builder");
+                  print("in MainScreenState");
                   if (state is GetCarSuccess || state is GetCarReLoadFailure) {
                     return page;
                   } else if (state is GetCarLoading) {
@@ -60,10 +61,13 @@ class _MainScreenState extends State<MainScreen> {
         pageIndex: pageIndex,
         onPageChanged: (value) {
           if (value != 4) {
-            setState(() {
-              context.read<CarBloc>().add(GetCar());
-              pageIndex = value;
-            });
+            context.read<CarBloc>().add(GetCar());
+            if(pageIndex != value){
+              setState(() {
+                pageIndex = value;
+              });
+            }
+
           } else {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               final overlay = Overlay.of(context);
@@ -99,7 +103,10 @@ class _MainScreenState extends State<MainScreen> {
       case 0:
         return const Maintenance();
       case 1:
-        return const Clim();
+        return BlocProvider(
+            create: (context) => AcProgBloc(context.read<CarBloc>().apiCarRepo),
+            child: const Clim()
+        );
       case 2:
         return const Home();
       case 3:

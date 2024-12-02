@@ -1,14 +1,14 @@
 import 'package:api_car_repository/api_car_repository.dart';
+import 'package:design_test/pages/clim_page/blocs/ac_prog/ac_prog_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class NextProgList extends StatelessWidget {
-
-  final List<ACProg?> acProgList;
-  const NextProgList({super.key, required this.acProgList, });
+  const NextProgList({super.key, });
 
   @override
   Widget build(BuildContext context) {
@@ -28,52 +28,69 @@ class NextProgList extends StatelessWidget {
               )
             ]
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 12,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary,
-                  borderRadius: const BorderRadius.all(Radius.circular(50)),
-                ),
-                width: 100,
-                height: 4,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 24.0),
-                child: Text(
-                  acProgList.isNotEmpty ? "PROCHAINES PROGRAMMATIONS".toUpperCase() : "Aucune PROGRAMMATION prévue".toUpperCase(),
-                  style: GoogleFonts.teko(
-                      color:
-                      Theme.of(context).colorScheme.primary,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
+        child: BlocBuilder<AcProgBloc, AcProgState>(
+          builder: (context, state) {
+            print("in NextProgList");
+            if(state is AcProgSuccess){
+              return _displayAllActiveProg(context, state.progs, false);
+            }else if(state is AcProgLoading){
+              return _displayAllActiveProg(context, [], true);
+            }else {
+              return const Center(child: Text("An error while loading programations"));
+            }
+          },
+        )
+      )
+    );
+  }
 
-              ListView.builder(
-                itemCount: acProgList.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  final acProg = acProgList[index]; // Récupérez chaque voiture
-                  return acProg != null ? NextProg(acProg: acProg,): null;
-                },
-              ),
-              const SizedBox(
-                height: 128,
-              ),
-            ],
+  Widget _displayAllActiveProg(BuildContext context, List<ACProg> progs, bool isLoading){
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(
+            height: 12,
           ),
-        ),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+              borderRadius: const BorderRadius.all(Radius.circular(50)),
+            ),
+            width: 100,
+            height: 4,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 24.0),
+            child: Text(
+              progs.isEmpty && !isLoading ? "Aucune PROGRAMMATION prévue".toUpperCase() : "PROCHAINES PROGRAMMATIONS".toUpperCase() ,
+              style: GoogleFonts.teko(
+                  color:
+                  Theme.of(context).colorScheme.primary,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+
+          isLoading ?
+          const Center(child: CircularProgressIndicator()):
+          ListView.builder(
+            itemCount: progs.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              final acProg = progs[index]; // Récupérez chaque voiture
+              return  NextProg(acProg: acProg,);
+            },
+          ),
+          const SizedBox(
+            height: 128,
+          ),
+        ],
       ),
     );
   }

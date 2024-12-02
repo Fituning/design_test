@@ -10,11 +10,11 @@ part 'car_event.dart';
 part 'car_state.dart';
 
 class CarBloc extends Bloc<CarEvent, CarState> {
-  final ApiCarRepo _apiCarRepo;
+  final ApiCarRepo apiCarRepo;
   final MqttService _mqttService;
   Car? _cachedCar; // Variable pour stocker l'objet Car mis en cache
 
-  CarBloc(this._apiCarRepo)
+  CarBloc(this.apiCarRepo)
       : _mqttService = MqttService(), // Initialise le service MQTT
         super(GetCarInitial()) {
     _initializeMqtt(); // Démarre la connexion MQTT
@@ -26,8 +26,7 @@ class CarBloc extends Bloc<CarEvent, CarState> {
       }
 
       try {
-        Car car = await _apiCarRepo.getCar();
-        print(car);
+        Car car = await apiCarRepo.getCar();
         _cachedCar = car;
         _saveCarToCache(car); // Sauvegarde les nouvelles données dans le cache
         _mqttService.onConnected(car.vin);
@@ -45,7 +44,7 @@ class CarBloc extends Bloc<CarEvent, CarState> {
       try {
         if(_cachedCar != null){
 
-          AirConditioning updatedAirConditioning = await _apiCarRepo.updateAirConditioning(
+          AirConditioning updatedAirConditioning = await apiCarRepo.airConditioningRepo.updateAirConditioning(
             temperature: event.temperature,
             ventilationLevel: event.ventilationLevel,
             mode: event.mode,
