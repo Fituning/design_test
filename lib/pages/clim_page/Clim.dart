@@ -4,7 +4,7 @@ import 'package:design_test/pages/clim_page/blocs/ac_prog/ac_prog_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/car_bloc/car_bloc.dart';
-import '../../components/clim_controler_panel.dart';
+import 'components/clim_controler_panel.dart';
 
 class Clim extends StatelessWidget {
   const Clim({super.key});

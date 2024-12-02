@@ -2,6 +2,7 @@ import 'package:design_test/bloc/car_bloc/car_bloc.dart';
 import 'package:design_test/pages/Charge.dart';
 import 'package:design_test/pages/clim_page/Clim.dart';
 import 'package:design_test/pages/clim_page/blocs/ac_prog/ac_prog_bloc.dart';
+import 'package:design_test/pages/clim_page/clim_prog.dart';
 import 'package:design_test/pages/home.dart';
 import 'package:design_test/pages/maintenance.dart';
 import 'package:design_test/pages/unlock_dialog.dart';
@@ -42,7 +43,6 @@ class _MainScreenState extends State<MainScreen> {
             children: [
               BlocBuilder<CarBloc, CarState>(
                 builder: (context, state) {
-                  print("in MainScreenState");
                   if (state is GetCarSuccess || state is GetCarReLoadFailure) {
                     return page;
                   } else if (state is GetCarLoading) {
@@ -119,19 +119,31 @@ class _MainScreenState extends State<MainScreen> {
   /// Méthode pour obtenir le FloatingActionButton
   Widget? _getFloatingActionButton() {
     switch (pageIndex) {
-      case 1:
-      case 3:
-        return _buildCircularElevatedButton(
+      case 1:return buildCircularElevatedButton(
           icon: FontAwesomeIcons.clock,
           size: 42,
           padding: 16,
-        );
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(
+                builder: (BuildContext context) => const ClimProg()));
+          }
+      );
       case 2:
-        return _buildCircularElevatedButton(
+        return buildCircularElevatedButton(
           icon: FontAwesomeIcons.unlock,
           size: 42,
           padding: 24,
           onPressed: () => _showUnlockDialog(),
+        );
+      case 3:
+        return buildCircularElevatedButton(
+          icon: FontAwesomeIcons.clock,
+          size: 42,
+          padding: 16,
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(
+                builder: (BuildContext context) => const Placeholder()));
+          }
         );
       default:
         return null;
@@ -139,7 +151,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   /// Méthode pour construire le CircularElevatedButton
-  Widget _buildCircularElevatedButton({
+  Widget buildCircularElevatedButton({
     required IconData icon,
     required double size,
     required double padding,
@@ -168,6 +180,21 @@ class _MainScreenState extends State<MainScreen> {
     return pageIndex == 2 ? CustomFabLocation() : FloatingActionButtonLocation.centerFloat;
   }
 }
+
+class BuildCircularElevatedButton extends StatelessWidget {
+  final IconData icon;
+  final double size;
+  final double padding;
+  final VoidCallback? onPressed;
+  const BuildCircularElevatedButton({super.key, required this.icon, required this.size, required this.padding, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+
 
 class CustomFabLocation extends FloatingActionButtonLocation {
   @override

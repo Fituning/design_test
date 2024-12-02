@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../bloc/car_bloc/car_bloc.dart';
-import 'Vent.dart';
-import 'chip_button.dart';
-import 'circular_progress_indicator.dart';
+import '../../../bloc/car_bloc/car_bloc.dart';
+import '../../../components/Vent.dart';
+import '../../../components/chip_button.dart';
+import '../../../components/circular_progress_indicator.dart';
 
 class ClimControllerPanel extends StatefulWidget {
   const ClimControllerPanel({
