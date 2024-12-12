@@ -44,3 +44,6 @@ app.*.map.json
 pubspec.lock
 .env
 pubspec.lock
+/android/build
+/ios
+/android/app/src/main/res
