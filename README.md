@@ -91,6 +91,105 @@ API_KEY=https://your-api-url.com
 
 ---
 
+### 3. Resolving R8/ProGuard Errors
+If you encounter `Missing classes detected while running R8` errors when building a release APK, follow these steps:
+
+#### Create or Edit `proguard-rules.pro`
+1. In the `android/app/` directory, create a file named `proguard-rules.pro` if it does not exist.
+2. Add the following rules to handle the missing classes:
+```proguard
+# Suppression des avertissements pour les classes manquantes
+-dontwarn com.google.api.client.http.GenericUrl
+-dontwarn com.google.api.client.http.HttpHeaders
+-dontwarn com.google.api.client.http.HttpRequest
+-dontwarn com.google.api.client.http.HttpRequestFactory
+-dontwarn com.google.api.client.http.HttpResponse
+-dontwarn com.google.api.client.http.HttpTransport
+-dontwarn com.google.api.client.http.javanet.NetHttpTransport$Builder
+-dontwarn com.google.api.client.http.javanet.NetHttpTransport
+-dontwarn com.google.errorprone.annotations.CanIgnoreReturnValue
+-dontwarn com.google.errorprone.annotations.CheckReturnValue
+-dontwarn com.google.errorprone.annotations.Immutable
+-dontwarn com.google.errorprone.annotations.InlineMe
+-dontwarn com.google.errorprone.annotations.RestrictedApi
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.concurrent.GuardedBy
+-dontwarn javax.annotation.concurrent.ThreadSafe
+-dontwarn org.joda.time.Instant
+```
+
+#### Link `proguard-rules.pro` in `build.gradle`
+1. Open `android/app/build.gradle`.
+2. Ensure ProGuard is linked in the `release` build type:
+```gradle
+android {
+    ...
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true // Active ProGuard/R8
+            shrinkResources true // Réduit la taille des ressources
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+```
+
+#### Clean and Rebuild the Project
+1. Clean the project:
+```bash
+flutter clean
+```
+2. Rebuild the APK:
+```bash
+flutter build apk --release
+```
+
+---
+
+### 4. Building the APK
+To build the APK, follow these steps:
+1. Clean the project:
+   ```bash
+   flutter clean
+   ```
+2. Navigate to the `android` directory and clean Gradle:
+   ```bash
+   cd android
+   ./gradlew clean
+   ```
+3. Return to the project root and fetch dependencies:
+   ```bash
+   flutter pub get
+   ```
+4. Generate the launcher icons (if not already done):
+   ```bash
+   dart run flutter_launcher_icons
+   ```
+5. Build the release APK:
+   ```bash
+   flutter build apk --release
+   ```
+
+---
+
+### 5. Changing the App Name and Icon
+- **To change the app name**:
+    - [StackOverflow Guide](https://stackoverflow.com/questions/49353199/how-can-i-change-the-app-display-name-build-with-flutter)
+    - [flutter_launcher_name Package](https://pub.dev/packages/flutter_launcher_name)
+
+- **To change the app icon**:
+    - [flutter_launcher_icons Package](https://pub.dev/packages/flutter_launcher_icons)
+    - [YouTube Tutorial for App Icon](https://www.youtube.com/watch?v=eMHbgIgJyUQ)
+
+---
+
+### 6. Enabling Internet Access for Non-Dev Mode
+If the app does not have internet access on devices not in developer mode, follow these steps:  
+[StackOverflow Solution](https://stackoverflow.com/questions/54551198/how-to-solve-socketexception-failed-host-lookup-www-xyz-com-os-error-no-ad)
+
+---
+
 ## Additional Notes
 - **Project Structure Evolution**: The current project structure is temporary and will be adjusted as new requirements arise.
 - **Flutter Troubleshooting**: If you encounter configuration issues, run:
@@ -98,7 +197,11 @@ API_KEY=https://your-api-url.com
   flutter doctor --verbose
   ```
   This will provide detailed information to diagnose any dependency problems.
+- **Video Resources**: For more information, check out these videos:
+    - [YouTube Tutorial 1](https://www.youtube.com/watch?v=eMHbgIgJyUQ)
+    - [YouTube Tutorial 2](https://www.youtube.com/watch?v=eMHbgIgJyUQ)
 
 ---
 
 This document is designed to evolve alongside the project. Feel free to update it as new requirements emerge.
+
