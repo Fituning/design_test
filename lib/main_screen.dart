@@ -57,6 +57,14 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       ),
+
+      /*bottomNavigationBar: BottomNavigationBar(
+          items: const [
+        BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.house),label: "1"),
+        BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.house), label: "2")
+      ],
+        type: BottomNavigationBarType.fixed,//pour la mettre en transparente
+      ),*/
       bottomNavigationBar: NavBar(
         pageIndex: pageIndex,
         onPageChanged: (value) {

@@ -21,6 +21,8 @@ dependencies:
   #for env variables:
   flutter_dotenv: ^5.2.1
 
+  shared_preferences: ^2.0.13 #for persitant cache data
+
 
   api_user_repository: #import api repo
     path: ../api_user_repository

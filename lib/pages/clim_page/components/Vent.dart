@@ -7,9 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../bloc/car_bloc/car_bloc.dart';
-import 'ElevatedButton.dart';
-import 'NotifPastille.dart';
+import '../../../bloc/car_bloc/car_bloc.dart';
+import '../../../components/ElevatedButton.dart';
+import '../../../components/NotifPastille.dart';
 
 const int minVentLevel = 0;
 int maxVentLevel = VentilationLevelEnum.values.length - 1;

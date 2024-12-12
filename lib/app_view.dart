@@ -30,8 +30,6 @@ class _MyAppViewState extends State<MyAppView> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top]);
 
     //initializeDateFormatting(findSystemLocale().toString());
     return MaterialApp(
@@ -75,8 +73,11 @@ class _MyAppViewState extends State<MyAppView> {
 
       home: BlocBuilder<AuthBloc, AuthState>(
           builder: ((context, state) {
-            // context.read<AuthBloc>().add(GetUser());
+            // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive,
+            //     overlays: []);
             if (state.status == Authenticationstatus.authenticated) {
+              SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+                  overlays: [SystemUiOverlay.top]);
               return MultiBlocProvider(
                 providers: [
                   // BlocProvider(

@@ -1,5 +1,3 @@
-
-
 import '../../api_user_repository.dart';
 
 class MyUserEntity{

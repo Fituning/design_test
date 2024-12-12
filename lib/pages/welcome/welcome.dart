@@ -30,7 +30,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
 
     return Scaffold(
       resizeToAvoidBottomInset: true, // Permet d'ajuster la vue lors de l'apparition du clavier
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {

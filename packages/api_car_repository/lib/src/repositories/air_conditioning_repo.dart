@@ -3,6 +3,7 @@ import 'package:api_car_repository/src/repositories/base_repo.dart';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 abstract class AirConditioningRepository extends BaseRepository{
@@ -56,12 +57,15 @@ class AirConditioningRepo extends AirConditioningRepository{
       // Encodez le corps en JSON
       final jsonBody = jsonEncode(body);
 
+      final prefs = await SharedPreferences.getInstance();
+      String? deviceUUID = prefs.getString('device_uuid');
+
       // Faites une requête PATCH ou POST avec le corps en JSON
       final response = await http.patch(
         url,
         headers: {
           "Content-Type": "application/json",
-          "source": "frontend", // add source for no autorefresh
+          "source": deviceUUID ?? "frontend", // add device uuid to avoid autorefresh
           "Authorization": "Bearer $token" // Ajouter le token ici
         },// En-tête pour indiquer que le corps est en JSON
         body: jsonBody,

@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import '../../main.dart';
 import '../../mqtt_service.dart'; // Pour encoder et décoder JSON
 
 part 'car_event.dart';
@@ -76,7 +77,9 @@ class CarBloc extends Bloc<CarEvent, CarState> {
       // print('Message MQTT reçu : $jsonMessage');
       // print('Message MQTT reçu');
       // Parse le message et mets à jour l'état de la voiture
-      if(jsonMessage["source"] != "frontend"){
+      final deviceUUID = getDeviceUUID();
+
+      if(jsonMessage["source"] != deviceUUID){
         add(GetCar());
       }
     });

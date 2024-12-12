@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../bloc/car_bloc/car_bloc.dart';
-import '../../../components/Vent.dart';
+import 'Vent.dart';
 import '../../../components/chip_button.dart';
 import '../../../components/circular_progress_indicator.dart';
 
