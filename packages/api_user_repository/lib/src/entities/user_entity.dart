@@ -38,7 +38,7 @@ class MyUserEntity{
           .map((carJson) {
         if (carJson is Map<String, dynamic>) {
           // Si c'est un objet peuplé, on récupère uniquement l'_id
-          return carJson['_id'] as String;
+          return carJson['id'] as String;
         } else if (carJson is String) {
           // Si c'est déjà une chaîne (ID), on la garde
           return carJson;

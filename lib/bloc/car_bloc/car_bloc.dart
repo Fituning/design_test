@@ -21,7 +21,7 @@ class CarBloc extends Bloc<CarEvent, CarState> {
     _initializeMqtt(); // Démarre la connexion MQTT
 
     on<GetCar>((event, emit) async {
-      _cachedCar = await _loadCachedCar();
+      _cachedCar = await _loadCachedCar(); //to commit for resetting car cache
       if (state is! GetCarSuccess && state is! GetCarReLoadFailure) {
         emit(GetCarLoading());
       }

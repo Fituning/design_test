@@ -14,7 +14,7 @@ extension NotificationModeEnumExtension on NotificationModeEnum {
       case 'only_alert':
         return NotificationModeEnum.onlyAlert;
       default:
-        throw Exception('Invalid air conditioning mode: $mode');
+        throw Exception('Invalid notification mode: $mode');
     }
   }
 }

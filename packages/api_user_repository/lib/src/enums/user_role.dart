@@ -1,23 +1,24 @@
+
 enum UserRoleEnum {
-  superAdmin,
-  admin,
-  moderator,
-  user,
+  SUPER_ADMIN,
+  ADMIN,
+  MECHANIC,
+  USER, // rôle virtuel géré par un middleware
 }
 
 extension UserRoleEnumExtension on UserRoleEnum {
   static UserRoleEnum fromString(String mode) {
     switch (mode) {
-      case 'super_admin':
-        return UserRoleEnum.superAdmin;
-      case 'admin':
-        return UserRoleEnum.admin;
-      case 'moderator':
-        return UserRoleEnum.moderator;
-      case 'user':
-        return UserRoleEnum.user;
+      case 'SUPER_ADMIN':
+        return UserRoleEnum.SUPER_ADMIN;
+      case 'ADMIN':
+        return UserRoleEnum.ADMIN;
+      case 'MECHANIC':
+        return UserRoleEnum.MECHANIC;
+      case 'USER':
+        return UserRoleEnum.USER;
       default:
-        throw Exception('Invalid air conditioning mode: $mode');
+        throw Exception('Invalid User Role enum: $mode');
     }
   }
 }

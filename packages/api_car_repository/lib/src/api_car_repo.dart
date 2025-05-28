@@ -15,7 +15,7 @@ class ApiCarRepo implements CarRepository {
   late final ACProgRepo acProgRepo;
 
   ApiCarRepo(this._apiUserRepo)
-      : apiUrl = '${dotenv.env["API_KEY"]!}/api/car' {
+      : apiUrl = '${dotenv.env["API_KEY"]!}/api/cars' {
     airConditioningRepo = AirConditioningRepo('${dotenv.env["API_KEY"]!}/api/car', _apiUserRepo);
     // batteryRepo = BatteryRepo(apiUrl, apiUserRepo);
     acProgRepo = ACProgRepo('${dotenv.env["API_KEY"]!}/api/ac_prog', _apiUserRepo);
@@ -80,6 +80,8 @@ class ApiCarRepo implements CarRepository {
       if (response.statusCode == 200) {
         // Decode the JSON response as a Map, since we are expecting a single Car object
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        // print(jsonResponse["data"]);
+
 
         // Parse the JSON into a Car object and return it
         return Car.fromEntity(CarEntity.fromJson(jsonResponse["data"]));

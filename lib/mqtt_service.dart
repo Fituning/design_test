@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
@@ -9,8 +10,8 @@ class MqttService {
     String clientId = 'client_${DateTime.now().millisecondsSinceEpoch}';
 
     // Initialise le client MQTT
-    client = MqttServerClient('lb28a76a.ala.eu-central-1.emqxsl.com', clientId);
-    client.port = 8883;
+    client = MqttServerClient(dotenv.env["MQTT_ADDRESS"]!, clientId);
+    client.port = int.parse(dotenv.env["MQTT_PORT"]!);
     client.secure = true;
     client.logging(on: true);
     client.keepAlivePeriod = 20;
@@ -22,7 +23,7 @@ class MqttService {
 
   Future<void> connect() async {
     try {
-      await client.connect('test_appli', 'ZMaczfTu7');
+      await client.connect(dotenv.env["MQTT_DB_USER"]!, dotenv.env["MQTT_DB_PASSWORD"]!);
       print("CONNECTED");
     } catch (e) {
       print('Erreur de connexion : $e');

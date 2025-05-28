@@ -47,7 +47,8 @@ class CarEntity{
       'software_status': softwareStatus.name,
       'average_consumption': averageConsumption,
       'remaining_range': remainingRange,
-      'gps_location': gpsLocation.coordinates,
+      'gps_latitude': gpsLocation.coordinates[0],
+      'gps_latitude': gpsLocation.coordinates[1],
       'right_door': rightDoor.name,
       'left_door': leftDoor.name,
       'hood': hood.name,
@@ -62,9 +63,12 @@ class CarEntity{
   factory CarEntity.fromJson(Map<String, dynamic> json) {
 
     // Parse GPS coordinates safely
-    List<dynamic> gpsCoordinates = json['gps_location'];
+    print(json);
+    // List<dynamic> gpsCoordinates = json['gps_location'];
+    // List<dynamic> gpsCoordinates = [json['gps_latitude'], json['gps_latitude']];
     GpsLocation gpsLocation = GpsLocation(
-      coordinates: gpsCoordinates.map((coord) => coord as double).toList(),
+      // coordinates: gpsCoordinates.map((coord) => coord as double).toList(),
+         coordinates: [json['gps_latitude'], json['gps_longitude']],
     );
 
     // Vérifier si 'ac_prog' existe et est une liste avant de la traiter

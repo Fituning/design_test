@@ -1,8 +1,6 @@
 import 'package:api_car_repository/api_car_repository.dart';
-import 'package:api_user_repository/api_user_repository.dart';
 import 'package:design_test/bloc/car_bloc/car_bloc.dart';
 import 'package:design_test/pages/select_car/car_picker.dart';
-import 'package:design_test/pages/select_car/pages/add_car_screen.dart';
 import 'package:design_test/pages/welcome/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

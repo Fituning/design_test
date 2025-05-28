@@ -47,7 +47,7 @@ class CarLockDialog extends StatelessWidget {
                       Expanded(child: Image.asset(
                         "assets/images/softcar_top.png",
                         fit: BoxFit.fitWidth,
-                        width: MediaQuery.of(context).size.width-150,
+                        width: MediaQuery.of(context).size.width-150, //todo fix img size (probleme tel Nico)
                         alignment: Alignment.topCenter,
                       )),
                       Positioned(
