@@ -16,7 +16,7 @@ class ApiCarRepo implements CarRepository {
 
   ApiCarRepo(this._apiUserRepo)
       : apiUrl = '${dotenv.env["API_KEY"]!}/api/cars' {
-    airConditioningRepo = AirConditioningRepo('${dotenv.env["API_KEY"]!}/api/car', _apiUserRepo);
+    airConditioningRepo = AirConditioningRepo('${dotenv.env["API_KEY"]!}/api/cars', _apiUserRepo);
     // batteryRepo = BatteryRepo(apiUrl, apiUserRepo);
     acProgRepo = ACProgRepo('${dotenv.env["API_KEY"]!}/api/ac_prog', _apiUserRepo);
   }

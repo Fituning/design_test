@@ -10,7 +10,7 @@ sealed class CarEvent extends Equatable {
 class GetCar extends CarEvent {}
 
 class UpdateAirConditioning extends CarEvent {
-  final int? temperature;
+  final double? temperature;
   final AirConditioningModeEnum? mode;
   final VentilationLevelEnum? ventilationLevel;
   final bool? acIsActive;

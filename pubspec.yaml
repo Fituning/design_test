@@ -74,6 +74,8 @@ dependencies:
   #for mqtt device identification
   uuid: ^4.5.1
 
+  logger: ^2.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

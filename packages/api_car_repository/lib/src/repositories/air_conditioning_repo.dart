@@ -19,7 +19,7 @@ class AirConditioningRepo extends AirConditioningRepository{
 
   @override
   Future<AirConditioning> updateAirConditioning({
-    int? temperature,
+    double? temperature,
     AirConditioningModeEnum? mode,
     VentilationLevelEnum? ventilationLevel,
     bool? acIsActive,
@@ -30,19 +30,19 @@ class AirConditioningRepo extends AirConditioningRepository{
       final token = await apiUserRepo.getJwtToken();
 
       // Créez l'URL en utilisant votre API
-      final url = Uri.parse('$apiUrl/update/air_conditioning');
+      final url = Uri.parse('$apiUrl/air_conditioning');
 
       // Construisez le corps de la requête en JSON de manière dynamique
       final Map<String, dynamic> body = {};
 
       if (temperature != null) {
-        body['temperature'] = temperature;
+        body['temperature'] = temperature.toString();
       }
       if (mode != null) {
         body['mode'] = mode.name;
       }
       if (ventilationLevel != null) {
-        body['ventilation_level'] = ventilationLevel.index;
+        body['ventilation_level'] = ventilationLevel.name;
       }
       if (acIsActive != null) {
         body['ac_is_active'] = acIsActive;
@@ -71,11 +71,15 @@ class AirConditioningRepo extends AirConditioningRepository{
         body: jsonBody,
       );
 
+      print(jsonBody);
+      print(response.statusCode);
+      print(response.body);
+
       if (response.statusCode == 200) {
         // Décodez la réponse JSON en tant que Map, car nous attendons un objet Car
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
-        return AirConditioning.fromEntity(AirConditioningEntity.fromJson(jsonResponse["data"]));//todo ne met pas a jour le car puisque MQTT envoie une notification de changement
+        return AirConditioning.fromEntity(AirConditioningEntity.fromJson(jsonResponse["data"]["air_conditioning"]));//todo ne met pas a jour le car puisque MQTT envoie une notification de changement
       } else {
         throw Exception('Failed to update car');
       }

@@ -33,8 +33,9 @@ class MqttService {
 
   void onConnected(String carVin) {
     print('Connecté à MQTT');
-    client.subscribe('car/batteryStatus/$carVin', MqttQos.atMostOnce);
-    client.subscribe('car/airConditioning/$carVin', MqttQos.atMostOnce);
+    // client.subscribe('car/$carVin', MqttQos.atMostOnce);
+    // client.subscribe('car/$carVin/receive/air_conditioning', MqttQos.atMostOnce);
+    client.subscribe('car/$carVin/updated', MqttQos.atMostOnce);
   }
 
   void onDisconnected() {

@@ -2,7 +2,7 @@
 import 'package:api_car_repository/src/enums/enum.dart';
 
 class AirConditioningEntity {
-  int temperature;
+  double temperature;
   AirConditioningModeEnum mode;
 
   VentilationLevelEnum ventilationLevel;
@@ -31,8 +31,9 @@ class AirConditioningEntity {
   }
 
   factory AirConditioningEntity.fromJson(Map<String, dynamic> json) {
+    print(json);
     return AirConditioningEntity(
-      temperature: json['temperature'] as int,
+      temperature: (json['temperature'] as num).toDouble(),
       mode: AirConditioningModeEnumExtension.fromString(json['mode']),
       ventilationLevel: VentilationLevelEnumExtension.fromString(json['ventilation_level']),
       acIsActive: json['ac_is_active'] as bool,

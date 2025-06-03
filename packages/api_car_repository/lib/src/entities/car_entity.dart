@@ -48,7 +48,7 @@ class CarEntity{
       'average_consumption': averageConsumption,
       'remaining_range': remainingRange,
       'gps_latitude': gpsLocation.coordinates[0],
-      'gps_latitude': gpsLocation.coordinates[1],
+      'gps_longitude': gpsLocation.coordinates[1],
       'right_door': rightDoor.name,
       'left_door': leftDoor.name,
       'hood': hood.name,

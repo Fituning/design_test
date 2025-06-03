@@ -4,7 +4,7 @@ import 'package:api_car_repository/api_car_repository.dart';
 class ACProg{
   String id;
   String name;
-  int temperature;
+  double temperature;
   VentilationLevelEnum ventilationLevel;
   bool isActive;
   DateTime dateInitial;

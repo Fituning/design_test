@@ -5,7 +5,7 @@ class ACProgEntity {
   String id;
   String name;
   bool isActive;
-  int temperature;
+  double temperature;
   VentilationLevelEnum ventilationLevel;
   DateTime dateInitial;
   DateTime dateFinal;
@@ -39,7 +39,7 @@ class ACProgEntity {
     return ACProgEntity(
       id: json['_id'],
       name: json['name'],
-      temperature: json['temperature'] as int,
+      temperature: json['temperature'] as double,
       ventilationLevel: VentilationLevelEnumExtension.fromInt(json['ventilation_level']),
       isActive: json['is_active'],
       dateInitial: DateTime.parse(json['date_initial'] as String),

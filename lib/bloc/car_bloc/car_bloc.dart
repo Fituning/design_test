@@ -73,28 +73,36 @@ class CarBloc extends Bloc<CarEvent, CarState> {
     _mqttService.connect();
     _mqttService.listen((message) {
       // Traite le message MQTT et mets à jour l'état si nécessaire
+      print("message du topic : $message");
       Map<String, dynamic> jsonMessage = jsonDecode(message);
       // print('Message MQTT reçu : $jsonMessage');
       // print('Message MQTT reçu');
       // Parse le message et mets à jour l'état de la voiture
       final deviceUUID = getDeviceUUID();
+      print("message du topic : $jsonMessage");
 
       if(jsonMessage["source"] != deviceUUID){
         add(GetCar());
-      }
+      }// todo, add source message in API
     });
   }
 
   // Méthode pour charger l'objet Car depuis le cache
   Future<Car?> _loadCachedCar() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? carJson = prefs.getString('cachedCar');
-    if (carJson != null) {
-      // _cachedCar = Car.fromJson(jsonDecode(carJson)); // Convertir JSON en objet Car
-      return _cachedCar = Car.fromEntity(CarEntity.fromJson(jsonDecode(carJson))); // Convertir JSON en objet Car
-      // emit(GetCarSuccess(_cachedCar!));
+    try{
+      final prefs = await SharedPreferences.getInstance();
+      final String? carJson = prefs.getString('cachedCar');
+      if (carJson != null) {
+        // _cachedCar = Car.fromJson(jsonDecode(carJson)); // Convertir JSON en objet Car
+        return _cachedCar = Car.fromEntity(CarEntity.fromJson(jsonDecode(carJson))); // Convertir JSON en objet Car
+        // emit(GetCarSuccess(_cachedCar!));
+      }
+      return null;
+    }catch(e){
+      _clearCarCache();
+      return null;
     }
-    return null;
+
   }
 
   // Méthode pour sauvegarder l'objet Car dans le cache
@@ -102,6 +110,12 @@ class CarBloc extends Bloc<CarEvent, CarState> {
     final prefs = await SharedPreferences.getInstance();
     // prefs.setString('cachedCar', jsonEncode(car.toJson())); // Convertir objet Car en JSON
     prefs.setString('cachedCar', jsonEncode(car.toEntity().toJson())); // Convertir objet Car en JSON
+  }
+
+  Future<void> _clearCarCache() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('cachedCar');
+    print("cache has been cleared ");
   }
 
   // Méthode pour obtenir l'objet Car mis en cache

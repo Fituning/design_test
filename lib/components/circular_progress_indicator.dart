@@ -35,7 +35,7 @@ class _CircularProgressSliderState extends State<CircularProgressSlider> {
             child: Column(
               children: [
                 Text(
-                  car.airConditioning.temperature.toString(),
+                  car.airConditioning.temperature.toStringAsFixed(1),
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                     fontSize: 32,
@@ -94,7 +94,7 @@ class _CircularProgressSliderState extends State<CircularProgressSlider> {
                       },
                       onValueChanged: (value) {
                         setState(() {
-                          car.airConditioning.temperature = value.round();
+                          car.airConditioning.temperature = (value * 2).round() / 2;
                         });
                       },
                     ),
