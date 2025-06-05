@@ -146,7 +146,7 @@ class _MainScreenState extends State<MainScreen> {
           icon: FontAwesomeIcons.unlock,
           size: 42,
           padding: 24,
-          onPressed: () => _showUnlockDialog(car),
+          onPressed: () => _showUnlockDialog(),
         );
       case 3:
         return buildCircularElevatedButton(
@@ -179,13 +179,15 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   /// Méthode pour afficher la boîte de dialogue de déverrouillage
-  void _showUnlockDialog( Car car) {
-    CarBloc bloc = context.read<CarBloc>();
+  void _showUnlockDialog() {
+    final carBloc = context.read<CarBloc>();
+
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return CarLockDialog(car: car, carBloc: bloc,); //todo add car
-      },
+      builder: (_) => BlocProvider.value(
+        value: carBloc,
+        child: const CarLockDialog(),
+      ),
     );
   }
 

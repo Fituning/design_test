@@ -7,14 +7,7 @@ import '../../bloc/car_bloc/car_bloc.dart';
 import '../../components/ElevatedButton.dart';
 
 class CarLockDialog extends StatefulWidget {
-  const CarLockDialog( {
-    super.key,
-    required this.car,
-    required this.carBloc,
-  });
-
-  final Car car;
-  final CarBloc carBloc;
+  const CarLockDialog({super.key});
 
   @override
   State<CarLockDialog> createState() => _CarLockDialogState();
@@ -23,9 +16,6 @@ class CarLockDialog extends StatefulWidget {
 class _CarLockDialogState extends State<CarLockDialog> {
   @override
   Widget build(BuildContext context) {
-    Car car = widget.car;
-    CarBloc carBloc = widget.carBloc;
-
     return Dialog(
       insetPadding: const EdgeInsets.all(16),
       child: ClipRRect(
@@ -35,124 +25,137 @@ class _CarLockDialogState extends State<CarLockDialog> {
             maxWidth: MediaQuery.of(context).size.width * 0.9,
             maxHeight: MediaQuery.of(context).size.height * 0.6,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                color: Theme.of(context).colorScheme.primary,
-                padding: const EdgeInsets.all(8),
-                child: Row(
+          child: BlocBuilder<CarBloc, CarState>(
+            builder: (context, state) {
+              if (state is CarLoadedState) {
+                var car = state.car;
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    IconButton(
-                      icon: const FaIcon(FontAwesomeIcons.xmark),
-                      onPressed: () => Navigator.of(context).pop(),
-                      iconSize: 20,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
+                    // ... haut du dialog
+                    Flexible(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return Stack(
+                            alignment: AlignmentDirectional.center,
+                            children: [
+                              Image.asset(
+                                "assets/images/softcar_top.png",
+                                fit: BoxFit.fitWidth,
+                                width: constraints.maxWidth - 40,
+                                height: constraints.maxHeight - 40,
+                              ),
+                              // Bouton capot
+                              Positioned(
+                                top: 10,
+                                child: CircularElevatedButton(
+                                  icon: const FaIcon(FontAwesomeIcons.unlock),
+                                  iconClicked: const FaIcon(FontAwesomeIcons.lock),
+                                  onPressed: () {
+                                    setState((){
+                                        car.hood = toggleDoorStatus(car.hood);
+                                        context.read<CarBloc>().add(const UpdateDoorState(door: DoorEnum.hood));
+                                  });
+                                  },
+                                  iconSize: 28,
+                                  padding: const EdgeInsets.all(16),
+                                  elevation: 6,
+                                  bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
+                                  value: car.hood == DoorStatusEnum.close,
+                                ),
+                              ),
+                              // Bouton gauche
+                              Positioned(
+                                left: 60,
+                                child: CircularElevatedButton(
+                                  icon: const FaIcon(FontAwesomeIcons.unlock),
+                                  iconClicked: const FaIcon(FontAwesomeIcons.lock),
+                                  onPressed: () {
+                                    setState((){
+                                      car.leftDoor =
+                                          toggleDoorStatus(car.leftDoor);
+                                      context.read<CarBloc>().add(const UpdateDoorState(door: DoorEnum.left));
+                                    });
+                                  },
+                                  iconSize: 28,
+                                  padding: const EdgeInsets.all(16),
+                                  elevation: 6,
+                                  bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
+                                  value: car.leftDoor == DoorStatusEnum.close,
+                                ),
+                              ),
+                              // Bouton droit
+                              Positioned(
+                                right: 60,
+                                child: CircularElevatedButton(
+                                  icon: const FaIcon(FontAwesomeIcons.unlock),
+                                  iconClicked: const FaIcon(FontAwesomeIcons.lock),
+                                  onPressed: () {
+                                    setState((){
+                                      car.rightDoor =toggleDoorStatus(car.rightDoor);
+                                      context.read<CarBloc>().add(const UpdateDoorState(door: DoorEnum.right));
+                                    });
+                                  },
+                                  iconSize: 28,
+                                  padding: const EdgeInsets.all(16),
+                                  elevation: 6,
+                                  bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
+                                  value: car.rightDoor == DoorStatusEnum.close,
+                                ),
+                              ),
+                              // Bouton global
+                              Positioned(
+                                right: -14,
+                                bottom: -14,
+                                child: CircularElevatedButton(
+                                  icon: const FaIcon(FontAwesomeIcons.unlock),
+                                  onPressed: () {
+                                    setState((){
+                                      car = toggleAllDoors(car);
+                                      context.read<CarBloc>().add(const UpdateDoorState(door: DoorEnum.all));
+                                    });
+                                  },
+                                  iconSize: 33,
+                                  padding: const EdgeInsets.all(24),
+                                  elevation: 6,
+                                  bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
+                                  value: car.hood == DoorStatusEnum.close &&
+                                      car.leftDoor == DoorStatusEnum.close &&
+                                      car.rightDoor == DoorStatusEnum.close,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   ],
-                ),
-              ),
-              Flexible(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return Stack(
-                      alignment: AlignmentDirectional.center,
-                      children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Image.asset(
-                            "assets/images/softcar_top.png",
-                            fit: BoxFit.fitWidth,
-                            width: constraints.maxWidth - 40,
-                            height: constraints.maxHeight - 40,
-                          ),
-                        ),
+                );
+              }
 
-                        Positioned(
-                          top: 10,
-                          child: Align(
-                            alignment : Alignment.topCenter,
-                            child: CircularElevatedButton(
-                              icon: const FaIcon(FontAwesomeIcons.unlock),
-                              iconClicked : const FaIcon(FontAwesomeIcons.lock),
-                              onPressed: () {
-                                carBloc.add(const UpdateDoorState(door: DoorEnum.hood));
-                              },
-                              iconSize: 28,
-                              padding: const EdgeInsets.all(16),
-                              elevation: 6,
-                              bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
-                              value: car.hood == DoorStatusEnum.close ,
-                            ),
-                          ),
-                        ),
-
-                        Positioned(
-                          left: 60,
-                          child: Align(
-                            alignment : Alignment.center,
-                            child: Builder(
-                              builder: (context) => CircularElevatedButton(
-                                icon: const FaIcon(FontAwesomeIcons.unlock),
-                                iconClicked: const FaIcon(FontAwesomeIcons.lock),
-                                onPressed: () {
-                                  carBloc.add(const UpdateDoorState(door: DoorEnum.left));
-                                },
-                                iconSize: 28,
-                                padding: const EdgeInsets.all(16),
-                                elevation: 6,
-                                bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
-                                value: car.leftDoor == DoorStatusEnum.close,
-                              ),
-                            )
-                          ),
-                        ),
-
-                        Positioned(
-                          right: 60,
-                          child: Align(
-                            alignment : Alignment.center,
-                            child: CircularElevatedButton(
-                              icon: const FaIcon(FontAwesomeIcons.unlock),
-                              iconClicked : const FaIcon(FontAwesomeIcons.lock),
-                              onPressed: () {
-                                carBloc.add(const UpdateDoorState(door: DoorEnum.right));
-                              },
-                              iconSize: 28,
-                              padding: const EdgeInsets.all(16),
-                              elevation: 6,
-                              bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
-                              value: car.rightDoor == DoorStatusEnum.close ,
-                            ),
-                          ),
-                        ),
-
-                        Positioned(
-                          right: -14,
-                          bottom: -14,
-                          child: CircularElevatedButton(
-                            icon: const FaIcon(FontAwesomeIcons.unlock),
-                            onPressed: () {
-                              carBloc.add(const UpdateDoorState(door: DoorEnum.all));
-                            },
-                            iconSize: 33,
-                            padding: const EdgeInsets.all(24),
-                            elevation: 6,
-                            bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
-                            value: ( car.rightDoor == DoorStatusEnum.close &&  car.leftDoor == DoorStatusEnum.close && car.hood == DoorStatusEnum.close),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
+              return const Center(child: CircularProgressIndicator());
+            },
           ),
         ),
       ),
     );
   }
+}
+
+DoorStatusEnum toggleDoorStatus(DoorStatusEnum current) {
+  return current == DoorStatusEnum.close ? DoorStatusEnum.open : DoorStatusEnum.close;
+}
+
+Car toggleAllDoors(Car car) {
+  final allClosed = car.hood == DoorStatusEnum.close &&
+      car.leftDoor == DoorStatusEnum.close &&
+      car.rightDoor == DoorStatusEnum.close;
+
+  final newStatus = allClosed ? DoorStatusEnum.open : DoorStatusEnum.close;
+
+  car.hood = newStatus;
+  car.leftDoor = newStatus;
+  car.rightDoor = newStatus;
+
+  return car;
 }
