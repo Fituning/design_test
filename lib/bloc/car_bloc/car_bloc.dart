@@ -57,7 +57,29 @@ class CarBloc extends Bloc<CarEvent, CarState> {
           _saveCarToCache(_cachedCar!); // Sauvegarde les nouvelles données dans le cache
           emit(GetCarSuccess(_cachedCar!));
         }else{
-          GetCar();
+          add(GetCar()); //GetCar();
+        }
+      } catch (e) {
+        if (_cachedCar != null) {
+          emit(GetCarReLoadFailure(_cachedCar!,"impossible de mettre a jour les données"));
+        } else {
+          emit(GetCarFailure());
+        }
+      }
+    });
+
+    on<UpdateDoorState>((event, emit) async {
+      try {
+        if(_cachedCar != null){
+
+          Car updatedCar = await apiCarRepo.doorsRepo.updateDoorState(door: event.door);
+
+          _cachedCar = updatedCar;
+          _saveCarToCache(_cachedCar!); // Sauvegarde les nouvelles données dans le cache
+          emit(GetCarSuccess(_cachedCar!));
+
+        }else{
+          add(GetCar()); //GetCar();
         }
       } catch (e) {
         if (_cachedCar != null) {

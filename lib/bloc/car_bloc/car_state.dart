@@ -10,23 +10,26 @@ final class GetCarInitial extends CarState {}
 final class GetCarFailure extends CarState {}
 final class GetCarLoading extends CarState {}
 
-final class GetCarReLoadFailure extends CarState {
-  final Car car;
-  final String msg;
-
-  const GetCarReLoadFailure(this.car,this.msg);
-
-  @override
-  List<Object> get props => [car,msg];
-}
-
-final class GetCarSuccess extends CarState {
+abstract class CarLoadedState extends CarState {
   final Car car;
 
-  const GetCarSuccess(this.car);
+  const CarLoadedState(this.car);
 
   @override
   List<Object> get props => [car];
+}
+
+final class GetCarSuccess extends CarLoadedState {
+  const GetCarSuccess(super.car);
+}
+
+final class GetCarReLoadFailure extends CarLoadedState {
+  final String msg;
+
+  const GetCarReLoadFailure(super.car, this.msg);
+
+  @override
+  List<Object> get props => super.props..add(msg);
 }
 
 final class UpdateCarFailure extends CarState {}

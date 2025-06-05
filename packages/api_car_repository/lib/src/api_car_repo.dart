@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:api_car_repository/src/repositories/doors_repo.dart';
 import 'package:api_car_repository/src/repositories/repositories.dart';
 import 'package:api_user_repository/api_user_repository.dart';
 import 'package:http/http.dart' as http;
@@ -13,12 +14,15 @@ class ApiCarRepo implements CarRepository {
   late final AirConditioningRepo airConditioningRepo;
   // late final BatteryRepo batteryRepo;
   late final ACProgRepo acProgRepo;
+  late final DoorsRepo doorsRepo;
 
   ApiCarRepo(this._apiUserRepo)
       : apiUrl = '${dotenv.env["API_KEY"]!}/api/cars' {
-    airConditioningRepo = AirConditioningRepo('${dotenv.env["API_KEY"]!}/api/cars', _apiUserRepo);
+    airConditioningRepo = AirConditioningRepo(apiUrl, _apiUserRepo);
+
     // batteryRepo = BatteryRepo(apiUrl, apiUserRepo);
     acProgRepo = ACProgRepo('${dotenv.env["API_KEY"]!}/api/ac_prog', _apiUserRepo);
+    doorsRepo = DoorsRepo('$apiUrl/door', _apiUserRepo);
   }
 
   @override

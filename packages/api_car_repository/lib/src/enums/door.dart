@@ -3,6 +3,13 @@ enum DoorStatusEnum {
   close,
 }
 
+enum DoorEnum {
+  right,
+  left,
+  hood,
+  all
+}
+
 extension DoorStatusEnumExtension on DoorStatusEnum {
   static DoorStatusEnum fromString(String state) {
     switch (state) {

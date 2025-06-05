@@ -71,9 +71,9 @@ class AirConditioningRepo extends AirConditioningRepository{
         body: jsonBody,
       );
 
-      print(jsonBody);
-      print(response.statusCode);
-      print(response.body);
+      // print(jsonBody);
+      // print(response.statusCode);
+      // print(response.body);
 
       if (response.statusCode == 200) {
         // Décodez la réponse JSON en tant que Map, car nous attendons un objet Car

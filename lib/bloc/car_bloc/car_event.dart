@@ -17,7 +17,7 @@ class UpdateAirConditioning extends CarEvent {
   final bool? frontDefogging;
   final bool? backDefogging;
 
-  UpdateAirConditioning({
+  const UpdateAirConditioning({
     this.temperature,
     this.mode,
     this.ventilationLevel,
@@ -29,6 +29,18 @@ class UpdateAirConditioning extends CarEvent {
   @override
   List<Object?> get props => [temperature, mode,ventilationLevel, acIsActive, frontDefogging, backDefogging];
 }
+
+class UpdateDoorState extends CarEvent {
+  final DoorEnum door;
+
+  const UpdateDoorState({
+    required this.door,
+  });
+
+  @override
+  List<Object?> get props => [door];
+}
+
 
 // class UpdateCarFromMqtt extends CarEvent {}
 
