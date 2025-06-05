@@ -2,8 +2,10 @@ import 'package:api_car_repository/api_car_repository.dart';
 import 'package:design_test/components/notification_overlay_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:latlong2/latlong.dart';
 import '../bloc/car_bloc/car_bloc.dart';
 import '../components/circular_info_tile.dart';
 
@@ -12,6 +14,10 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final LatLng centerPoint = LatLng(46.9903, 6.9293);
+
+    final MapController mapController = MapController();
+
     return Container(
       color: Theme.of(context).colorScheme.surface,
       child: Column(
@@ -19,9 +25,53 @@ class Home extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 13 / 24,
             width: MediaQuery.of(context).size.width,
-            child: Image.asset(
-              "assets/images/map2.jpg",
-              fit: BoxFit.cover,
+            child: FlutterMap(
+              mapController: mapController,
+              options: MapOptions(
+                center: centerPoint,// Neuchâtel style 🔥
+                zoom: 15.0,
+                interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.doubleTapZoom,
+                onPositionChanged: (MapPosition pos, bool hasGesture) {
+                  if (hasGesture && pos.center != centerPoint) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      mapController.move(centerPoint, pos.zoom ?? 13.0);
+                    });
+                  }
+                },
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: ['a', 'b', 'c'],
+                  userAgentPackageName: 'com.example.app',
+                ),
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: centerPoint,
+                      width: 60,
+                      height: 60,
+                      child:  FaIcon(
+                        FontAwesomeIcons.car,
+                        color: Theme.of(context).colorScheme.secondary,
+                        size: 34,
+                        shadows: [
+                          Shadow(
+                            color: Theme.of(context).colorScheme.primary.withOpacity(0.8), // ombre bien contrastée
+                            offset: Offset(1, 1),
+                            blurRadius: 4,
+                          ),
+                          Shadow(
+                            color: Theme.of(context).colorScheme.surface, // léger halo clair autour
+                            offset: Offset(0, 0),
+                            blurRadius: 10,
+                          ),
+                        ],
+                      )
+                    )
+                  ],
+                ),
+              ],
             ),
           ),
           Expanded(
