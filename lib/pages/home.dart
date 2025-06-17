@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:api_car_repository/api_car_repository.dart';
 import 'package:design_test/components/notification_overlay_bar.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +22,25 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
   late final AnimatedMapController _animCtrl;
+  late double directionAngle = 0;
+  late double iconSize = 60;
 
   @override
   void initState() {
     super.initState();
     _animCtrl = AnimatedMapController(vsync: this);
+
+    _animCtrl.mapController.mapEventStream.listen((event) {
+      if (event is MapEventMove && mounted) {
+        final zoom = _animCtrl.mapController.camera.zoom;
+        final newSize = getIconSizeFromZoom(zoom);
+        if ((newSize - iconSize).abs() > 0.5) {
+          setState(() {
+            iconSize = newSize;
+          });
+        }
+      }
+    });
   }
 
   @override
@@ -35,23 +52,46 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
 
-
     final MapController mapController =  _animCtrl.mapController;
+
 
     return BlocListener<CarBloc, CarState>(
       listenWhen: (prev, curr) => curr is CarLoadedState,
       listener: (context, state) {
         if (state is CarLoadedState) {
-          final LatLng newCenter = LatLng(
+          final LatLng newPosition = LatLng(
             state.car.gpsLocation.coordinates[0],
             state.car.gpsLocation.coordinates[1],
           );
-          _animCtrl.animateTo(
-            dest: newCenter,
-            rotation: 0,
-            zoom: _animCtrl.mapController.camera.zoom,
-            customId: null, // ou un
+          final distance = const Distance().as(
+            LengthUnit.Meter,
+            _animCtrl.mapController.camera.center,
+            newPosition,
           );
+
+          double getRotationAngle(LatLng from, LatLng to) {
+            final dLon = (to.longitude - from.longitude) * pi / 180;
+            final lat1 = from.latitude * pi / 180;
+            final lat2 = to.latitude * pi / 180;
+
+            final y = sin(dLon) * cos(lat2);
+            final x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
+
+            final heading = atan2(y, x); // En radians
+            return heading;
+          }
+          directionAngle = getRotationAngle(_animCtrl.mapController.camera.center, newPosition);
+          if (distance > 100) {
+
+            _animCtrl.animateTo(
+              dest: newPosition,
+              zoom: _animCtrl.mapController.camera.zoom,
+              rotation: 0,
+              curve: Curves.linear,
+              // duration: const Duration(milliseconds: 600),
+            );
+
+          }
           // mapController.move(
           //   newCenter,
           //   mapController.camera.zoom,
@@ -79,17 +119,19 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               mapController: mapController,
               options: MapOptions(
                 initialCenter: centerPoint,
+                maxZoom: 20,
+                minZoom: 2,
                 initialZoom: 16.0,
                 interactionOptions: const InteractionOptions(
                   flags: InteractiveFlag.pinchZoom | InteractiveFlag.doubleTapZoom,
                 ),
-                onPositionChanged: (MapPosition pos, bool hasGesture) {
-                  if (hasGesture && pos.center != centerPoint) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      mapController.move(centerPoint, pos.zoom ?? 13.0);
-                    });
-                  }
-                },
+                // onPositionChanged: (MapPosition pos, bool hasGesture) {
+                //   if (hasGesture && pos.center != centerPoint) {
+                //     WidgetsBinding.instance.addPostFrameCallback((_) {
+                //       mapController.move(centerPoint, pos.zoom ?? 13.0);
+                //     });
+                //   }
+                // },
               ),
               children: [
                 TileLayer(
@@ -101,13 +143,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   markers: [
                     Marker(
                         point: centerPoint,
-                        width: 60,
-                        height: 60,
-                        child:  Image.asset(
-                          "assets/images/softcar_top.png",
-                          width: 24,
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.centerRight,
+                        width: iconSize,
+                        height: iconSize,
+                        child:  Transform.rotate(
+                          angle: directionAngle,
+                          child: Image.asset(
+                            "assets/images/softcar_top.png",
+                            // width: 12,
+                            fit: BoxFit.contain,
+                            alignment: Alignment.center,
+                          ),
                         ),
                     )
                   ],
@@ -296,6 +341,20 @@ class _Display extends StatelessWidget {
   }
 }
 
+
+double getIconSizeFromZoom(double zoom) {
+  if (zoom <= 2) return 30;
+  if (zoom >= 20) return 75;
+
+  // Interpolation personnalisée par plage
+  if (zoom <= 10) {
+    return lerpDouble(30, 45, (zoom - 2) / (10 - 2))!;
+  } else if (zoom <= 16) {
+    return lerpDouble(45, 60, (zoom - 10) / (16 - 10))!;
+  } else {
+    return lerpDouble(60, 75, (zoom - 16) / (20 - 16))!;
+  }
+}
 
 
 
