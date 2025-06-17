@@ -3,20 +3,40 @@ import 'package:design_test/components/notification_overlay_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_animations/flutter_map_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import '../bloc/car_bloc/car_bloc.dart';
 import '../components/circular_info_tile.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> with TickerProviderStateMixin {
+  late final AnimatedMapController _animCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _animCtrl = AnimatedMapController(vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _animCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
 
 
-    final MapController mapController =  MapController();
+    final MapController mapController =  _animCtrl.mapController;
 
     return BlocListener<CarBloc, CarState>(
       listenWhen: (prev, curr) => curr is CarLoadedState,
@@ -26,12 +46,18 @@ class Home extends StatelessWidget {
             state.car.gpsLocation.coordinates[0],
             state.car.gpsLocation.coordinates[1],
           );
-          mapController.move(
-            newCenter,
-            mapController.camera.zoom,
-            // mapController.camera.rotation,
-            // duration: const Duration(milliseconds: 500),
+          _animCtrl.animateTo(
+            dest: newCenter,
+            rotation: 0,
+            zoom: _animCtrl.mapController.camera.zoom,
+            customId: null, // ou un
           );
+          // mapController.move(
+          //   newCenter,
+          //   mapController.camera.zoom,
+          //   // mapController.camera.rotation,
+          //   // duration: const Duration(milliseconds: 500),
+          // );
         }
       },
   child: Container(
@@ -53,7 +79,7 @@ class Home extends StatelessWidget {
               mapController: mapController,
               options: MapOptions(
                 initialCenter: centerPoint,
-                initialZoom: 15.0,
+                initialZoom: 16.0,
                 interactionOptions: const InteractionOptions(
                   flags: InteractiveFlag.pinchZoom | InteractiveFlag.doubleTapZoom,
                 ),
