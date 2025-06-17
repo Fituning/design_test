@@ -103,23 +103,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         point: centerPoint,
                         width: 60,
                         height: 60,
-                        child:  FaIcon(
-                          FontAwesomeIcons.car,
-                          color: Theme.of(context).colorScheme.secondary,
-                          size: 34,
-                          shadows: [
-                            Shadow(
-                              color: Theme.of(context).colorScheme.primary.withOpacity(0.8), // ombre bien contrastée
-                              offset: Offset(1, 1),
-                              blurRadius: 4,
-                            ),
-                            Shadow(
-                              color: Theme.of(context).colorScheme.surface, // léger halo clair autour
-                              offset: Offset(0, 0),
-                              blurRadius: 10,
-                            ),
-                          ],
-                        )
+                        child:  Image.asset(
+                          "assets/images/softcar_top.png",
+                          width: 24,
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerRight,
+                        ),
                     )
                   ],
                 ),
