@@ -16,9 +16,25 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
 
 
-    final MapController mapController = MapController();
+    final MapController mapController =  MapController();
 
-    return Container(
+    return BlocListener<CarBloc, CarState>(
+      listenWhen: (prev, curr) => curr is CarLoadedState,
+      listener: (context, state) {
+        if (state is CarLoadedState) {
+          final LatLng newCenter = LatLng(
+            state.car.gpsLocation.coordinates[0],
+            state.car.gpsLocation.coordinates[1],
+          );
+          mapController.move(
+            newCenter,
+            mapController.camera.zoom,
+            // mapController.camera.rotation,
+            // duration: const Duration(milliseconds: 500),
+          );
+        }
+      },
+  child: Container(
       color: Theme.of(context).colorScheme.surface,
       child: BlocBuilder<CarBloc, CarState>(
   builder: (context, state) {
@@ -36,9 +52,11 @@ class Home extends StatelessWidget {
             child: FlutterMap(
               mapController: mapController,
               options: MapOptions(
-                center: centerPoint,// Neuchâtel style 🔥
-                zoom: 15.0,
-                interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.doubleTapZoom,
+                initialCenter: centerPoint,
+                initialZoom: 15.0,
+                interactionOptions: const InteractionOptions(
+                  flags: InteractiveFlag.pinchZoom | InteractiveFlag.doubleTapZoom,
+                ),
                 onPositionChanged: (MapPosition pos, bool hasGesture) {
                   if (hasGesture && pos.center != centerPoint) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -156,7 +174,8 @@ class Home extends StatelessWidget {
 
   },
 ),
-    );
+    ),
+);
   }
 }
 
