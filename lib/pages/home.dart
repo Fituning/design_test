@@ -53,6 +53,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
 
     final MapController mapController =  _animCtrl.mapController;
+    bool _initialPositioned = false;
+    late final LatLng centerPoint;
 
 
     return BlocListener<CarBloc, CarState>(
@@ -81,17 +83,20 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             return heading;
           }
           directionAngle = getRotationAngle(_animCtrl.mapController.camera.center, newPosition);
-          if (distance > 100) {
+          if (distance > 1) {
 
             _animCtrl.animateTo(
               dest: newPosition,
               zoom: _animCtrl.mapController.camera.zoom,
               rotation: 0,
-              curve: Curves.linear,
+              curve: Curves.easeInOut,
               // duration: const Duration(milliseconds: 600),
             );
 
+
           }
+
+
           // mapController.move(
           //   newCenter,
           //   mapController.camera.zoom,
@@ -107,7 +112,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     if(state is CarLoadedState){
       final car = state.car;
       final msg = state is GetCarReLoadFailure ? state.msg : null;
-      final LatLng centerPoint = LatLng(car.gpsLocation.coordinates[0],car.gpsLocation.coordinates[1]);
+
+
+      if(!_initialPositioned){
+        centerPoint = LatLng(car.gpsLocation.coordinates[0],car.gpsLocation.coordinates[1]);
+        _initialPositioned = true;
+      }
+
 
 
       return Column(
@@ -121,7 +132,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 initialCenter: centerPoint,
                 maxZoom: 20,
                 minZoom: 2,
-                initialZoom: 16.0,
+                initialZoom: 18.0, //todo put 16.0
                 interactionOptions: const InteractionOptions(
                   flags: InteractiveFlag.pinchZoom | InteractiveFlag.doubleTapZoom,
                 ),
@@ -142,7 +153,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 MarkerLayer(
                   markers: [
                     Marker(
-                        point: centerPoint,
+                        point: LatLng(car.gpsLocation.coordinates[0],car.gpsLocation.coordinates[1]),
                         width: iconSize,
                         height: iconSize,
                         child:  Transform.rotate(
