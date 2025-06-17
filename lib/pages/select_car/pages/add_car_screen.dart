@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../blocs/select_car/select_car_bloc.dart';
 
-
-
 class AddCarScreen extends StatefulWidget {
   const AddCarScreen({super.key});
 
@@ -23,9 +21,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
   void _addCar([String? value]) {
     if (_formKey.currentState!.validate()) {
       // Déclencher l'action de connexion
-      context.read<SelectCarBloc>().add(
-        AddCar(vinController.text)
-      );
+      context.read<SelectCarBloc>().add(AddCar(vinController.text));
     }
   }
 
@@ -34,19 +30,20 @@ class _AddCarScreenState extends State<AddCarScreen> {
     return LayoutBuilder(
       builder: (context, constraints) {
         // Vérifier si l'espace est suffisant pour afficher l'image
-        final isEnoughSpace = constraints.maxHeight > 400; // Ajustez la valeur selon la taille de votre image.
+        final isEnoughSpace = constraints.maxHeight >
+            400; // Ajustez la valeur selon la taille de votre image.
 
         return BlocListener<SelectCarBloc, SelectCarState>(
           listener: (context, state) {
-            if(state is SelectCarSuccess){
+            if (state is SelectCarSuccess) {
               setState(() {
                 selectCarRequired = false;
               });
-            }else if( state is SelectCarLoading){
+            } else if (state is SelectCarLoading) {
               setState(() {
                 selectCarRequired = true;
               });
-            }else if(state is SelectCarFailure){
+            } else if (state is SelectCarFailure) {
               setState(() {
                 selectCarRequired = false;
                 _errorMsg = state.error;
@@ -54,70 +51,70 @@ class _AddCarScreenState extends State<AddCarScreen> {
             }
           },
           child: SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Pas encore de voiture ajoutée",
+                    style: GoogleFonts.roboto(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Pas encore de voiture ajoutée",
-                          style: GoogleFonts.roboto(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                  ),
+                  if (isEnoughSpace) // Afficher l'image uniquement si l'espace est suffisant
+                    Image.asset(
+                      "assets/images/softcar_blue.png",
+                      width: MediaQuery.of(context).size.width - 48,
+                    ),
+                  const SizedBox(height: 32),
+                  Form(
+                    key: _formKey,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32),
+                      child: Column(
+                        children: [
+                          MyTextField(
+                            controller: vinController,
+                            labelText: "Numéro VIN",
+                            hintText: '',
+                            obscureText: false,
+                            keyboardType: TextInputType.name,
+                            textInputAction: TextInputAction.done,
+                            onFieldSubmitted: _addCar,
+                            validator: (val) {
+                              if (val!.isEmpty) {
+                                return 'Please fill in this field';
+                              }
+                              return null;
+                            },
                           ),
-                        ),
-                        if (isEnoughSpace) // Afficher l'image uniquement si l'espace est suffisant
-                          Image.asset(
-                            "assets/images/softcar_blue.png",
-                            width: MediaQuery.of(context).size.width - 48,
-                          ),
-                        const SizedBox(height: 32),
-                        Form(
-                          key: _formKey,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 32),
-                            child: Column(
-                              children: [
-                                MyTextField(
-                                  controller: vinController,
-                                  labelText: "Numéro VIN",
-                                  hintText: '',
-                                  obscureText: false,
-                                  keyboardType: TextInputType.name,
-                                  textInputAction: TextInputAction.done,
-                                  onFieldSubmitted : _addCar,
-                                  validator: (val) {
-                                    if (val!.isEmpty) {
-                                      return 'Please fill in this field';
-                                    }
-                                    return null;
-                                  },
-                                ),
-
-
-                                const SizedBox(height: 24),
-                                if (_errorMsg != null)
-                                  Text(
-                                    _errorMsg!,
-                                    style: TextStyle(color: Theme.of(context).colorScheme.error),
-                                  ),
-
-
-                                !selectCarRequired ? ElevatedButton(
+                          const SizedBox(height: 24),
+                          if (_errorMsg != null)
+                            Text(
+                              _errorMsg!,
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.error),
+                            ),
+                          !selectCarRequired
+                              ? ElevatedButton(
                                   onPressed: _addCar,
                                   style: TextButton.styleFrom(
                                     elevation: 3.0,
-                                    backgroundColor: Theme.of(context).colorScheme.primary,
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.primary,
                                     foregroundColor: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(60),
                                     ),
                                   ),
                                   child: const Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 25, vertical: 5),
                                     child: Text(
                                       'add car',
                                       textAlign: TextAlign.center,
@@ -128,19 +125,19 @@ class _AddCarScreenState extends State<AddCarScreen> {
                                       ),
                                     ),
                                   ),
-                                ): const CircularProgressIndicator(),
-                                const SizedBox(height: 76),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+                                )
+                              : const CircularProgressIndicator(),
+                          const SizedBox(height: 76),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+                ],
+              ),
+            ),
+          ),
         );
       },
     );
   }
-
 }

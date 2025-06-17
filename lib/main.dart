@@ -10,11 +10,14 @@ import 'app.dart';
 import 'app_view.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized(); //verify anything in the project is initialize
+  WidgetsFlutterBinding
+      .ensureInitialized(); //verify anything in the project is initialize
   Bloc.observer = SimpleBlocObserver();
   await dotenv.load(); // Charge les variables d'environnement
   await getDeviceUUID();
-  runApp(MyApp(apiUserRepo: ApiUserRepo(),));
+  runApp(MyApp(
+    apiUserRepo: ApiUserRepo(),
+  ));
 }
 
 Future<String> getDeviceUUID() async {
@@ -28,7 +31,3 @@ Future<String> getDeviceUUID() async {
 
   return uuid;
 }
-
-
-
-

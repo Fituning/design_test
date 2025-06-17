@@ -34,17 +34,17 @@ class _ClimControllerPanelState extends State<ClimControllerPanel> {
       child: ClipRRect(
         child: OverflowBox(
           alignment: Alignment.topCenter,
-          maxHeight: widget.expandedHeight+76,
+          maxHeight: widget.expandedHeight + 76,
           fit: OverflowBoxFit.max,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              VentController(car : widget.car),
+              VentController(car: widget.car),
               const SizedBox(
                 height: 38,
               ),
-              CircularProgressSlider(car : widget.car),
+              CircularProgressSlider(car: widget.car),
               const SizedBox(
                 height: 38,
               ),
@@ -56,7 +56,7 @@ class _ClimControllerPanelState extends State<ClimControllerPanel> {
     );
   }
 
-  Widget _displayACControls(BuildContext context, Car car){
+  Widget _displayACControls(BuildContext context, Car car) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 44.0),
       child: Row(
@@ -72,11 +72,13 @@ class _ClimControllerPanelState extends State<ClimControllerPanel> {
                     fontWeight: FontWeight.w500),
               ),
               value: car.airConditioning.acIsActive,
-              onPressed: (){
+              onPressed: () {
                 setState(() {
-                  car.airConditioning.acIsActive = !car.airConditioning.acIsActive;
+                  car.airConditioning.acIsActive =
+                      !car.airConditioning.acIsActive;
                 });
-                context.read<CarBloc>().add(UpdateAirConditioning(acIsActive: car.airConditioning.acIsActive));
+                context.read<CarBloc>().add(UpdateAirConditioning(
+                    acIsActive: car.airConditioning.acIsActive));
               },
             ),
           ),
@@ -92,11 +94,13 @@ class _ClimControllerPanelState extends State<ClimControllerPanel> {
                 height: 28,
               ),
               value: car.airConditioning.frontDefogging,
-              onPressed: (){
+              onPressed: () {
                 setState(() {
-                  car.airConditioning.frontDefogging = !car.airConditioning.frontDefogging;
+                  car.airConditioning.frontDefogging =
+                      !car.airConditioning.frontDefogging;
                 });
-                context.read<CarBloc>().add(UpdateAirConditioning(frontDefogging: car.airConditioning.frontDefogging));
+                context.read<CarBloc>().add(UpdateAirConditioning(
+                    frontDefogging: car.airConditioning.frontDefogging));
               },
             ),
           ),
@@ -112,11 +116,13 @@ class _ClimControllerPanelState extends State<ClimControllerPanel> {
                 height: 28,
               ),
               value: car.airConditioning.backDefogging,
-              onPressed: (){
+              onPressed: () {
                 setState(() {
-                  car.airConditioning.backDefogging = !car.airConditioning.backDefogging;
+                  car.airConditioning.backDefogging =
+                      !car.airConditioning.backDefogging;
                 });
-                context.read<CarBloc>().add(UpdateAirConditioning(backDefogging: car.airConditioning.backDefogging));
+                context.read<CarBloc>().add(UpdateAirConditioning(
+                    backDefogging: car.airConditioning.backDefogging));
               },
             ),
           ),

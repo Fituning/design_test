@@ -28,7 +28,6 @@ class _MyAppViewState extends State<MyAppView> {
 
   @override
   Widget build(BuildContext context) {
-
     //initializeDateFormatting(findSystemLocale().toString());
     return MaterialApp(
       title: 'Flutter Demo',
@@ -69,34 +68,35 @@ class _MyAppViewState extends State<MyAppView> {
       supportedLocales: S.delegate.supportedLocales,
       themeMode: ThemeMode.light,
 
-      home: BlocBuilder<AuthBloc, AuthState>(
-          builder: ((context, state) {
-            // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive,
-            //     overlays: []);
-            if (state.status == Authenticationstatus.authenticated) {
-              SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-                  overlays: [SystemUiOverlay.top]);
-              return MultiBlocProvider(
-                providers: [
-                  // BlocProvider(
-                  //   create: (context) => SignInBloc(
-                  //       context.read<AuthenticationBloc>().userRepository),
-                  // ),
-                  BlocProvider(
-                    create: (context) => CarBloc(ApiCarRepo(context.read<AuthBloc>().apiUserRepo))..add(GetCar()),
-                  ),
-                ],
-                child: const MainScreen(),
-              );
-            }else if (state.status == Authenticationstatus.noCarSelected || state.status == Authenticationstatus.noCars){
-              return const CarPicker();//todo refaire la page
-            } else if (state.status == Authenticationstatus.unauthenticated){
-              return const WelcomeScreen();
-            }else{
-              return const Center(child: CircularProgressIndicator());
-            }
-          })),
+      home: BlocBuilder<AuthBloc, AuthState>(builder: ((context, state) {
+        // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive,
+        //     overlays: []);
+        if (state.status == Authenticationstatus.authenticated) {
+          SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+              overlays: [SystemUiOverlay.top]);
+          return MultiBlocProvider(
+            providers: [
+              // BlocProvider(
+              //   create: (context) => SignInBloc(
+              //       context.read<AuthenticationBloc>().userRepository),
+              // ),
+              BlocProvider(
+                create: (context) =>
+                    CarBloc(ApiCarRepo(context.read<AuthBloc>().apiUserRepo))
+                      ..add(GetCar()),
+              ),
+            ],
+            child: const MainScreen(),
+          );
+        } else if (state.status == Authenticationstatus.noCarSelected ||
+            state.status == Authenticationstatus.noCars) {
+          return const CarPicker(); //todo refaire la page
+        } else if (state.status == Authenticationstatus.unauthenticated) {
+          return const WelcomeScreen();
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      })),
     );
   }
 }
-

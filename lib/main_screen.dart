@@ -30,13 +30,15 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     // final Widget page = _getPage();
     // final Widget? floatingActionButton = _getFloatingActionButton();
-    final FloatingActionButtonLocation floatingActionLocation = _getFabLocation();
+    final FloatingActionButtonLocation floatingActionLocation =
+        _getFabLocation();
 
     return BlocBuilder<CarBloc, CarState>(
       builder: (context, state) {
         if (state is CarLoadedState) {
           final Widget page = _getPage();
-          final Widget? floatingActionButton = _getFloatingActionButton(state.car);
+          final Widget? floatingActionButton =
+              _getFloatingActionButton(state.car);
 
           return Scaffold(
             floatingActionButton: floatingActionButton,
@@ -67,26 +69,28 @@ class _MainScreenState extends State<MainScreen> {
               onPageChanged: (value) {
                 if (value != 4) {
                   context.read<CarBloc>().add(GetCar());
-                  if(pageIndex != value){
+                  if (pageIndex != value) {
                     setState(() {
                       pageIndex = value;
                     });
                   }
-
                 } else {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     final overlay = Overlay.of(context);
                     final overlayEntry = OverlayEntry(
                         builder: (context) => NotificationOverlayBar(
-                          message: "Pas de composant REX associée ",
-                          color: Theme.of(context).colorScheme.primaryContainer,
-                          icon: FaIcon(
-                            FontAwesomeIcons.fire,
-                            color: Theme.of(context).colorScheme.onPrimaryContainer,
-                            size: 34,
-                          ),
-                        )
-                    );
+                              message: "Pas de composant REX associée ",
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
+                              icon: FaIcon(
+                                FontAwesomeIcons.fire,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer,
+                                size: 34,
+                              ),
+                            ));
 
                     // Insérer l'overlay
                     overlay.insert(overlayEntry);
@@ -103,11 +107,11 @@ class _MainScreenState extends State<MainScreen> {
         } else if (state is GetCarLoading) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          return const Center(child: Text("An error has occurred in main page"));
+          return const Center(
+              child: Text("An error has occurred in main page"));
         }
       },
     );
-
   }
 
   /// Méthode pour obtenir la page
@@ -118,8 +122,7 @@ class _MainScreenState extends State<MainScreen> {
       case 1:
         return BlocProvider(
             create: (context) => AcProgBloc(context.read<CarBloc>().apiCarRepo),
-            child: const Clim()
-        );
+            child: const Clim());
       case 2:
         return const Home();
       case 3:
@@ -132,15 +135,17 @@ class _MainScreenState extends State<MainScreen> {
   /// Méthode pour obtenir le FloatingActionButton
   Widget? _getFloatingActionButton(Car car) {
     switch (pageIndex) {
-      case 1:return buildCircularElevatedButton(
-          icon: FontAwesomeIcons.clock,
-          size: 42,
-          padding: 16,
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(
-                builder: (BuildContext context) => const ClimProg()));
-          }
-      );
+      case 1:
+        return buildCircularElevatedButton(
+            icon: FontAwesomeIcons.clock,
+            size: 42,
+            padding: 16,
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const ClimProg()));
+            });
       case 2:
         return buildCircularElevatedButton(
           icon: FontAwesomeIcons.unlock,
@@ -150,14 +155,15 @@ class _MainScreenState extends State<MainScreen> {
         );
       case 3:
         return buildCircularElevatedButton(
-          icon: FontAwesomeIcons.clock,
-          size: 42,
-          padding: 16,
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(
-                builder: (BuildContext context) => const Placeholder()));
-          }
-        );
+            icon: FontAwesomeIcons.clock,
+            size: 42,
+            padding: 16,
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const Placeholder()));
+            });
       default:
         return null;
     }
@@ -193,7 +199,9 @@ class _MainScreenState extends State<MainScreen> {
 
   /// Méthode pour obtenir la position du FloatingActionButton
   FloatingActionButtonLocation _getFabLocation() {
-    return pageIndex == 2 ? CustomFabLocation() : FloatingActionButtonLocation.centerFloat;
+    return pageIndex == 2
+        ? CustomFabLocation()
+        : FloatingActionButtonLocation.centerFloat;
   }
 }
 
@@ -202,15 +210,19 @@ class BuildCircularElevatedButton extends StatelessWidget {
   final double size;
   final double padding;
   final VoidCallback? onPressed;
-  const BuildCircularElevatedButton({super.key, required this.icon, required this.size, required this.padding, this.onPressed});
+
+  const BuildCircularElevatedButton(
+      {super.key,
+      required this.icon,
+      required this.size,
+      required this.padding,
+      this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
   }
 }
-
-
 
 class CustomFabLocation extends FloatingActionButtonLocation {
   @override

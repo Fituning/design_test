@@ -54,7 +54,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     final MapController mapController = _animCtrl.mapController;
     bool initialPositioned = false;
     LatLng initialCenterPoint = const LatLng(0, 0);
-
     return BlocListener<CarBloc, CarState>(
       listenWhen: (prev, curr) => curr is CarLoadedState,
       listener: (context, state) {
@@ -80,6 +79,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             final heading = atan2(y, x); // En radians
             return heading;
           }
+
 
           if (distance > 1) {
             directionAngle = getRotationAngle(
@@ -121,56 +121,56 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     height: MediaQuery.of(context).size.height * 13 / 24,
                     width: MediaQuery.of(context).size.width,
                     child: Stack(
+                      children: [FlutterMap(
+                      mapController: mapController,
+                      options: MapOptions(
+                        initialCenter: initialCenterPoint,
+                        maxZoom: 20,
+                        minZoom: 2,
+                        initialZoom: 16.0,
+                        interactionOptions: const InteractionOptions(
+                          flags: InteractiveFlag.pinchZoom |
+                              InteractiveFlag.doubleTapZoom,
+                        ),
+                        // onPositionChanged: (MapPosition pos, bool hasGesture) {
+                        //   if (hasGesture && pos.center != centerPoint) {
+                        //     WidgetsBinding.instance.addPostFrameCallback((_) {
+                        //       mapController.move(centerPoint, pos.zoom ?? 13.0);
+                        //     });
+                        //   }
+                        // },
+                      ),
                       children: [
-                        FlutterMap(
-                          mapController: mapController,
-                          options: MapOptions(
-                            initialCenter: initialCenterPoint,
-                            maxZoom: 20,
-                            minZoom: 2,
-                            initialZoom: 16.0,
-                            interactionOptions: const InteractionOptions(
-                              flags: InteractiveFlag.pinchZoom |
-                                  InteractiveFlag.doubleTapZoom,
+                        TileLayer(
+                          urlTemplate:
+                              'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          // subdomains: ['a', 'b', 'c'],
+                          userAgentPackageName: 'com.example.app',
+                        ),
+                        constMarkerLayer(
+                          markers: [],
                             ),
-                            // onPositionChanged: (MapPosition pos, bool hasGesture) {
-                            //   if (hasGesture && pos.center != centerPoint) {
-                            //     WidgetsBinding.instance.addPostFrameCallback((_) {
-                            //       mapController.move(centerPoint, pos.zoom ?? 13.0);
-                            //     });
-                            //   }
-                            // },
-                          ),
-                          children: [
-                            TileLayer(
-                              urlTemplate:
-                                  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                              // subdomains: ['a', 'b', 'c'],
-                              userAgentPackageName: 'com.example.app',
-                            ),
-                            const MarkerLayer(
-                              markers: [],
-                            ),
-                          ],
+                              ],
                         ),
                         Center(
                           child: SizedBox(
-                            width: iconSize,
-                            height: iconSize,
-                            child: Transform.rotate(
-                              angle: directionAngle,
-                              child: Image.asset(
-                                "assets/images/softcar_top.png",
-                                // width: 12,
-                                fit: BoxFit.contain,
-                                alignment: Alignment.center,
+                              width: iconSize,
+                              height: iconSize,
+                              child: Transform.rotate(
+                                angle: directionAngle,
+                                child: Image.asset(
+                                  "assets/images/softcar_top.png",
+                                  // width: 12,
+                                  fit: BoxFit.contain,
+                                  alignment: Alignment.center,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
+
                   Expanded(
                     child: SingleChildScrollView(
                       child: Padding(

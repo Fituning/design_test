@@ -11,47 +11,46 @@ class Clim extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-      BlocBuilder<CarBloc, CarState>(
-        builder: (context, state) {
-          print("in Clim");
-          if(state is GetCarSuccess){
-            final car = state.car;
-            print("in Success");
-            context.read<AcProgBloc>().add(GetAllActiveProg());
-            return CustomScrollView(
-              slivers: [
-                SliverPersistentHeader(
-                  delegate: ClimControl(car :car),
-                ),
+    return BlocBuilder<CarBloc, CarState>(
+      builder: (context, state) {
+        print("in Clim");
+        if (state is GetCarSuccess) {
+          final car = state.car;
+          print("in Success");
+          context.read<AcProgBloc>().add(GetAllActiveProg());
+          return CustomScrollView(
+            slivers: [
+              SliverPersistentHeader(
+                delegate: ClimControl(car: car),
+              ),
 
-
-                NextProgList()
-                // BlocProvider(
-                //   create: (context) => AcProgBloc(context.read<CarBloc>().apiCarRepo)..add(GetAllActiveProg()),
-                //   child: NextProgList()
-                // )
-
-              ],
-            );
-          }else if(state is GetCarReLoadFailure){
-            final Car car = state.car;
-            return CustomScrollView(
-              slivers: [
-                SliverPersistentHeader(
-                  delegate: ClimControl(car :car),
-                ),
-                BlocProvider(
-                    create: (context) => AcProgBloc(context.read<CarBloc>().apiCarRepo)..add(GetAllActiveProg()),
-                    child: const NextProgList()
-                )
-              ],
-            );
-          }else {
-            return const Center(child: Text("An error has occurred while loading home page"));
-          }
-        },
-      );
+              NextProgList()
+              // BlocProvider(
+              //   create: (context) => AcProgBloc(context.read<CarBloc>().apiCarRepo)..add(GetAllActiveProg()),
+              //   child: NextProgList()
+              // )
+            ],
+          );
+        } else if (state is GetCarReLoadFailure) {
+          final Car car = state.car;
+          return CustomScrollView(
+            slivers: [
+              SliverPersistentHeader(
+                delegate: ClimControl(car: car),
+              ),
+              BlocProvider(
+                  create: (context) =>
+                      AcProgBloc(context.read<CarBloc>().apiCarRepo)
+                        ..add(GetAllActiveProg()),
+                  child: const NextProgList())
+            ],
+          );
+        } else {
+          return const Center(
+              child: Text("An error has occurred while loading home page"));
+        }
+      },
+    );
   }
 }
 
@@ -64,20 +63,17 @@ class ClimControl extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return ClimControllerPanel(expandedHeight: expandedHeight, car :car);
+    return ClimControllerPanel(expandedHeight: expandedHeight, car: car);
   }
 
   @override
   double get maxExtent => expandedHeight;
 
   @override
-  double get minExtent =>expandedHeight-100;
+  double get minExtent => expandedHeight - 100;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return true;//mettre a true pour reconstruire la vue si les valeurs changent
+    return true; //mettre a true pour reconstruire la vue si les valeurs changent
   }
 }
-
-
-
