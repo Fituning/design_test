@@ -14,13 +14,21 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LatLng centerPoint = LatLng(46.9903, 6.9293);
+
 
     final MapController mapController = MapController();
 
     return Container(
       color: Theme.of(context).colorScheme.surface,
-      child: Column(
+      child: BlocBuilder<CarBloc, CarState>(
+  builder: (context, state) {
+    if(state is CarLoadedState){
+      final car = state.car;
+      final msg = state is GetCarReLoadFailure ? state.msg : null;
+      final LatLng centerPoint = LatLng(car.gpsLocation.coordinates[0],car.gpsLocation.coordinates[1]);
+
+
+      return Column(
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.height * 13 / 24,
@@ -42,32 +50,32 @@ class Home extends StatelessWidget {
               children: [
                 TileLayer(
                   urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: ['a', 'b', 'c'],
+                  // subdomains: ['a', 'b', 'c'],
                   userAgentPackageName: 'com.example.app',
                 ),
                 MarkerLayer(
                   markers: [
                     Marker(
-                      point: centerPoint,
-                      width: 60,
-                      height: 60,
-                      child:  FaIcon(
-                        FontAwesomeIcons.car,
-                        color: Theme.of(context).colorScheme.secondary,
-                        size: 34,
-                        shadows: [
-                          Shadow(
-                            color: Theme.of(context).colorScheme.primary.withOpacity(0.8), // ombre bien contrastée
-                            offset: Offset(1, 1),
-                            blurRadius: 4,
-                          ),
-                          Shadow(
-                            color: Theme.of(context).colorScheme.surface, // léger halo clair autour
-                            offset: Offset(0, 0),
-                            blurRadius: 10,
-                          ),
-                        ],
-                      )
+                        point: centerPoint,
+                        width: 60,
+                        height: 60,
+                        child:  FaIcon(
+                          FontAwesomeIcons.car,
+                          color: Theme.of(context).colorScheme.secondary,
+                          size: 34,
+                          shadows: [
+                            Shadow(
+                              color: Theme.of(context).colorScheme.primary.withOpacity(0.8), // ombre bien contrastée
+                              offset: Offset(1, 1),
+                              blurRadius: 4,
+                            ),
+                            Shadow(
+                              color: Theme.of(context).colorScheme.surface, // léger halo clair autour
+                              offset: Offset(0, 0),
+                              blurRadius: 10,
+                            ),
+                          ],
+                        )
                     )
                   ],
                 ),
@@ -94,19 +102,7 @@ class Home extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: BlocBuilder<CarBloc, CarState>(
-                        builder: (context, state) {
-                          if(state is GetCarSuccess){
-                            final car = state.car;
-                            return _Display(car: car,);
-                          }else if(state is GetCarReLoadFailure){
-                            final car = state.car;
-                            return _Display(car: car,errorMessage: state.msg,);
-                          }else {
-                            return const Center(child: Text("An error has occurred while loading home page"));
-                          }
-                        },
-                      ),
+                      child:  _Display(car: car,errorMessage: msg ,)
                     ),
                   ],
                 ),
@@ -114,7 +110,52 @@ class Home extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      );
+    }else {
+      return Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 13 / 24,
+            width: MediaQuery.of(context).size.width,
+            child: FlutterMap(
+              mapController: mapController,
+              options: MapOptions(
+                center: LatLng(0, 0), // 🌍 Centre du monde
+                zoom: 2.0,            // 🔍 Zoom global
+                interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.doubleTapZoom,
+                onPositionChanged: (MapPosition pos, bool hasGesture) {
+                  if (hasGesture && pos.center != LatLng(0, 0)) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      mapController.move(LatLng(0, 0), pos.zoom ?? 2.0);
+                    });
+                  }
+                },
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: ['a', 'b', 'c'],
+                  userAgentPackageName: 'com.example.app',
+                ),
+              ],
+            ),
+          ),
+          const Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(top: 24, bottom: 16),
+                child: Center(
+                  child: Text("An error has occurred while loading home page"),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+  },
+),
     );
   }
 }
@@ -166,10 +207,10 @@ class _Display extends StatelessWidget {
             unit: "%",
             iconColor: car.battery.chargeLevel < 10
                 ? Theme.of(context).colorScheme.onError
-                : null,
+                : (car.battery.chargeLevel > 85 ? Theme.of(context).colorScheme.onTertiary: null ),
             bgColor: car.battery.chargeLevel < 10
                 ? Theme.of(context).colorScheme.error
-                : null,
+                : (car.battery.chargeLevel > 85 ? Theme.of(context).colorScheme.tertiary: null ),
           ),
         ),
         Expanded(
