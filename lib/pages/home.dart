@@ -51,11 +51,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-
-    final MapController mapController =  _animCtrl.mapController;
+    final MapController mapController = _animCtrl.mapController;
     bool _initialPositioned = false;
     late final LatLng centerPoint;
-
 
     return BlocListener<CarBloc, CarState>(
       listenWhen: (prev, curr) => curr is CarLoadedState,
@@ -82,9 +80,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             final heading = atan2(y, x); // En radians
             return heading;
           }
-          directionAngle = getRotationAngle(_animCtrl.mapController.camera.center, newPosition);
           if (distance > 1) {
-
+            directionAngle = getRotationAngle(_animCtrl.mapController.camera.center, newPosition);
             _animCtrl.animateTo(
               dest: newPosition,
               zoom: _animCtrl.mapController.camera.zoom,
@@ -92,10 +89,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               curve: Curves.easeInOut,
               // duration: const Duration(milliseconds: 600),
             );
-
-
           }
-
 
           // mapController.move(
           //   newCenter,
@@ -105,148 +99,154 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           // );
         }
       },
-  child: Container(
-      color: Theme.of(context).colorScheme.surface,
-      child: BlocBuilder<CarBloc, CarState>(
-  builder: (context, state) {
-    if(state is CarLoadedState){
-      final car = state.car;
-      final msg = state is GetCarReLoadFailure ? state.msg : null;
+      child: Container(
+        color: Theme.of(context).colorScheme.surface,
+        child: BlocBuilder<CarBloc, CarState>(
+          builder: (context, state) {
+            if (state is CarLoadedState) {
+              final car = state.car;
+              final msg = state is GetCarReLoadFailure ? state.msg : null;
 
+              if (!_initialPositioned) {
+                centerPoint = LatLng(car.gpsLocation.coordinates[0],
+                    car.gpsLocation.coordinates[1]);
+                _initialPositioned = true;
+              }
 
-      if(!_initialPositioned){
-        centerPoint = LatLng(car.gpsLocation.coordinates[0],car.gpsLocation.coordinates[1]);
-        _initialPositioned = true;
-      }
-
-
-
-      return Column(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 13 / 24,
-            width: MediaQuery.of(context).size.width,
-            child: FlutterMap(
-              mapController: mapController,
-              options: MapOptions(
-                initialCenter: centerPoint,
-                maxZoom: 20,
-                minZoom: 2,
-                initialZoom: 18.0, //todo put 16.0
-                interactionOptions: const InteractionOptions(
-                  flags: InteractiveFlag.pinchZoom | InteractiveFlag.doubleTapZoom,
-                ),
-                // onPositionChanged: (MapPosition pos, bool hasGesture) {
-                //   if (hasGesture && pos.center != centerPoint) {
-                //     WidgetsBinding.instance.addPostFrameCallback((_) {
-                //       mapController.move(centerPoint, pos.zoom ?? 13.0);
-                //     });
-                //   }
-                // },
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  // subdomains: ['a', 'b', 'c'],
-                  userAgentPackageName: 'com.example.app',
-                ),
-                MarkerLayer(
-                  markers: [
-                    Marker(
-                        point: LatLng(car.gpsLocation.coordinates[0],car.gpsLocation.coordinates[1]),
-                        width: iconSize,
-                        height: iconSize,
-                        child:  Transform.rotate(
-                          angle: directionAngle,
-                          child: Image.asset(
-                            "assets/images/softcar_top.png",
-                            // width: 12,
-                            fit: BoxFit.contain,
-                            alignment: Alignment.center,
-                          ),
+              return Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 13 / 24,
+                    width: MediaQuery.of(context).size.width,
+                    child: FlutterMap(
+                      mapController: mapController,
+                      options: MapOptions(
+                        initialCenter: centerPoint,
+                        maxZoom: 20,
+                        minZoom: 2,
+                        initialZoom: 18.0,
+                        //todo put 16.0
+                        interactionOptions: const InteractionOptions(
+                          flags: InteractiveFlag.pinchZoom |
+                              InteractiveFlag.doubleTapZoom,
                         ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 24, bottom: 16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "My Softcar".toUpperCase(),
-                      style: GoogleFonts.teko(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600,
+                        // onPositionChanged: (MapPosition pos, bool hasGesture) {
+                        //   if (hasGesture && pos.center != centerPoint) {
+                        //     WidgetsBinding.instance.addPostFrameCallback((_) {
+                        //       mapController.move(centerPoint, pos.zoom ?? 13.0);
+                        //     });
+                        //   }
+                        // },
+                      ),
+                      children: [
+                        TileLayer(
+                          urlTemplate:
+                              'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          // subdomains: ['a', 'b', 'c'],
+                          userAgentPackageName: 'com.example.app',
+                        ),
+                        MarkerLayer(
+                          markers: [
+                            Marker(
+                              point: mapController.camera.center,
+                              width: iconSize,
+                              height: iconSize,
+                              child: Transform.rotate(
+                                angle: directionAngle,
+                                child: Image.asset(
+                                  "assets/images/softcar_top.png",
+                                  // width: 12,
+                                  fit: BoxFit.contain,
+                                  alignment: Alignment.center,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 24, bottom: 16),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "My Softcar".toUpperCase(),
+                              style: GoogleFonts.teko(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0),
+                                child: _Display(
+                                  car: car,
+                                  errorMessage: msg,
+                                )),
+                          ],
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 16,
+                  ),
+                ],
+              );
+            } else {
+              return Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 13 / 24,
+                    width: MediaQuery.of(context).size.width,
+                    child: FlutterMap(
+                      mapController: mapController,
+                      options: MapOptions(
+                        center: LatLng(0, 0), // 🌍 Centre du monde
+                        zoom: 2.0, // 🔍 Zoom global
+                        interactiveFlags: InteractiveFlag.pinchZoom |
+                            InteractiveFlag.doubleTapZoom,
+                        onPositionChanged: (MapPosition pos, bool hasGesture) {
+                          if (hasGesture && pos.center != LatLng(0, 0)) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              mapController.move(LatLng(0, 0), pos.zoom ?? 2.0);
+                            });
+                          }
+                        },
+                      ),
+                      children: [
+                        TileLayer(
+                          urlTemplate:
+                              'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          subdomains: ['a', 'b', 'c'],
+                          userAgentPackageName: 'com.example.app',
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child:  _Display(car: car,errorMessage: msg ,)
+                  ),
+                  const Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 24, bottom: 16),
+                        child: Center(
+                          child: Text(
+                              "An error has occurred while loading home page"),
+                        ),
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
-    }else {
-      return Column(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 13 / 24,
-            width: MediaQuery.of(context).size.width,
-            child: FlutterMap(
-              mapController: mapController,
-              options: MapOptions(
-                center: LatLng(0, 0), // 🌍 Centre du monde
-                zoom: 2.0,            // 🔍 Zoom global
-                interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.doubleTapZoom,
-                onPositionChanged: (MapPosition pos, bool hasGesture) {
-                  if (hasGesture && pos.center != LatLng(0, 0)) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      mapController.move(LatLng(0, 0), pos.zoom ?? 2.0);
-                    });
-                  }
-                },
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: ['a', 'b', 'c'],
-                  userAgentPackageName: 'com.example.app',
-                ),
-              ],
-            ),
-          ),
-          const Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.only(top: 24, bottom: 16),
-                child: Center(
-                  child: Text("An error has occurred while loading home page"),
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-
-  },
-),
-    ),
-);
+                  ),
+                ],
+              );
+            }
+          },
+        ),
+      ),
+    );
   }
 }
 
@@ -266,15 +266,14 @@ class _Display extends StatelessWidget {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final overlay = Overlay.of(context);
         final overlayEntry = OverlayEntry(
-          builder: (context) => NotificationOverlayBar(
-            message: errorMessage??"",
-            icon: FaIcon(
-              FontAwesomeIcons.triangleExclamation,
-              color: Theme.of(context).colorScheme.onError,
-              size: 34,
-            ),
-          )
-        );
+            builder: (context) => NotificationOverlayBar(
+                  message: errorMessage ?? "",
+                  icon: FaIcon(
+                    FontAwesomeIcons.triangleExclamation,
+                    color: Theme.of(context).colorScheme.onError,
+                    size: 34,
+                  ),
+                ));
 
         // Insérer l'overlay
         overlay.insert(overlayEntry);
@@ -293,21 +292,27 @@ class _Display extends StatelessWidget {
           child: CircularInfoTile(
             icon: const FaIcon(FontAwesomeIcons.batteryHalf),
             label: "Battery",
-            value: car.battery.chargeLevel.toString(), // Utilisez la valeur de la batterie
+            value: car.battery.chargeLevel.toString(),
+            // Utilisez la valeur de la batterie
             unit: "%",
             iconColor: car.battery.chargeLevel < 10
                 ? Theme.of(context).colorScheme.onError
-                : (car.battery.chargeLevel > 85 ? Theme.of(context).colorScheme.onTertiary: null ),
+                : (car.battery.chargeLevel > 85
+                    ? Theme.of(context).colorScheme.onTertiary
+                    : null),
             bgColor: car.battery.chargeLevel < 10
                 ? Theme.of(context).colorScheme.error
-                : (car.battery.chargeLevel > 85 ? Theme.of(context).colorScheme.tertiary: null ),
+                : (car.battery.chargeLevel > 85
+                    ? Theme.of(context).colorScheme.tertiary
+                    : null),
           ),
         ),
         Expanded(
           child: CircularInfoTile(
             icon: const FaIcon(FontAwesomeIcons.route),
             label: "Range",
-            value: car.remainingRange.toString(), // Remplacez par car.range si vous avez cette propriété
+            value: car.remainingRange.toString(),
+            // Remplacez par car.range si vous avez cette propriété
             unit: "km",
             iconColor: car.remainingRange < 40
                 ? Theme.of(context).colorScheme.onError
@@ -326,7 +331,8 @@ class _Display extends StatelessWidget {
             label: "Status",
             value: car.chargingSocketIsConnected
                 ? (car.chargeIsActivated ? "Charging" : "Plugged")
-                : "Unplugged", // Exemple de statut
+                : "Unplugged",
+            // Exemple de statut
             iconColor: !car.chargingSocketIsConnected
                 ? Theme.of(context).colorScheme.onError
                 : null,
@@ -339,7 +345,8 @@ class _Display extends StatelessWidget {
     );
   }
 
-  Widget _getChargeIcon(bool chargingSocketIsConnected, bool chargeIsActivated) {
+  Widget _getChargeIcon(
+      bool chargingSocketIsConnected, bool chargeIsActivated) {
     if (chargingSocketIsConnected) {
       if (chargeIsActivated) {
         return const FaIcon(FontAwesomeIcons.bolt);
@@ -351,7 +358,6 @@ class _Display extends StatelessWidget {
     }
   }
 }
-
 
 double getIconSizeFromZoom(double zoom) {
   if (zoom <= 2) return 30;
@@ -366,7 +372,3 @@ double getIconSizeFromZoom(double zoom) {
     return lerpDouble(60, 75, (zoom - 16) / (20 - 16))!;
   }
 }
-
-
-
-
