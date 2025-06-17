@@ -1,0 +1,29 @@
+name: api_user_repository
+description: The Repo that handle user
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+#  cloud_firestore: ^5.4.1
+  rxdart: ^0.28.0
+  http: ^1.2.2
+
+  #for env variables:
+  flutter_dotenv: ^5.2.1
+
+  flutter_secure_storage: ^9.2.2 #pour sécuriser le token
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true

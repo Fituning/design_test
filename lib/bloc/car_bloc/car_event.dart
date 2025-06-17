@@ -10,14 +10,14 @@ sealed class CarEvent extends Equatable {
 class GetCar extends CarEvent {}
 
 class UpdateAirConditioning extends CarEvent {
-  final int? temperature;
+  final double? temperature;
   final AirConditioningModeEnum? mode;
   final VentilationLevelEnum? ventilationLevel;
   final bool? acIsActive;
   final bool? frontDefogging;
   final bool? backDefogging;
 
-  UpdateAirConditioning({
+  const UpdateAirConditioning({
     this.temperature,
     this.mode,
     this.ventilationLevel,
@@ -29,6 +29,18 @@ class UpdateAirConditioning extends CarEvent {
   @override
   List<Object?> get props => [temperature, mode,ventilationLevel, acIsActive, frontDefogging, backDefogging];
 }
+
+class UpdateDoorState extends CarEvent {
+  final DoorEnum door;
+
+  const UpdateDoorState({
+    required this.door,
+  });
+
+  @override
+  List<Object?> get props => [door];
+}
+
 
 // class UpdateCarFromMqtt extends CarEvent {}
 

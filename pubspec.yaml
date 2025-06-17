@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_launcher_icons: ^0.14.2
+  #flutter_launcher_name: ^0.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -56,12 +58,29 @@ dependencies:
   api_car_repository: #import api repo
     path: packages/api_car_repository
 
+  api_user_repository: #import api repo
+    path: packages/api_user_repository
+
   shared_preferences: ^2.0.13 #for persitant cache data
   mqtt_client: ^9.6.0
 
 
   #pour les circular slider
   syncfusion_flutter_gauges: ^27.1.52
+
+  #for env variables:
+  flutter_dotenv: ^5.2.1
+
+  #for mqtt device identification
+  uuid: ^4.5.1
+
+  logger: ^2.0.2
+
+  # map dependencies
+
+  flutter_map: ^6.1.0
+  flutter_map_animations: ^0.6.0
+  latlong2: ^0.9.0
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +106,7 @@ flutter:
 
   assets:
      - assets/images/
+     - .env
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -117,3 +137,10 @@ flutter:
 
 flutter_intl:
   enabled: true
+
+flutter_launcher_icons: #for icon
+  android: true
+  ios: true
+  image_path: "assets/images/logo_softcar_rounded.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/images/logo_softcar_rounded_expanded.png"

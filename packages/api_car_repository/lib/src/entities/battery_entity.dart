@@ -2,7 +2,7 @@
 class BatteryEntity {
   int chargeLevel;
   int batteryHealth;
-  DateTime? chargingTime;
+  Duration? chargingTime;
   double chargingPower;
 
   BatteryEntity({
@@ -16,7 +16,7 @@ class BatteryEntity {
     return {
       'charge_level': chargeLevel,
       'battery_health': batteryHealth,
-      'charging_time': chargingTime,
+      'charging_time': chargingTime?.inMinutes,
       'charging_power': chargingPower,
     };
   }
@@ -25,8 +25,10 @@ class BatteryEntity {
     return BatteryEntity(
       chargeLevel: json['charge_level'] as int,
       batteryHealth: json['battery_health'] as int,
-      chargingTime: json['charging_time'] as DateTime?,
+      chargingTime: json['charging_time'] != null ? Duration(minutes: (json['charging_time'] as num).round()): null,
       chargingPower: (json['charging_power'] as num).toDouble(),
     );
   }
+
+
 }

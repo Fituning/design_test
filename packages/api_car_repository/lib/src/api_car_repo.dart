@@ -1,24 +1,66 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:api_car_repository/src/repositories/doors_repo.dart';
+import 'package:api_car_repository/src/repositories/repositories.dart';
+import 'package:api_user_repository/api_user_repository.dart';
 import 'package:http/http.dart' as http;
 import 'package:api_car_repository/api_car_repository.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiCarRepo implements CarRepository {
-  final String apiUrl = 'https://ocr-api-4fox.onrender.com/api/car'; // Replace with your API URL
+  final String apiUrl;
+  final ApiUserRepo _apiUserRepo;
+
+  late final AirConditioningRepo airConditioningRepo;
+  // late final BatteryRepo batteryRepo;
+  late final ACProgRepo acProgRepo;
+  late final DoorsRepo doorsRepo;
+
+  ApiCarRepo(this._apiUserRepo)
+      : apiUrl = '${dotenv.env["API_KEY"]!}/api/cars' {
+    airConditioningRepo = AirConditioningRepo(apiUrl, _apiUserRepo);
+
+    // batteryRepo = BatteryRepo(apiUrl, apiUserRepo);
+    acProgRepo = ACProgRepo('${dotenv.env["API_KEY"]!}/api/ac_prog', _apiUserRepo);
+    doorsRepo = DoorsRepo('$apiUrl/door', _apiUserRepo);
+  }
 
   @override
   Future<List<Car>> getCars() async {
     try {
-      final response = await http.get(Uri.parse(apiUrl));
+      final token = await _apiUserRepo.getJwtToken();
+      final response = await http.get(
+        Uri.parse('$apiUrl/cars'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token" // Ajouter le token ici
+        },
+      );
 
       if (response.statusCode == 200) {
-        List<dynamic> jsonResponse = jsonDecode(response.body);
+        // Decode the JSON response as a Map, since we are expecting a single Car object
+        // Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
-        return jsonResponse
-            .map((carData) => Car.fromEntity(CarEntity.fromJson(carData)))
-            .toList();
+        // print(jsonResponse["data"]);
+
+        List<dynamic> jsonlist = jsonResponse["data"];
+
+        // print(jsonlist);
+
+        return jsonlist
+                .map((carData) => Car.fromEntity(CarEntity.fromJson(carData)))
+                .toList();
+
+        // Parse the JSON into a Car object and return it
+        // return jsonResponse
+        //     .map((carData) => Car.fromEntity(CarEntity.fromJson(carData)))
+        //     .toList();
+        throw Exception(response.body);
       } else {
-        throw Exception('Failed to load cars');
+        // Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        // return Car.fromEntity(CarEntity.fromJson(jsonResponse));
+        throw Exception(response.body);
       }
     } catch (e) {
       log(e.toString());
@@ -29,16 +71,28 @@ class ApiCarRepo implements CarRepository {
   @override
   Future<Car> getCar() async {
     try {
-      final response = await http.get(Uri.parse('$apiUrl/672a183e50544b8598a27d90'));
+      final token = await _apiUserRepo.getJwtToken();
+      final response = await http.get(
+          // Uri.parse('$apiUrl/${dotenv.env["TEST_CAR_ID"]}'),
+        Uri.parse(apiUrl),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token" // Ajouter le token ici
+          },
+      );
 
       if (response.statusCode == 200) {
         // Decode the JSON response as a Map, since we are expecting a single Car object
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        // print(jsonResponse["data"]);
+
 
         // Parse the JSON into a Car object and return it
-        return Car.fromEntity(CarEntity.fromJson(jsonResponse));
+        return Car.fromEntity(CarEntity.fromJson(jsonResponse["data"]));
       } else {
-        throw Exception('Failed to load car');
+        // Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        // return Car.fromEntity(CarEntity.fromJson(jsonResponse));
+        throw Exception(response.body);
       }
     } catch (e) {
       log(e.toString());
@@ -47,66 +101,10 @@ class ApiCarRepo implements CarRepository {
   }
 
   @override
-  Future<Car> updateAirConditioning({
-    int? temperature,
-    AirConditioningModeEnum? mode,
-    VentilationLevelEnum? ventilationLevel,
-    bool? acIsActive,
-    bool? frontDefogging,
-    bool? backDefogging,
-  }) async {
-    try {
-      // Créez l'URL en utilisant votre API
-      final url = Uri.parse('$apiUrl/672a183e50544b8598a27d90/update/air_conditioning');
-
-      // Construisez le corps de la requête en JSON de manière dynamique
-      final Map<String, dynamic> body = {};
-
-      if (temperature != null) {
-        body['temperature'] = temperature;
-      }
-      if (mode != null) {
-        body['mode'] = mode.name;
-      }
-      if (ventilationLevel != null) {
-        body['ventilation_level'] = ventilationLevel.index;
-      }
-      if (acIsActive != null) {
-        body['ac_is_active'] = acIsActive;
-      }
-      if (frontDefogging != null) {
-        body['front_defogging'] = frontDefogging;
-      }
-      if (backDefogging != null) {
-        body['back_defogging'] = backDefogging;
-      }
-
-      // Encodez le corps en JSON
-      final jsonBody = jsonEncode(body);
-
-      print(jsonBody);
-
-      // Faites une requête PATCH ou POST avec le corps en JSON
-      final response = await http.patch(
-        url,
-        headers: {"Content-Type": "application/json"}, // En-tête pour indiquer que le corps est en JSON
-        body: jsonBody,
-      );
-
-      if (response.statusCode == 200) {
-        // Décodez la réponse JSON en tant que Map, car nous attendons un objet Car
-        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-
-        // Analysez le JSON en un objet Car et retournez-le
-        print("json response : $jsonResponse");
-        return Car.fromEntity(CarEntity.fromJson(jsonResponse));
-      } else {
-        throw Exception('Failed to update car');
-      }
-    } catch (e) {
-      log(e.toString());
-      rethrow;
-    }
+  Future<Battery> updateBattery() {
+    // TODO: implement updateBattery
+    throw UnimplementedError();
   }
+
 
 }

@@ -7,6 +7,7 @@ import '../bloc/car_bloc/car_bloc.dart';
 import '../components/circular_charge_gauge.dart';
 import '../components/circular_info_tile.dart';
 import '../components/notification_overlay_bar.dart';
+import '../utils/date_time.dart';
 
 class Charge extends StatelessWidget {
   const Charge({super.key});
@@ -100,7 +101,7 @@ class _Display extends StatelessWidget {
                   child: CircularInfoTile(
                     icon: const FaIcon(FontAwesomeIcons.chargingStation),
                     label: "Temps de charge",
-                    value: car.battery.chargingTime.toString(),
+                    value:  formatHourMinute(car.battery.chargingTime),
                     // unit: "min",
                   )
               ),

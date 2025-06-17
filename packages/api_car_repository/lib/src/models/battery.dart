@@ -4,7 +4,7 @@ import 'package:api_car_repository/src/entities/entities.dart';
 class Battery{
   int chargeLevel;
   int batteryHealth;
-  DateTime? chargingTime;
+  Duration? chargingTime;
   double chargingPower;
 
   Battery({

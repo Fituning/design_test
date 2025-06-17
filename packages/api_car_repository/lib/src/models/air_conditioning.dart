@@ -3,7 +3,7 @@ import 'package:api_car_repository/src/enums/enum.dart';
 
 
 class AirConditioning{
-  int temperature;
+  double temperature;
   AirConditioningModeEnum mode;
   VentilationLevelEnum ventilationLevel;
   bool acIsActive;

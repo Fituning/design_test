@@ -1,9 +1,12 @@
 import 'package:api_car_repository/api_car_repository.dart';
 import 'package:design_test/bloc/car_bloc/car_bloc.dart';
+import 'package:design_test/pages/select_car/car_picker.dart';
+import 'package:design_test/pages/welcome/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'bloc/auth_bloc/auth_bloc.dart';
 import 'generated/l10n.dart';
 import 'main_screen.dart';
 
@@ -17,9 +20,14 @@ class MyAppView extends StatefulWidget {
 class _MyAppViewState extends State<MyAppView> {
   // This widget is the root of your application.
   @override
+  void initState() {
+    super.initState();
+    // Déclencher l'événement GetUser au démarrage
+    context.read<AuthBloc>().add(AuthStarted());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top]);
 
     //initializeDateFormatting(findSystemLocale().toString());
     return MaterialApp(
@@ -60,10 +68,34 @@ class _MyAppViewState extends State<MyAppView> {
       ],
       supportedLocales: S.delegate.supportedLocales,
       themeMode: ThemeMode.light,
-      home: BlocProvider(
-        create:  (context) => CarBloc(ApiCarRepo())..add(GetCar()),
-        child: const MainScreen(),
-      ),
+
+      home: BlocBuilder<AuthBloc, AuthState>(
+          builder: ((context, state) {
+            // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive,
+            //     overlays: []);
+            if (state.status == Authenticationstatus.authenticated) {
+              SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+                  overlays: [SystemUiOverlay.top]);
+              return MultiBlocProvider(
+                providers: [
+                  // BlocProvider(
+                  //   create: (context) => SignInBloc(
+                  //       context.read<AuthenticationBloc>().userRepository),
+                  // ),
+                  BlocProvider(
+                    create: (context) => CarBloc(ApiCarRepo(context.read<AuthBloc>().apiUserRepo))..add(GetCar()),
+                  ),
+                ],
+                child: const MainScreen(),
+              );
+            }else if (state.status == Authenticationstatus.noCarSelected || state.status == Authenticationstatus.noCars){
+              return const CarPicker();//todo refaire la page
+            } else if (state.status == Authenticationstatus.unauthenticated){
+              return const WelcomeScreen();
+            }else{
+              return const Center(child: CircularProgressIndicator());
+            }
+          })),
     );
   }
 }

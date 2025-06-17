@@ -30,7 +30,7 @@ class ChipButton extends StatelessWidget {
               top: 0,
               child: NotificationBadge(
                 activeColor: activeColor ?? Theme.of(context).colorScheme.secondary,
-                inactiveColor: inactiveColor ?? Theme.of(context).colorScheme.primaryContainer,
+                inactiveColor: inactiveColor ?? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.25),
                 active: value,
               ),
             ),
