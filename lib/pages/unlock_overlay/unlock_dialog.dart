@@ -50,17 +50,22 @@ class _CarLockDialogState extends State<CarLockDialog> {
                                 top: 10,
                                 child: CircularElevatedButton(
                                   icon: const FaIcon(FontAwesomeIcons.unlock),
-                                  iconClicked: const FaIcon(FontAwesomeIcons.lock),
+                                  iconClicked:
+                                      const FaIcon(FontAwesomeIcons.lock),
                                   onPressed: () {
-                                    setState((){
-                                        car.hood = toggleDoorStatus(car.hood);
-                                        context.read<CarBloc>().add(const UpdateDoorState(door: DoorEnum.hood));
-                                  });
+                                    setState(() {
+                                      car.hood = toggleDoorStatus(car.hood);
+                                      context.read<CarBloc>().add(
+                                          const UpdateDoorState(
+                                              door: DoorEnum.hood));
+                                    });
                                   },
                                   iconSize: 28,
                                   padding: const EdgeInsets.all(16),
                                   elevation: 6,
-                                  bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
+                                  bgColor: Theme.of(context)
+                                      .colorScheme
+                                      .surfaceContainerLow,
                                   value: car.hood == DoorStatusEnum.close,
                                 ),
                               ),
@@ -69,18 +74,23 @@ class _CarLockDialogState extends State<CarLockDialog> {
                                 left: 60,
                                 child: CircularElevatedButton(
                                   icon: const FaIcon(FontAwesomeIcons.unlock),
-                                  iconClicked: const FaIcon(FontAwesomeIcons.lock),
+                                  iconClicked:
+                                      const FaIcon(FontAwesomeIcons.lock),
                                   onPressed: () {
-                                    setState((){
+                                    setState(() {
                                       car.leftDoor =
                                           toggleDoorStatus(car.leftDoor);
-                                      context.read<CarBloc>().add(const UpdateDoorState(door: DoorEnum.left));
+                                      context.read<CarBloc>().add(
+                                          const UpdateDoorState(
+                                              door: DoorEnum.left));
                                     });
                                   },
                                   iconSize: 28,
                                   padding: const EdgeInsets.all(16),
                                   elevation: 6,
-                                  bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
+                                  bgColor: Theme.of(context)
+                                      .colorScheme
+                                      .surfaceContainerLow,
                                   value: car.leftDoor == DoorStatusEnum.close,
                                 ),
                               ),
@@ -89,17 +99,23 @@ class _CarLockDialogState extends State<CarLockDialog> {
                                 right: 60,
                                 child: CircularElevatedButton(
                                   icon: const FaIcon(FontAwesomeIcons.unlock),
-                                  iconClicked: const FaIcon(FontAwesomeIcons.lock),
+                                  iconClicked:
+                                      const FaIcon(FontAwesomeIcons.lock),
                                   onPressed: () {
-                                    setState((){
-                                      car.rightDoor =toggleDoorStatus(car.rightDoor);
-                                      context.read<CarBloc>().add(const UpdateDoorState(door: DoorEnum.right));
+                                    setState(() {
+                                      car.rightDoor =
+                                          toggleDoorStatus(car.rightDoor);
+                                      context.read<CarBloc>().add(
+                                          const UpdateDoorState(
+                                              door: DoorEnum.right));
                                     });
                                   },
                                   iconSize: 28,
                                   padding: const EdgeInsets.all(16),
                                   elevation: 6,
-                                  bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
+                                  bgColor: Theme.of(context)
+                                      .colorScheme
+                                      .surfaceContainerLow,
                                   value: car.rightDoor == DoorStatusEnum.close,
                                 ),
                               ),
@@ -110,15 +126,19 @@ class _CarLockDialogState extends State<CarLockDialog> {
                                 child: CircularElevatedButton(
                                   icon: const FaIcon(FontAwesomeIcons.unlock),
                                   onPressed: () {
-                                    setState((){
+                                    setState(() {
                                       car = toggleAllDoors(car);
-                                      context.read<CarBloc>().add(const UpdateDoorState(door: DoorEnum.all));
+                                      context.read<CarBloc>().add(
+                                          const UpdateDoorState(
+                                              door: DoorEnum.all));
                                     });
                                   },
                                   iconSize: 33,
                                   padding: const EdgeInsets.all(24),
                                   elevation: 6,
-                                  bgColor: Theme.of(context).colorScheme.surfaceContainerLow,
+                                  bgColor: Theme.of(context)
+                                      .colorScheme
+                                      .surfaceContainerLow,
                                   value: car.hood == DoorStatusEnum.close &&
                                       car.leftDoor == DoorStatusEnum.close &&
                                       car.rightDoor == DoorStatusEnum.close,
@@ -143,7 +163,9 @@ class _CarLockDialogState extends State<CarLockDialog> {
 }
 
 DoorStatusEnum toggleDoorStatus(DoorStatusEnum current) {
-  return current == DoorStatusEnum.close ? DoorStatusEnum.open : DoorStatusEnum.close;
+  return current == DoorStatusEnum.close
+      ? DoorStatusEnum.open
+      : DoorStatusEnum.close;
 }
 
 Car toggleAllDoors(Car car) {

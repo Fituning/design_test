@@ -23,7 +23,8 @@ class MqttService {
 
   Future<void> connect() async {
     try {
-      await client.connect(dotenv.env["MQTT_DB_USER"]!, dotenv.env["MQTT_DB_PASSWORD"]!);
+      await client.connect(
+          dotenv.env["MQTT_DB_USER"]!, dotenv.env["MQTT_DB_PASSWORD"]!);
       print("CONNECTED");
     } catch (e) {
       print('Erreur de connexion : $e');
@@ -53,7 +54,8 @@ class MqttService {
   void listen(void Function(String message) onMessage) {
     client.updates?.listen((List<MqttReceivedMessage<MqttMessage>> c) {
       final MqttPublishMessage message = c[0].payload as MqttPublishMessage;
-      final String payload = MqttPublishPayload.bytesToStringAsString(message.payload.message);
+      final String payload =
+          MqttPublishPayload.bytesToStringAsString(message.payload.message);
       onMessage(payload);
     });
   }

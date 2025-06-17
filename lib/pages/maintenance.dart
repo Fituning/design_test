@@ -10,10 +10,7 @@ class Maintenance extends StatelessWidget {
   Widget build(BuildContext context) {
     double scale = 0.75;
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 76,
-        bottom: 12
-      ),
+      padding: const EdgeInsets.only(top: 76, bottom: 12),
       child: Column(
         children: [
           const SizedBox(
@@ -32,21 +29,24 @@ class Maintenance extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 Positioned(
-                  // Ajuster la position pour centrer l'image par rapport au bord gauche
-                  left: -MediaQuery.of(context).size.width*scale/2,  // Décalage de la moitié de la largeur de l'image
-                  child: Container(
-                        child: Image.asset(
-                          "assets/images/softcar_top_interior.png",
-                          width: MediaQuery.of(context).size.width*scale,
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.centerRight,
-                        ),
-                      )
-                ),
+                    // Ajuster la position pour centrer l'image par rapport au bord gauche
+                    left: -MediaQuery.of(context).size.width * scale / 2,
+                    // Décalage de la moitié de la largeur de l'image
+                    child: Container(
+                      child: Image.asset(
+                        "assets/images/softcar_top_interior.png",
+                        width: MediaQuery.of(context).size.width * scale,
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerRight,
+                      ),
+                    )),
                 Padding(
-                  padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*scale*10/24, right: 6.0),
+                  padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * scale * 10 / 24,
+                      right: 6.0),
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height*scale*15/24,
+                    height:
+                        MediaQuery.of(context).size.height * scale * 15 / 24,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -91,7 +91,6 @@ class Maintenance extends StatelessWidget {
                     ),
                   ),
                 ),
-
               ],
             ),
           ),

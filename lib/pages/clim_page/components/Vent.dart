@@ -15,10 +15,7 @@ const int minVentLevel = 0;
 int maxVentLevel = VentilationLevelEnum.values.length - 1;
 
 class VentController extends StatefulWidget {
-  const VentController({
-    super.key,
-    required this.car
-  });
+  const VentController({super.key, required this.car});
 
   final Car car;
 
@@ -42,28 +39,35 @@ class _VentControllerState extends State<VentController> {
           onPressed: () {
             setState(() {
               // Mettre à jour l'état local
-              car.airConditioning.ventilationLevel = VentilationLevelEnumExtension.fromInt(
-                max(minVentLevel, car.airConditioning.ventilationLevel.index - 1),
+              car.airConditioning.ventilationLevel =
+                  VentilationLevelEnumExtension.fromInt(
+                max(minVentLevel,
+                    car.airConditioning.ventilationLevel.index - 1),
               );
             });
             // Déclencher la requête avec un délai
-            _onVentilationLevelChange(car.airConditioning.ventilationLevel.index);
+            _onVentilationLevelChange(
+                car.airConditioning.ventilationLevel.index);
           },
         ),
         const SizedBox(width: 32),
-        _ventLevelIndicator(context,car.airConditioning.ventilationLevel.index),
+        _ventLevelIndicator(
+            context, car.airConditioning.ventilationLevel.index),
         const SizedBox(width: 32),
         CircularElevatedButton(
           icon: const FaIcon(FontAwesomeIcons.plus),
           onPressed: () {
             setState(() {
               // Mettre à jour l'état local
-              car.airConditioning.ventilationLevel = VentilationLevelEnumExtension.fromInt(
-                min(maxVentLevel, car.airConditioning.ventilationLevel.index + 1),
+              car.airConditioning.ventilationLevel =
+                  VentilationLevelEnumExtension.fromInt(
+                min(maxVentLevel,
+                    car.airConditioning.ventilationLevel.index + 1),
               );
             });
             // Déclencher la requête avec un délai
-            _onVentilationLevelChange(car.airConditioning.ventilationLevel.index);
+            _onVentilationLevelChange(
+                car.airConditioning.ventilationLevel.index);
           },
         ),
       ],
@@ -75,8 +79,8 @@ class _VentControllerState extends State<VentController> {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 600), () {
       context.read<CarBloc>().add(UpdateAirConditioning(
-        ventilationLevel: VentilationLevelEnumExtension.fromInt(newLevel),
-      ));
+            ventilationLevel: VentilationLevelEnumExtension.fromInt(newLevel),
+          ));
     });
   }
 
@@ -89,14 +93,18 @@ class _VentControllerState extends State<VentController> {
         ),
         const SizedBox(height: 6),
         Row(
-          children: List.generate(3, (index) { // Generate 3 badges
+          children: List.generate(3, (index) {
+            // Generate 3 badges
             return Padding(
               padding: const EdgeInsets.only(right: 8), // Add padding
               child: NotificationBadge(
                 radius: 8,
                 active: (ventLevel >= index + 1),
                 activeColor: Theme.of(context).colorScheme.secondary,
-                inactiveColor: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.25),
+                inactiveColor: Theme.of(context)
+                    .colorScheme
+                    .primaryContainer
+                    .withOpacity(0.25),
               ),
             );
           }),

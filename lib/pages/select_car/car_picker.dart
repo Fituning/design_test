@@ -24,20 +24,22 @@ class _CarPickerState extends State<CarPicker> with TickerProviderStateMixin {
   @override
   void initState() {
     tabController = TabController(
-        initialIndex: context.read<AuthBloc>().state.status == Authenticationstatus.noCarSelected ? 1 : 0,
+        initialIndex: context.read<AuthBloc>().state.status ==
+                Authenticationstatus.noCarSelected
+            ? 1
+            : 0,
         length: 2,
-        vsync: this
-    );
+        vsync: this);
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
     // final Widget authMethod = _buildAuthView();
 
     return Scaffold(
-      resizeToAvoidBottomInset: true, // Permet d'ajuster la vue lors de l'apparition du clavier
+      resizeToAvoidBottomInset: true,
+      // Permet d'ajuster la vue lors de l'apparition du clavier
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: LayoutBuilder(
@@ -57,12 +59,13 @@ class _CarPickerState extends State<CarPicker> with TickerProviderStateMixin {
                       width: MediaQuery.of(context).size.width / 3 * 2,
                     ),
                     const SizedBox(height: 32),
-
                     Padding(
-                      padding: const EdgeInsets.only(top: 24,left: 24, right: 24),
+                      padding:
+                          const EdgeInsets.only(top: 24, left: 24, right: 24),
                       child: TabBar(
                         controller: tabController,
-                        unselectedLabelColor: Theme.of(context).colorScheme.primary,
+                        unselectedLabelColor:
+                            Theme.of(context).colorScheme.primary,
                         labelColor: Theme.of(context).colorScheme.secondary,
                         indicatorColor: Theme.of(context).colorScheme.secondary,
                         tabs: const [
@@ -89,18 +92,16 @@ class _CarPickerState extends State<CarPicker> with TickerProviderStateMixin {
                         ],
                       ),
                     ),
-                    
                     MultiBlocProvider(
-                      providers:[
+                      providers: [
                         BlocProvider<SelectCarBloc>(
                           create: (context) => SelectCarBloc(
-                              context.read<AuthBloc>().apiUserRepo
-                          ),
+                              context.read<AuthBloc>().apiUserRepo),
                         ),
                         BlocProvider<GetCarBloc>(
-                            create: (context) => GetCarBloc(
-                                ApiCarRepo(context.read<AuthBloc>().apiUserRepo)
-                            )..add(GetCars()),
+                          create: (context) => GetCarBloc(
+                              ApiCarRepo(context.read<AuthBloc>().apiUserRepo))
+                            ..add(GetCars()),
                         ),
                       ],
                       child: Expanded(
@@ -113,7 +114,6 @@ class _CarPickerState extends State<CarPicker> with TickerProviderStateMixin {
                         ),
                       ),
                     ),
-
                   ],
                 ),
               ),
