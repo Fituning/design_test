@@ -22,8 +22,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
   late final AnimatedMapController _animCtrl;
-  late double directionAngle = 0;
-  late double iconSize = 60;
+  double directionAngle = 0;
+  double iconSize = 60;
 
   @override
   void initState() {
@@ -52,8 +52,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final MapController mapController = _animCtrl.mapController;
-    bool _initialPositioned = false;
-    late final LatLng centerPoint;
+    bool initialPositioned = false;
+    LatLng initialCenterPoint = const LatLng(0,0);
+    LatLng position = const LatLng(0,0);
 
     return BlocListener<CarBloc, CarState>(
       listenWhen: (prev, curr) => curr is CarLoadedState,
@@ -89,6 +90,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               curve: Curves.easeInOut,
               // duration: const Duration(milliseconds: 600),
             );
+            setState(() {
+              position = newPosition;
+            });
           }
 
           // mapController.move(
@@ -107,10 +111,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               final car = state.car;
               final msg = state is GetCarReLoadFailure ? state.msg : null;
 
-              if (!_initialPositioned) {
-                centerPoint = LatLng(car.gpsLocation.coordinates[0],
+              if (!initialPositioned) {
+                initialCenterPoint = LatLng(car.gpsLocation.coordinates[0],
                     car.gpsLocation.coordinates[1]);
-                _initialPositioned = true;
+                position = initialCenterPoint;
+                initialPositioned = true;
               }
 
               return Column(
@@ -121,11 +126,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     child: FlutterMap(
                       mapController: mapController,
                       options: MapOptions(
-                        initialCenter: centerPoint,
+                        initialCenter: initialCenterPoint,
                         maxZoom: 20,
                         minZoom: 2,
-                        initialZoom: 18.0,
-                        //todo put 16.0
+                        initialZoom: 16.0,
                         interactionOptions: const InteractionOptions(
                           flags: InteractiveFlag.pinchZoom |
                               InteractiveFlag.doubleTapZoom,
@@ -148,7 +152,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         MarkerLayer(
                           markers: [
                             Marker(
-                              point: mapController.camera.center,
+                              point: position,
                               width: iconSize,
                               height: iconSize,
                               child: Transform.rotate(
