@@ -53,8 +53,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final MapController mapController = _animCtrl.mapController;
     bool initialPositioned = false;
-    LatLng initialCenterPoint = const LatLng(0,0);
-    LatLng position = const LatLng(0,0);
+    LatLng initialCenterPoint = const LatLng(0, 0);
 
     return BlocListener<CarBloc, CarState>(
       listenWhen: (prev, curr) => curr is CarLoadedState,
@@ -81,18 +80,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             final heading = atan2(y, x); // En radians
             return heading;
           }
+
           if (distance > 1) {
-            directionAngle = getRotationAngle(_animCtrl.mapController.camera.center, newPosition);
+            directionAngle = getRotationAngle(
+                _animCtrl.mapController.camera.center, newPosition);
             _animCtrl.animateTo(
               dest: newPosition,
               zoom: _animCtrl.mapController.camera.zoom,
               rotation: 0,
-              curve: Curves.easeInOut,
+              curve: Curves.easeOut,
               // duration: const Duration(milliseconds: 600),
             );
-            setState(() {
-              position = newPosition;
-            });
           }
 
           // mapController.move(
@@ -114,7 +112,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               if (!initialPositioned) {
                 initialCenterPoint = LatLng(car.gpsLocation.coordinates[0],
                     car.gpsLocation.coordinates[1]);
-                position = initialCenterPoint;
                 initialPositioned = true;
               }
 
@@ -123,49 +120,53 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 13 / 24,
                     width: MediaQuery.of(context).size.width,
-                    child: FlutterMap(
-                      mapController: mapController,
-                      options: MapOptions(
-                        initialCenter: initialCenterPoint,
-                        maxZoom: 20,
-                        minZoom: 2,
-                        initialZoom: 16.0,
-                        interactionOptions: const InteractionOptions(
-                          flags: InteractiveFlag.pinchZoom |
-                              InteractiveFlag.doubleTapZoom,
-                        ),
-                        // onPositionChanged: (MapPosition pos, bool hasGesture) {
-                        //   if (hasGesture && pos.center != centerPoint) {
-                        //     WidgetsBinding.instance.addPostFrameCallback((_) {
-                        //       mapController.move(centerPoint, pos.zoom ?? 13.0);
-                        //     });
-                        //   }
-                        // },
-                      ),
+                    child: Stack(
                       children: [
-                        TileLayer(
-                          urlTemplate:
-                              'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                          // subdomains: ['a', 'b', 'c'],
-                          userAgentPackageName: 'com.example.app',
-                        ),
-                        MarkerLayer(
-                          markers: [
-                            Marker(
-                              point: position,
-                              width: iconSize,
-                              height: iconSize,
-                              child: Transform.rotate(
-                                angle: directionAngle,
-                                child: Image.asset(
-                                  "assets/images/softcar_top.png",
-                                  // width: 12,
-                                  fit: BoxFit.contain,
-                                  alignment: Alignment.center,
-                                ),
-                              ),
-                            )
+                        FlutterMap(
+                          mapController: mapController,
+                          options: MapOptions(
+                            initialCenter: initialCenterPoint,
+                            maxZoom: 20,
+                            minZoom: 2,
+                            initialZoom: 16.0,
+                            interactionOptions: const InteractionOptions(
+                              flags: InteractiveFlag.pinchZoom |
+                                  InteractiveFlag.doubleTapZoom,
+                            ),
+                            // onPositionChanged: (MapPosition pos, bool hasGesture) {
+                            //   if (hasGesture && pos.center != centerPoint) {
+                            //     WidgetsBinding.instance.addPostFrameCallback((_) {
+                            //       mapController.move(centerPoint, pos.zoom ?? 13.0);
+                            //     });
+                            //   }
+                            // },
+                          ),
+                          children: [
+                            TileLayer(
+                              urlTemplate:
+                                  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                              // subdomains: ['a', 'b', 'c'],
+                              userAgentPackageName: 'com.example.app',
+                            ),
+                            const MarkerLayer(
+                              markers: [],
+                            ),
                           ],
+                        ),
+                        Center(
+                          child: SizedBox(
+                            width: iconSize,
+                            height: iconSize,
+                            child: Transform.rotate(
+                              angle: directionAngle,
+                              child: Image.asset(
+                                "assets/images/softcar_top.png",
+                                // width: 12,
+                                fit: BoxFit.contain,
+                                alignment: Alignment.center,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
