@@ -1,4 +1,5 @@
 import 'package:api_user_repository/api_user_repository.dart';
+import 'package:design_test/generated/assets.dart';
 import 'package:design_test/pages/welcome/pages/sign_in_screen.dart';
 import 'package:design_test/pages/welcome/pages/sign_up_screen.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                         children: [
                           const SizedBox(height: 76),
                           Image.asset(
-                            "assets/images/logo_softcar.png",
+                            Assets.logosLogoSoftcar,
                             width: MediaQuery.of(context).size.width / 3 * 2,
                           ),
                           const SizedBox(height: 32),

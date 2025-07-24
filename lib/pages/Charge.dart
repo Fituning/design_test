@@ -1,4 +1,5 @@
 import 'package:api_car_repository/api_car_repository.dart';
+import 'package:design_test/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,7 +49,7 @@ class Charge extends StatelessWidget {
                 ),
                 Expanded(
                     child: Image.asset(
-                  "assets/images/softcar_top.png",
+                  Assets.imagesSoftcarTop,
                   fit: BoxFit.fitWidth,
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.topCenter,

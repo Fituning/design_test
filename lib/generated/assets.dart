@@ -2,18 +2,14 @@
 class Assets {
   Assets._();
 
-  static const String assetsImagesLogoSoftcar = 'assets/images/Logo_softcar.svg';
-  static const String assetsImagesLogoSoftcarRounded = 'assets/images/logo_softcar_rounded.svg';
   static const String designTest = '.env';
-  static const String imagesAirTurbine = 'assets/images/AirTurbine.svg';
-  static const String imagesClockAdd = 'assets/images/clock_add.svg';
-  static const String imagesDegArriere = 'assets/images/deg_arriere.svg';
-  static const String imagesDegAvant = 'assets/images/deg_avant.svg';
+  static const String iconsAirTurbine = 'assets/images/icons/AirTurbine.svg';
+  static const String iconsClockAdd = 'assets/images/icons/clock_add.svg';
+  static const String iconsDegArriere = 'assets/images/icons/deg_arriere.svg';
+  static const String iconsDegAvant = 'assets/images/icons/deg_avant.svg';
   static const String imagesFrame185 = 'assets/images/Frame_185.png';
-  static const String imagesLogoSoftcar = 'assets/images/logo_softcar.png';
-  static const String imagesLogoSoftcarRounded = 'assets/images/logo_softcar_rounded.png';
-  static const String imagesLogoSoftcarRoundedExpanded = 'assets/images/logo_softcar_rounded_expanded.png';
-  static const String imagesLogoSoftcarWhite = 'assets/images/logo_softcar_white.png';
+  static const String imagesLogosLogoSoftcar = 'assets/images/logos/Logo_softcar.svg';
+  static const String imagesLogosLogoSoftcarRounded = 'assets/images/logos/logo_softcar_rounded.svg';
   static const String imagesMap = 'assets/images/map.png';
   static const String imagesMap2 = 'assets/images/map2.jpg';
   static const String imagesScreenshot20241017161950 = 'assets/images/Screenshot_20241017-161950.png';
@@ -25,5 +21,9 @@ class Assets {
   static const String imagesSoftcarTopInterior = 'assets/images/softcar_top_interior.png';
   static const String imagesSoftcarYellow = 'assets/images/softcar_yellow.png';
   static const String imagesTimeArrow = 'assets/images/time_arrow.svg';
+  static const String logosLogoSoftcar = 'assets/images/logos/logo_softcar.png';
+  static const String logosLogoSoftcarRounded = 'assets/images/logos/logo_softcar_rounded.png';
+  static const String logosLogoSoftcarRoundedExpanded = 'assets/images/logos/logo_softcar_rounded_expanded.png';
+  static const String logosLogoSoftcarWhite = 'assets/images/logos/logo_softcar_white.png';
 
 }

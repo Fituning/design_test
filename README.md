@@ -160,6 +160,7 @@ To build the APK, follow these steps:
    ```
 3. Return to the project root and fetch dependencies:
    ```bash
+   cd ../
    flutter pub get
    ```
 4. Generate the launcher icons (if not already done):

@@ -1,4 +1,5 @@
 import 'package:api_car_repository/api_car_repository.dart';
+import 'package:design_test/generated/assets.dart';
 import 'package:design_test/pages/clim_page/blocs/ac_prog/ac_prog_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -148,7 +149,7 @@ class _NextProgState extends State<NextProg> {
                     Column(
                       children: [
                         SvgPicture.asset(
-                          "assets/images/time_arrow.svg",
+                          Assets.imagesTimeArrow,
                           colorFilter: ColorFilter.mode(
                               Theme.of(context).colorScheme.onSurface,
                               BlendMode.srcIn),

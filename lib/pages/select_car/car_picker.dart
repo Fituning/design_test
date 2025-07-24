@@ -1,4 +1,5 @@
 import 'package:api_car_repository/api_car_repository.dart';
+import 'package:design_test/generated/assets.dart';
 import 'package:design_test/pages/select_car/blocs/get_car/get_car_bloc.dart';
 import 'package:design_test/pages/select_car/pages/add_car_screen.dart';
 import 'package:design_test/pages/select_car/pages/select_car_screen.dart';
@@ -55,7 +56,7 @@ class _CarPickerState extends State<CarPicker> with TickerProviderStateMixin {
                   children: [
                     const SizedBox(height: 76),
                     Image.asset(
-                      "assets/images/logo_softcar.png",
+                      Assets.logosLogoSoftcar,
                       width: MediaQuery.of(context).size.width / 3 * 2,
                     ),
                     const SizedBox(height: 32),

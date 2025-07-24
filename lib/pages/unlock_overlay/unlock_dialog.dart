@@ -1,4 +1,5 @@
 import 'package:api_car_repository/api_car_repository.dart';
+import 'package:design_test/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -40,7 +41,7 @@ class _CarLockDialogState extends State<CarLockDialog> {
                             alignment: AlignmentDirectional.center,
                             children: [
                               Image.asset(
-                                "assets/images/softcar_top.png",
+                                Assets.imagesSoftcarTop,
                                 fit: BoxFit.fitWidth,
                                 width: constraints.maxWidth - 40,
                                 height: constraints.maxHeight - 40,

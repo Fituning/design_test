@@ -1,4 +1,5 @@
 import 'package:api_car_repository/api_car_repository.dart';
+import 'package:design_test/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -90,7 +91,7 @@ class _ClimControllerPanelState extends State<ClimControllerPanel> {
           Expanded(
             child: ChipButton(
               icon: SvgPicture.asset(
-                "assets/images/deg_avant.svg",
+                Assets.iconsDegAvant,
                 height: 28,
               ),
               value: car.airConditioning.frontDefogging,
@@ -112,7 +113,7 @@ class _ClimControllerPanelState extends State<ClimControllerPanel> {
           Expanded(
             child: ChipButton(
               icon: SvgPicture.asset(
-                "assets/images/deg_arriere.svg",
+                Assets.iconsDegArriere,
                 height: 28,
               ),
               value: car.airConditioning.backDefogging,

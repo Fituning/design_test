@@ -141,6 +141,6 @@ flutter_intl:
 flutter_launcher_icons: #for icon
   android: true
   ios: true
-  image_path: "assets/images/logo_softcar_rounded.png"
-  adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground: "assets/images/logo_softcar_rounded_expanded.png"
+  image_path: "assets/images/logos/logo_softcar_rounded.png"
+  adaptive_icon_background: "#ffff00"
+  adaptive_icon_foreground: "assets/images/logos/logo_softcar_rounded_expanded.png"

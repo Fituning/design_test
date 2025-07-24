@@ -1,3 +1,4 @@
+import 'package:design_test/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,7 +18,7 @@ class ClimProg extends StatelessWidget {
     return Scaffold(
       floatingActionButton: CircularElevatedButton(
         icon: SvgPicture.asset(
-          "assets/images/clock_add.svg",
+          Assets.iconsClockAdd,
           height: 42,
           colorFilter: ColorFilter.mode(
               Theme.of(context).colorScheme.onSurface, BlendMode.srcIn),

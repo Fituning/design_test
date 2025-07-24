@@ -136,7 +136,7 @@ class _SelectCarScreenState extends State<SelectCarScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12.0),
                   child: Image.asset(
-                    "assets/images/softcar_${car.color}.png",
+                    "assets/images/softcar_${car.color}.png",//todo fix color problem maybs with a switch
                     height: 60, // Hauteur de l'image
                     fit: BoxFit.cover,
                   ),

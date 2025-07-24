@@ -1,5 +1,6 @@
 // TODO Implement this library.import 'package:flutter/cupertino.dart';
 import 'package:design_test/components/my_textfield.dart';
+import 'package:design_test/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -68,7 +69,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
                   ),
                   if (isEnoughSpace) // Afficher l'image uniquement si l'espace est suffisant
                     Image.asset(
-                      "assets/images/softcar_blue.png",
+                      Assets.imagesSoftcarBlue,
                       width: MediaQuery.of(context).size.width - 48,
                     ),
                   const SizedBox(height: 32),

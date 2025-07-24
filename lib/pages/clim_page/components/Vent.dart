@@ -10,6 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../bloc/car_bloc/car_bloc.dart';
 import '../../../components/ElevatedButton.dart';
 import '../../../components/NotifPastille.dart';
+import '../../../generated/assets.dart';
 
 const int minVentLevel = 0;
 int maxVentLevel = VentilationLevelEnum.values.length - 1;
@@ -88,7 +89,7 @@ class _VentControllerState extends State<VentController> {
     return Column(
       children: [
         SvgPicture.asset(
-          "assets/images/AirTurbine.svg",
+          Assets.iconsAirTurbine,
           height: 33,
         ),
         const SizedBox(height: 6),

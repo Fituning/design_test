@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:api_car_repository/api_car_repository.dart';
 import 'package:design_test/components/notification_overlay_bar.dart';
+import 'package:design_test/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -159,7 +160,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               child: Transform.rotate(
                                 angle: directionAngle,
                                 child: Image.asset(
-                                  "assets/images/softcar_top.png",
+                                  Assets.imagesSoftcarTop,
                                   // width: 12,
                                   fit: BoxFit.contain,
                                   alignment: Alignment.center,
@@ -170,7 +171,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         ],
                       ),
                     ),
-
                   Expanded(
                     child: SingleChildScrollView(
                       child: Padding(

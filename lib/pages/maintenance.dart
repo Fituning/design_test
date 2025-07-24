@@ -1,4 +1,5 @@
 import 'package:design_test/components/circular_info_tile.dart';
+import 'package:design_test/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,7 +35,7 @@ class Maintenance extends StatelessWidget {
                     // Décalage de la moitié de la largeur de l'image
                     child: Container(
                       child: Image.asset(
-                        "assets/images/softcar_top_interior.png",
+                        Assets.imagesSoftcarTopInterior,
                         width: MediaQuery.of(context).size.width * scale,
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.centerRight,
