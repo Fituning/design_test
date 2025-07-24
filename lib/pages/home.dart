@@ -81,7 +81,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             return heading;
           }
 
-
           if (distance > 1) {
             directionAngle = getRotationAngle(
                 _animCtrl.mapController.camera.center, newPosition);
@@ -114,9 +113,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 initialCenterPoint = LatLng(car.gpsLocation.coordinates[0],
                     car.gpsLocation.coordinates[1]);
                 initialPositioned = true;
-              }
 
-              return Column(
+
+        }      return Column(
                 children: [
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 13 / 24,
